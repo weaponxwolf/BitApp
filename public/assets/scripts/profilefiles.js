@@ -123,11 +123,6 @@ function optionMenu(params) {
       );
 }
 
-function hiii() {
-      console.log("YOOOO");
-}
-
-
 
 function enterfolder(params) {
       window.location.href = "/profile/" + params.id;
@@ -162,7 +157,7 @@ function submitfile() {
       $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "/profile/profilefiles/uploadfile",
+            url: "/profile/uploadfile",
             data: data,
             processData: false,
             contentType: false,
@@ -182,37 +177,43 @@ function submitfile() {
 function RefreshFiles() {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
-      var folderLocation = locarray[2];
-      $.get("/profile/profilefiles/fileslist?location=" + folderLocation, function (data, status) {
+      var folderLocation = locarray[3];
+      $.get("/profile/fileslist?location=" + folderLocation, function (data, status) {
             $("#filesstructure ul").html("");
             data.forEach(element => {
-                  $("#filesstructure ul").append(`<li class="list-group-item" id="file_${element._id}">
-                <div class="row">
-                    <div class="col files" >
-                        <img src="/assets/img/file-icon.png" alt=""
-                            style="width: 1rem;margin-right: 1 rem;">
-                        <span>${element.name}</span>
-  
-                    </div>
-                    <div class="col option">
-                        <span id="fileoption_${element._id}" style="float: right;cursor: pointer;"
-                            onclick="fileoptionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
-                                style="width: 1rem;margin-right: 1 rem;">
-                        </span>
-                    </div>
-                </div>
-            </li>`);
+                  var makeid=element.split('.').join('_');
+                  $("#filesstructure ul").append(`<li class="list-group-item" id="file_${makeid}">
+                        <div class="row">
+                            <div class="col files">
+                                <img src="/assets/img/file-icon.png" alt=""
+                                    style="width: 1rem;margin-right: 1 rem;">
+                                <span>${element}</span>
+
+                            </div>
+                            <div class="col option">
+                                <span id="fileoption_${makeid}" style="float: right;cursor: pointer;"
+                                    onclick="fileoptionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
+                                        style="width: 1rem;margin-right: 1 rem;">
+                                </span>
+                            </div>
+                        </div>
+                    </li>`);
+
             });
       });
+
 }
 
 function deletefile(params) {
-      var fileid = params.id.split("_")[1];
-      var pathname = window.location.pathname;
-      var locarray = pathname.split("/");
-      var fileLocation = locarray[2];
-      $.post('/profile/profilefiles/deletefile', {
-            fileid: fileid,
+      var fileid=params.id.replace('_','$').split('$')[1];
+      var fileLocation=window.location.pathname;
+      if (fileLocation=="/profile/profilefiles/"||fileLocation=="/profile/profilefiles") {
+      }else{
+            fileLocation = window.location.pathname.replace('/$',' ').split(' ')[1].split('$').join('/');
+      }
+      var filename=$("#file_"+fileid+" div div span").html();
+      $.post('/profile/deletefile', {
+            filename :filename,
             filelocation: fileLocation
       }, function (data, status) {
             $("#messages").html(`<div style="padding: 1rem"> ${data}
@@ -266,7 +267,7 @@ function renamefile(params) {
 }
 
 function fileoptionMenu(params) {
-      var fileid = params.id.split("_")[1];
+      var fileid = params.id.replace('_','$').split('$')[1];
       $("#" + params.id).html("");
       $("#fileoption_" + fileid).remove();
       $("#file_" + fileid).append(`
@@ -278,12 +279,7 @@ function fileoptionMenu(params) {
                                         style="height: 1.5rem;margin-right: 1 rem;"></div>
                                 </span>
                             </div>
-                            <div class="rename-icon" id="rename_${fileid}" onclick="renamefile(this)">
-                                <span >
-                                    <div><img src="/assets/img/rename.png" alt=""
-                                        style="height: 1.5rem;margin-right: 1 rem;"></div>
-                                </span>
-                            </div>
+                            
                         </div>`);
       $("#file_" + fileid + " div .option").append(
             `<span style="float: right" id="removeoption_${fileid}" onclick="removeoption(this)"><img src="/assets/img/cross.png"  style="width: 1rem;cursor:pointer;"></span>`
@@ -323,30 +319,32 @@ $(document).ready(function () {
                     </li>`);
             });
       });
-      // var pathname = window.location.pathname;
-      // var locarray = pathname.split("/");
-      // var folderLocation = locarray[2];
-      // $.get("/profile/profilefiles/fileslist?location=" + folderLocation, function (data, status) {
-      //       $("#filesstructure ul").html("");
-      //       data.forEach(element => {
-      //             $("#filesstructure ul").append(`<li class="list-group-item" id="file_${element._id}">
-      //                   <div class="row">
-      //                       <div class="col files">
-      //                           <img src="/assets/img/file-icon.png" alt=""
-      //                               style="width: 1rem;margin-right: 1 rem;">
-      //                           <span>${element.name}</span>
+      var pathname = window.location.pathname;
+      var locarray = pathname.split("/");
+      var folderLocation = locarray[3];
+      $.get("/profile/fileslist?location=" + folderLocation, function (data, status) {
+            $("#filesstructure ul").html("");
+            data.forEach(element => {
+                  var makeid=element.split('.').join('_');
+                  $("#filesstructure ul").append(`<li class="list-group-item" id="file_${makeid}">
+                        <div class="row">
+                            <div class="col files">
+                                <img src="/assets/img/file-icon.png" alt=""
+                                    style="width: 1rem;margin-right: 1 rem;">
+                                <span>${element}</span>
 
-      //                       </div>
-      //                       <div class="col option">
-      //                           <span id="fileoption_${element._id}" style="float: right;cursor: pointer;"
-      //                               onclick="fileoptionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
-      //                                   style="width: 1rem;margin-right: 1 rem;">
-      //                           </span>
-      //                       </div>
-      //                   </div>
-      //               </li>`);
-      //       });
-      // });
+                            </div>
+                            <div class="col option">
+                                <span id="fileoption_${makeid}" style="float: right;cursor: pointer;"
+                                    onclick="fileoptionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
+                                        style="width: 1rem;margin-right: 1 rem;">
+                                </span>
+                            </div>
+                        </div>
+                    </li>`);
+
+            });
+      });
 
 
       $("#createfolder").click(function () {
@@ -358,8 +356,7 @@ $(document).ready(function () {
 
       $("#uploadfile").click(function () {
             var pathname = window.location.pathname;
-            var locarray = pathname.split("/");
-            var folderLocation = locarray[2];
+            var folderLocation = pathname.replace('$',' ').split(' ')[1];
             $("#messages").html("");
             $("#inputs").html(
                   `<form method="POST" id="fileform" enctype="multipart/form-data">
