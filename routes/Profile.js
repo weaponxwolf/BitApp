@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 
+const ProfileFolders=require('../models/ProfileFolders');
+const async = require('hbs/lib/async');
+
 app.use(cookieParser());
 app.use(fileUpload());
 
@@ -34,8 +37,40 @@ app.post('/createfolder',async (req,res)=>{
             var appenddir=req.body.foldername;
             var getname = GetName(req);
             var middir="";
+            if (req.body.location) {
+                  middir="/"+req.body.location;
+            }else
+            {
+                  middir="/"+middir;
+            }
             
-            
+            var getfoldername = getname.split('.').join('-').split('@')[0];
+            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername+middir+'/'+appenddir);
+            dir=dir.split('%20').join(' ');
+            dir=dir.split('$').join('/');
+            if (!fs.existsSync(dir)) {
+                  fs.mkdirSync(dir, {
+                        recursive: true
+                  });
+            }
+            const newProfileFile=new ProfileFolders({
+                  name : appenddir,
+                  filelocation : middir+'/'+appenddir,
+                  createdby : getname,
+                  createdon: Date.now()
+            });
+            newProfileFile.save();
+            await res.send("Folder '"+ appenddir +"' Created");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/deletefolder',async(req,res)=>{
+      try {
+            var appenddir=req.body.foldername;
+            var getname = GetName(req);
+            var middir="";
             if (req.body.location) {
                   middir="/"+req.body.location;
             }else
@@ -48,15 +83,12 @@ app.post('/createfolder',async (req,res)=>{
             dir=dir.split('%20').join(' ');
             dir=dir.split('$').join('/');
             console.log(dir);
-            if (!fs.existsSync(dir)) {
-                  fs.mkdirSync(dir, {
-                        recursive: true
-                  });
-            }
-            await res.send("Folder '"+ appenddir +"' Created");
+            fs.rmSync(dir, { recursive: true, force: true });
+            res.send('OK');
       } catch (error) {
-            console.log(error);
+            
       }
+      
 });
 
 app.get('/folderlist', async (req, res) => {

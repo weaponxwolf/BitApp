@@ -3,7 +3,6 @@ function RefreshList() {
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
       var pathanalysis=window.location.pathname.replace("/profile/profilefiles",'');
-      console.log(pathanalysis);
       $.get("/profile/folderlist?location=" + folderLocation, function (data, status) {
             $("#filestructure ul").html("");
             data.forEach(element => {
@@ -12,7 +11,8 @@ function RefreshList() {
                   }else{
                         var folderid = 'profilefiles'+pathanalysis+'$'+element;
                   }
-                  $("#filestructure ul").append(`<li class="list-group-item" id="folder_${element}">
+                  var makeid=element.split(' ').join('_');
+                  $("#filestructure ul").append(`<li class="list-group-item" name="" id="folder_${makeid}">
                         <div class="row">
                             <div class="col folders" onclick="enterfolder(this)" id="${folderid}">
                                 <img src="/assets/img/folder-icon.png" alt=""
@@ -21,7 +21,7 @@ function RefreshList() {
   
                             </div>
                             <div class="col option">
-                                <span id="option_${element}" style="float: right;cursor: pointer;"
+                                <span id="option_${makeid}" style="float: right;cursor: pointer;"
                                     onclick="optionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
                                         style="width: 1rem;margin-right: 1 rem;">
                                 </span>
@@ -72,9 +72,15 @@ function renamefolder(params) {
 }
 
 function deletefolder(params) {
-      var folderid = params.id.split("_")[1];
-      $.post('/profile/profilefiles/deletefolder', {
-            folderid: folderid
+      var foldername = params.id.replace('_','$').split('$')[1];
+      var foldername= $('#folder_'+foldername+" div div span").html();
+      var pathname = window.location.pathname;
+      var locarray = pathname.split("/");
+      var folderLocation = locarray[3];
+      console.log(foldername);
+      $.post('/profile/deletefolder', {
+            foldername: foldername,
+            location : folderLocation
       }, function (data, status) {
             $("#messages").html(`<div style="padding: 1rem"> ${data}
                     <span style="float: right"><img src="/assets/img/cross.png" alt="" style="width: 1rem;cursor:pointer;" onclick="removemessage()">
@@ -100,7 +106,8 @@ function removeoption(params) {
 }
 
 function optionMenu(params) {
-      var folderid = params.id.split("_")[1];
+      var folderid = params.id.replace('_','$').split('$')[1];
+      console.log(folderid);
       $("#" + params.id).html("");
       $("#option_" + folderid).remove();
       $("#folder_" + folderid).append(`
@@ -109,12 +116,6 @@ function optionMenu(params) {
                             <div class="delete-icon" id="delete_${folderid}" onclick="deletefolder(this)">
                                 <span >
                                     <div><img src="/assets/img/dust-bin.png" alt=""
-                                        style="height: 1.5rem;margin-right: 1 rem;"></div>
-                                </span>
-                            </div>
-                            <div class="rename-icon" id="rename_${folderid}" onclick="renamefolder(this)">
-                                <span >
-                                    <div><img src="/assets/img/rename.png" alt=""
                                         style="height: 1.5rem;margin-right: 1 rem;"></div>
                                 </span>
                             </div>
@@ -142,7 +143,6 @@ function createfolder() {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      console.log(folderLocation);
       $.post("/profile/createfolder", {
             foldername: folderName,
             location: folderLocation,
@@ -298,7 +298,6 @@ $(document).ready(function () {
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
       var pathanalysis=window.location.pathname.replace("/profile/profilefiles",'');
-      console.log(pathanalysis);
       $.get("/profile/folderlist?location=" + folderLocation, function (data, status) {
             $("#filestructure ul").html("");
             data.forEach(element => {
@@ -307,7 +306,8 @@ $(document).ready(function () {
                   }else{
                         var folderid = 'profilefiles'+pathanalysis+'$'+element;
                   }
-                  $("#filestructure ul").append(`<li class="list-group-item" id="folder_${element}">
+                  var makeid=element.split(' ').join('_');
+                  $("#filestructure ul").append(`<li class="list-group-item" name="" id="folder_${makeid}">
                         <div class="row">
                             <div class="col folders" onclick="enterfolder(this)" id="${folderid}">
                                 <img src="/assets/img/folder-icon.png" alt=""
@@ -316,7 +316,7 @@ $(document).ready(function () {
   
                             </div>
                             <div class="col option">
-                                <span id="option_${element}" style="float: right;cursor: pointer;"
+                                <span id="option_${makeid}" style="float: right;cursor: pointer;"
                                     onclick="optionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
                                         style="width: 1rem;margin-right: 1 rem;">
                                 </span>
@@ -371,20 +371,6 @@ $(document).ready(function () {
                 </form>
                 <button type="submit" onclick="submitfile()" id="submitfile" type="button" class="btn btn-primary">Upload</button>
                 `
-            );
-      });
-
-      $("#createlink").click(function () {
-            var pathname = window.location.pathname;
-            var locarray = pathname.split("/");
-            var folderLocation = locarray[2];
-            $("#messages").html("");
-            $("#inputs").html(
-                  `<div class="form-group">
-    <input type="text" class="form-control" aria-describedby="emailHelp" id="linkname" placeholder="Enter Link Name...">
-    <br>
-    <input type="text" class="form-control" aria-describedby="emailHelp" id="link" placeholder="Enter Link ...">
-    </div><button onclick="createlink()" type="button" class="btn btn-primary col-3">Create</button>`
             );
       });
 
