@@ -2,16 +2,16 @@ function RefreshList() {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      var pathanalysis=window.location.pathname.replace("/profile/profilefiles",'');
+      var pathanalysis = window.location.pathname.replace("/profile/profilefiles", '');
       $.get("/profile/folderlist?location=" + folderLocation, function (data, status) {
             $("#filestructure ul").html("");
             data.forEach(element => {
                   if (pathanalysis) {
-                        var folderid = 'profilefiles'+pathanalysis+'$'+element;
-                  }else{
-                        var folderid = 'profilefiles'+pathanalysis+'$'+element;
+                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
+                  } else {
+                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
                   }
-                  var makeid=element.split(' ').join('_');
+                  var makeid = element.split(' ').join('_');
                   $("#filestructure ul").append(`<li class="list-group-item" name="" id="folder_${makeid}">
                         <div class="row">
                             <div class="col folders" onclick="enterfolder(this)" id="${folderid}">
@@ -72,15 +72,14 @@ function renamefolder(params) {
 }
 
 function deletefolder(params) {
-      var foldername = params.id.replace('_','$').split('$')[1];
-      var foldername= $('#folder_'+foldername+" div div span").html();
+      var foldername = params.id.replace('_', '$').split('$')[1];
+      var foldername = $('#folder_' + foldername + " div div span").html();
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      console.log(foldername);
       $.post('/profile/deletefolder', {
             foldername: foldername,
-            location : folderLocation
+            location: folderLocation
       }, function (data, status) {
             $("#messages").html(`<div style="padding: 1rem"> ${data}
                     <span style="float: right"><img src="/assets/img/cross.png" alt="" style="width: 1rem;cursor:pointer;" onclick="removemessage()">
@@ -106,8 +105,7 @@ function removeoption(params) {
 }
 
 function optionMenu(params) {
-      var folderid = params.id.replace('_','$').split('$')[1];
-      console.log(folderid);
+      var folderid = params.id.replace('_', '$').split('$')[1];
       $("#" + params.id).html("");
       $("#option_" + folderid).remove();
       $("#folder_" + folderid).append(`
@@ -297,16 +295,16 @@ $(document).ready(function () {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      var pathanalysis=window.location.pathname.replace("/profile/profilefiles",'');
+      var pathanalysis = window.location.pathname.replace("/profile/profilefiles", '');
       $.get("/profile/folderlist?location=" + folderLocation, function (data, status) {
             $("#filestructure ul").html("");
             data.forEach(element => {
                   if (pathanalysis) {
-                        var folderid = 'profilefiles'+pathanalysis+'$'+element;
-                  }else{
-                        var folderid = 'profilefiles'+pathanalysis+'$'+element;
+                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
+                  } else {
+                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
                   }
-                  var makeid=element.split(' ').join('_');
+                  var makeid = element.split(' ').join('_');
                   $("#filestructure ul").append(`<li class="list-group-item" name="" id="folder_${makeid}">
                         <div class="row">
                             <div class="col folders" onclick="enterfolder(this)" id="${folderid}">
@@ -337,7 +335,7 @@ $(document).ready(function () {
       //                           <img src="/assets/img/file-icon.png" alt=""
       //                               style="width: 1rem;margin-right: 1 rem;">
       //                           <span>${element.name}</span>
-  
+
       //                       </div>
       //                       <div class="col option">
       //                           <span id="fileoption_${element._id}" style="float: right;cursor: pointer;"
@@ -374,17 +372,26 @@ $(document).ready(function () {
             );
       });
 
+
+      $("#breadcrumb").append(
+            `<li class="breadcrumb-item"><a href="/profile/profilefiles/">Profile Files </a></li>`);
+
+      
       var pathname = window.location.pathname;
-      var locarray = pathname.split("/");
-      var folderLocation = locarray[2];
-      var myarray = folderLocation.split('-');
-      var path = "root";
-      myarray.forEach(element => {
-            if (element == "root") {} else {
-                  path = path + "-" + element;
-            }
-            var element = element.split('%20').join(' ');
-            $("#breadcrumb").append(
-                  `<li class="breadcrumb-item"><a href="/profile/profilefiles/">${element}</a></li>`);
-      });
+      if (pathname == '/profile/profilefiles/' || pathname == '/profile/profilefiles') {
+            
+      }else{
+            var linkpaths = "";
+            pathname = pathname.replace('$', ' ').split(' ')[1].split('$');
+            pathname.forEach(element => {
+                  element = element.split('%20').join(' ');
+                  linkpaths = linkpaths + '$' + element;
+                  $("#breadcrumb").append(
+                        `<li class="breadcrumb-item"><a href="/profile/profilefiles/${linkpaths}">${element}</a></li>`);
+                  
+            })
+      }
+
+
+
 });

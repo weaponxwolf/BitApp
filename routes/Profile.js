@@ -83,8 +83,6 @@ app.post('/deletefolder',async(req,res)=>{
             var dir = path.join(__dirname, "..", "public/profile/" + getfoldername+middir+'/'+appenddir);
             dir=dir.split('%20').join(' ');
             dir=dir.split('$').join('/');
-            console.log(dir);
-            console.log(middir+'/'+appenddir);
             await ProfileFolders.deleteOne({
                   name : appenddir,
                   filelocation : middir+'/'+appenddir,
