@@ -76,7 +76,11 @@
                 <div id="uploadfile">Upload file</div>
             </div>
             <div class="col-9">
-                <h1>Profile Files</h1>
+                <h1> {{#if profileindex}}
+                    <a href="/profile/">Visit Profile</a>{{else}}
+                    Upload index.html to Open Profile
+                     {{/if}}</h1>
+
                 <div style="background-color: #cbffd9;font-size: small;" id="messages">
 
                 </div>

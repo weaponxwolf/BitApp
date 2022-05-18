@@ -168,8 +168,13 @@ function submitfile() {
               <span style="float: right"><img src="/assets/img/cross.png" alt="" style="width: 1rem;cursor:pointer;" onclick="removemessage()">
               </span>
               </div>`);
+              
                   $("#inputs").html("");
                   RefreshFiles();
+                  console.log(data);
+                  if (data.search('index.html')!=-1) {
+                        window.location.reload();
+                  }
             }
       });
 }
@@ -221,6 +226,9 @@ function deletefile(params) {
                     </span>
                 </div>`);
             $("#inputs").html("");
+            if (data.search('index.html')!=-1) {
+                  window.location.reload();
+            }
             RefreshFiles();
       });
 }

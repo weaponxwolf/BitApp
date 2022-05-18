@@ -20,19 +20,39 @@ const GetName = (req) => {
 }
 
 
-app.get('/', (req, res) => {
-      res.render('profile/index');
+// app.get('/', (req, res) => {
+//       res.render('profile/index');
+// });
+app.get('/', function(req, res) {
+      app.use(express.static('public/profile/btech10071-20/'));
+      
+      if (!fs.existsSync(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'))) {
+            res.redirect('/profile/profilefiles/');
+      }else{
+            res.sendFile(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'));
+      }
+      
 });
 
 app.get('/profilefiles/:hello', (req, res) => {
-      res.render('profile/profilefiles.hbs');
+      
+      if (!fs.existsSync(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'))) {
+            res.render('profile/profilefiles');
+      }else{
+            res.render('profile/profilefiles',{profileindex : profileindex});
+      }
+      
 });
 
-
-app.get('/profilefiles', (req, res) => {
-      res.render('profile/profilefiles.hbs');
+app.get('/profilefiles/', (req, res) => {
+      var profileindex=true;
+      if (!fs.existsSync(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'))) {
+            res.render('profile/profilefiles');
+      }else{
+            res.render('profile/profilefiles',{profileindex : profileindex});
+      }
+      
 });
-
 
 app.post('/createfolder', async (req, res) => {
       try {

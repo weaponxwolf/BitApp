@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+    <style>
+        .create div {
+            border: 1px solid black;
+            padding: 1rem;
+            margin: 1rem;
+            cursor: pointer;
+        }
+
+        .folders {
+            cursor: pointer;
+        }
+
+        .files {
+            cursor: pointer;
+        }
+
+        .delete-icon {
+            float: right;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+
+        }
+
+        .delete-icon:hover span {
+            display: none;
+        }
+
+        .delete-icon:hover::before {
+            content: "Delete";
+        }
+
+        .rename-icon {
+            float: right;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+        }
+
+        .rename-icon:hover span {
+            display: none;
+        }
+
+        .rename-icon:hover::before {
+            content: "Rename";
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back-to-top"></div>
+    <header>
+        {{>navbar}}
+    </header>
+
+    <main>
+        <div class="page-section counter-section">
+            <div class="container">
+                <div class="row align-items-center text-center">
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+    <div class="container">
+
+    </div>
+    {{>scripts}}
+
+
+</body>
+
+</html>

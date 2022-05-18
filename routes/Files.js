@@ -20,7 +20,7 @@ const GetName = (req) => {
 }
 
 app.get('/', (req, res) => {
-  res.render('files/index');
+  res.redirect('/files/root');
 });
 
 app.get('/root', (req, res) => {
