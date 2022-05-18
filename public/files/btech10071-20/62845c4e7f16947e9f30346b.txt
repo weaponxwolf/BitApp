@@ -1,0 +1,407 @@
+%Bisection Method
+clear all
+clc
+bisection = @(x) exp(x)-sin(x);
+x_lower = -4;
+x_upper = -3;
+x_mid = (x_lower+x_upper)/2;
+if bisection(x_lower)*bisection(x_upper) > 0.0
+    error('The brackets are wrong')
+end
+while abs((x_upper-x_lower)/x_upper)>0.0005
+    if (bisection(x_mid)*bisection(x_upper))<0
+        x_lower = x_mid;
+    else
+        x_upper = x_mid;
+    end
+    x_mid = (x_lower+x_upper)/2;
+end
+disp(' Root value');
+disp(x_mid);
+
+
+
+%First Derivative of a function using central difference
+clear
+clc
+%Input
+theta = 1;                          %Radians
+func = @(x) cos(x);                 %Function
+drfunc = @(x) -sin(x);              %Derived Function for Validation
+h = 0.01;                           %Step size
+%Calculation
+v_x = func(theta-h/2);
+v_xh = func(theta+h/2);
+derivative = (v_xh-v_x)/h;
+validate = drfunc(theta);
+%Result
+disp('Numerical Derivative')
+disp(derivative);
+disp('Analytical Derivative')
+disp(validate);
+
+%Definite Integration
+clear
+clc
+close all
+%Input
+func = @(x) exp(x);                 %Function
+dx = 0.001;                         %Step Size
+l_limit = 1;                        %Lower Limit
+u_limit = 3;                        %Upper Limit
+n = (u_limit-l_limit)/dx;
+a = zeros(n,1);
+z = zeros(n,1);
+%Main Loop
+for i = 1:n
+    z(i) = func(l_limit);
+    a(i) = (z(i)*dx);
+    l_limit = l_limit+dx;
+end
+%Results
+l_limit = 1;                        %Lower Limit for Plotting
+fplot(func,[l_limit u_limit])
+title('Plot of The Function')
+xlabel('x');
+ylabel('y');
+s = sum(a);
+disp('Integral Value');
+disp(s);
+
+%Divided Difference Method
+function ydm = DMD(x,y,x_i)
+%Function
+n = length(x);
+b = zeros(n,n);
+% assign dependent variables to the first column of b.
+b(:,1) = y(:); % the (:) ensures that y is a column vector.
+for j = 2:n
+for i = 1:n-j+1
+b(i,j) = (b(i+1,j-1)-b(i,j-1))/((x(i+j-1)-x(i)));
+end
+end
+% use the finite divided differences to interpolate
+xt = 1;
+ydm = b(1,1);
+for j = 1:n-1
+xt = xt*(x_i-x(j));
+ydm = ydm+b(1,j+1)*xt;
+end
+
+%Euler Backward ODE Solver
+clear
+clc
+close all
+%Inputs
+func = @(x,y) x-y;
+h = 0.025;
+x_upper_lim = 2;
+x_0 = 0;
+x = transpose(x_0:h:x_upper_lim);
+y = zeros(length(x),1);
+%Initial Boundary Condition
+y(1,1) = 1;
+%Implicit Function hence dependent on function; Change the 
+%loop function accordingly
+for i = 2:length(y)
+    y(i,1) = (y(i-1)+h*x(i))/(1+h);
+end
+%Result
+plot(x,y)
+
+%Euler Forward ODE Solver
+clear
+clc
+close all
+%Inputs
+func = @(x,y) x-y^2;
+h = 0.025;
+x_upper_lim = 2;
+x_0 = 0;
+x = transpose(x_0:h:x_upper_lim);
+y = zeros(length(x),1);
+%Initial Boundary Condition
+y(1,1) = 1;
+for i = 2:length(y)
+    y(i,1) = y(i-1)+h*func(x(i-1),y(i-1));
+end
+%Result
+plot(x,y)
+
+False Position Method
+clear all
+clc
+%function
+false_p = @(x) exp(x)-sin(x);
+%Inputs
+x_lower = -3;
+x_upper = -3.5;
+x_mid = (x_upper*false_p(x_lower)-x_lower*false_p(x_upper))/(false_p(x_lower)-false_p(x_upper));
+if false_p(x_lower)*false_p(x_upper)>0
+    disp('The brackets are wrong');
+end
+while abs((x_upper-x_lower)/x_upper)>0.0001
+    if (false_p(x_lower)*false_p(x_mid))>0
+    x_lower = x_mid;
+    else
+        x_upper = x_mid;
+    end
+    x_mid = (x_upper*false_p(x_lower)-x_lower*false_p(x_upper))/(false_p(x_lower)-false_p(x_upper));
+end
+disp(' Root Value ')
+disp(x_mid);
+
+
+% Fibonacci Plotter
+%function fib = fibonacci_plotter(k)
+k = 100;
+%Input
+n = zeros(k,1);
+n(1)=1;
+n(2)=1;
+%Function
+for i = 3:k
+    n(i) = n(i-2) + n(i-1);
+end
+fib = sum(n);
+%end
+
+
+%First Derivative of a function using forward difference
+clear
+clc
+%Input
+theta = 1;                          %Radians
+func = @(x) cos(x);                 %Function
+drfunc = @(x) -sin(x);              %Derived Function for Validation
+h = 0.01;                           %Step size
+%Calculation
+v_x = func(theta);
+v_xh = func(theta+h);
+derivative = (v_xh-v_x)/h;
+validate = drfunc(theta);
+%Result
+disp('Numerical Derivative')
+disp(derivative);
+disp('Analytical Derivative')
+disp(validate);
+
+%Gauss Jacobian Method for System of Linear Eqations 
+clc
+% Equations Variables
+a_11 = 6;
+a_12 = 1;
+a_13 = 1;
+a_21 = 1;
+a_22 = 4;
+a_23 = -1;
+a_31 = 1;
+a_32 = -1;
+a_33 = 5;
+b_1 = 20;
+b_2 = 6;
+b_3 = 7;
+%Intial gess
+x_11 = 0;
+x_21 = 0;
+x_31 = 0;
+% Matries
+coefficient_matrix_a = [0,a_12/a_11,a_13/a_11;a_21/a_22,0,a_23/a_22;a_31/a_33,a_32/a_33,0];
+coefficient_matrix_b = [b_1/a_11;b_2/a_22;b_3/a_33];
+for i=1:10
+vaule = coefficient_matrix_b - coefficient_matrix_a*[x_1(i);x_2(i);x_3(i)];
+end
+\\
+
+
+
+
+%Julia Set Fractal Simulation
+clear
+clc
+close all
+%Input
+maxitr = 200;               %Number of Iterations
+x_limit = [-2,2];           %x axis limits
+y_limit = [-2,2];           %y axis limits
+dx = 1000;                   %Number of points
+dy = 1000;
+%Creating Grid Points
+x = linspace(x_limit(1),x_limit(2),dx);
+y = linspace(y_limit(1),y_limit(2),dy);
+[x_g,y_g] = meshgrid(x,y);  %Creating Meshgrid with points
+%Set of all Up Grid Matrix
+count = ones(size(x_g));
+%Complex Number
+c = x_g +1i*y_g;
+c1 = -0.4 + 0.6i;
+%Initial Condition
+z = c;
+%Main Loop
+figure('Name','Fractal Simulation','NumberTitle','off','position',[170 70 1000 600]);
+for j = 1:maxitr
+    z = z.*z + c1;
+    inside = abs(z)<= 2;
+    count = count + inside;
+    imagesc(x,y,count);         %Create image from array
+    colormap default
+    axis on
+    title('Jullia Set Fractal Simulation')
+    drawnow
+end
+
+
+
+
+%Newton Forward Difference Method
+function yfn = newtonforward(x,y,x_i)
+n = length(x);
+p = ((x_i-x(1))/(x(2)-x(1)));
+b = zeros(n,n);
+% assign dependent variables to the first column of b.
+b(:,1) = y(:); % the (:) ensures that y is a column vector.
+for j = 2:n
+for i = 1:n-j+1
+b(i,j) = (b(i+1,j-1)-b(i,j-1));
+end
+end
+xt = 1;
+l = 1;
+yfn = b(1,1);
+for j = 1:n-1
+    xt = xt*(p-(j-1));
+ for i = j+1
+     l = l*(i-1);
+yfn = yfn+(b(1,j+1)*xt)/(l);
+ end
+end
+end
+
+
+
+%Newton Raphson Method
+clear all
+clc
+syms x
+newton_rap = @(x) 10*x^3-25.0425*x^2-3.592*x-0.1532;
+diff_f = matlabFunction( diff(newton_rap(x)) );
+%inputs
+x_initial = 0;
+x_mid = x_initial-(newton_rap(x_initial)/diff_f(x_initial));
+while abs((x_mid-x_initial)/x_mid)>0.00001
+    x_initial = x_mid;
+    x_mid = x_initial-(newton_rap(x_initial)/diff_f(x_initial));
+end
+disp(' Root value ');
+disp(x_mid);
+
+
+
+
+%Runge-Kutta 2nd order ODE Solver
+clear
+clc
+close all
+%Inputs
+func = @(x,y) x-y;
+h = 0.025;
+x_upper_lim = 2;
+x_0 = 0;
+x = transpose(x_0:h:x_upper_lim);
+y = zeros(length(x),1);
+%Initial Boundary Condition
+y(1,1) = 1;
+for i = 2:length(y)
+    k_1 = h*(func(x(i-1),y(i-1)));
+    k_2 = h*(func(x(i),y(i-1)+k_1));
+    y(i,1) = y(i-1)+(1/2)*(k_1+k_2);
+end
+%Result
+plot(x,y)
+
+
+%Runge-Kutta 3rd order ODE Solver
+clear
+clc
+close all
+%Inputs
+func = @(x,y) -2*y+x+4;
+h = 0.2;
+x_upper_lim = 2;
+x_0 = 0;
+x = transpose(x_0:h:x_upper_lim);
+y = zeros(length(x),1);
+%Initial Boundary Condition
+y(1,1) = 1;
+for i = 2:length(y)
+    k_1 = (h)*(func(x(i-1),y(i-1)));
+    k_2 = (h)*(func(x(i-1)+(h/2),(y(i-1)+(k_1/2))));
+    k_3 = (h)*(func(x(i-1)+h,(y(i-1)+(k_1/2)+k_2/2)));
+    y(i,1) = y(i-1)+(1/6)*(k_1+4*k_2+k_3);
+end
+v = transpose(x_0:h:x_upper_lim);
+ex(:,1) = -0.75*exp(-2.*v)+0.5.*v+1.75;
+%Result
+plot(x,y,'-ko')
+hold on
+plot(v,ex,'-bo')
+legend('Numerical','Exact')
+
+
+%Runge-Kutta 4th order ODE Solver
+clear
+clc
+close all
+%Inputs
+func = @(x,y) -2*y+x+4;
+h = 0.2;
+x_upper_lim = 2;
+x_0 = 0;
+x = transpose(x_0:h:x_upper_lim);
+y = zeros(length(x),1);
+%Initial Boundary Condition
+y(1,1) = 1;
+for i = 2:length(y)
+    k_1 = (h)*(func(x(i-1),y(i-1)));
+    k_2 = (h)*(func(x(i-1)+(h/2),(y(i-1)+(k_1/2))));
+    k_3 = (h)*(func(x(i-1)+(h/2),(y(i-1)+(k_2/2))));
+    k_4 = (h)*(func(x(i-1)+h,(y(i-1)+k_3)));
+    y(i,1) = y(i-1)+(1/6)*(k_1+2*k_2+2*k_3+k_4);
+end
+v = transpose(x_0:h:x_upper_lim);
+ex(:,1) = -0.75*exp(-2.*v)+0.5.*v+1.75;
+%Result
+plot(x,y,'-ko')
+hold on
+plot(v,ex,'-bo')
+legend('Numerical','Exact')
+
+
+%Second Derivative of a function using central difference
+clear
+clc
+%Input
+theta = 1;                          %Radians
+func = @(x) cos(x);                 %Function
+drfunc = @(x) -cos(x);              %Derived Function for Validation
+h = 0.01;                           %Step size
+%Calculation
+v_x = func(theta-h);
+v_xh = func(theta+h);
+v_xh1 = 2*func(theta);
+derivative = (v_xh+v_x-v_xh1)/h^2;
+validate = drfunc(theta);
+%Result
+disp('Numerical Derivative')
+disp(derivative);
+disp('Analytical Derivative')
+disp(validate);
+
+
+
+
+
+
+
+
+

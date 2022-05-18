@@ -1,0 +1,30 @@
+Normal Variables in php starts with $ sign . eg $a,$myvar
+
+A session is a way to store information (in variables) to be used across multiple pages.
+
+A cookie is often used to identify a user. 
+A cookie is a small file that the server embeds on the user's computer. 
+Each time the same computer requests a page with a browser, it will send the cookie too. 
+With PHP, you can both create and retrieve cookie values.
+
+isset() ->The isset() function checks whether a variable is set if set then return 1, which means that it has to be declared and is not NULL.
+$_SESSION['username']-> username is a session variable . 
+$_COOKIE['username'] -> username is cookie variable .
+$_POST['username'] -> username is post variable .
+
+Student S; //JAVA C++
+S.name="Prity";
+
+Student $S; //PHP 
+$S->name="Prity";
+
+
+GET
+The GET method is used to retrieve information from the given server using a given URI. Requests using GET should only retrieve data and should have no other effect on the data.
+POST
+A POST request is used to send data to the server, for example, customer information, file upload, etc. using HTML forms.
+PUT
+Replaces all current representations of the target resource with the uploaded content. ( Update )
+
+num_rows -> No Of Rows
+header('Location: url'); ->redirect to url
