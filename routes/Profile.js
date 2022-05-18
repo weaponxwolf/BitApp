@@ -59,6 +59,7 @@ app.post('/createfolder',async (req,res)=>{
                   createdby : getname,
                   createdon: Date.now()
             });
+            
             newProfileFile.save();
             await res.send("Folder '"+ appenddir +"' Created");
       } catch (error) {
@@ -83,8 +84,15 @@ app.post('/deletefolder',async(req,res)=>{
             dir=dir.split('%20').join(' ');
             dir=dir.split('$').join('/');
             console.log(dir);
+            console.log(middir+'/'+appenddir);
+            await ProfileFolders.deleteOne({
+                  name : appenddir,
+                  filelocation : middir+'/'+appenddir,
+                  createdby : getname,
+            });
+
             fs.rmSync(dir, { recursive: true, force: true });
-            res.send('OK');
+            res.send("Folder '"+appenddir+"' Deleted");
       } catch (error) {
             
       }
