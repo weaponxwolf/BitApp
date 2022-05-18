@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+    <style>
+        .create div {
+            border: 1px solid black;
+            padding: 1rem;
+            margin: 1rem;
+            cursor: pointer;
+        }
+
+        .folders {
+            cursor: pointer;
+        }
+
+        .files {
+            cursor: pointer;
+        }
+
+        .delete-icon {
+            float: right;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+
+        }
+
+        .delete-icon:hover span {
+            display: none;
+        }
+
+        .delete-icon:hover::before {
+            content: "Delete";
+        }
+
+        .rename-icon {
+            float: right;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+        }
+
+        .rename-icon:hover span {
+            display: none;
+        }
+
+        .rename-icon:hover::before {
+            content: "Rename";
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back-to-top"></div>
+    <header>
+        {{>navbar}}
+    </header>
+
+    <main>
+        <div class="page-section counter-section">
+            <div class="container">
+                <div class="row align-items-center text-center">
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="container">
+        <div class="row">
+            <div class="col-3 create">
+                <div id="createfolder">Create Folder</div>
+                <div id="createlink">Create Link</div>
+                <div id="uploadfile">Upload file</div>
+            </div>
+            <div class="col-9">
+                <h1>Files</h1>
+                <div style="background-color: #cbffd9;font-size: small;" id="messages">
+
+                </div>
+                <div id="inputs">
+                </div>
+
+
+                <hr>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb" id="breadcrumb">
+
+                    </ol>
+                </nav>
+                <div id="filestructure">
+                    <ul class="list-group">
+                    </ul>
+                </div>
+                <div id="filesstructure">
+                    <ul class="list-group">
+                    </ul>
+                </div>
+                <div id="linksstructure">
+                    <ul class="list-group">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container">
+
+    </div>
+    {{>scripts}}
+
+    <script src="/assets/scripts/profilefiles.js"></script>
+
+    <script>
+       
+    </script>
+
+</body>
+
+</html>

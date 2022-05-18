@@ -9,6 +9,9 @@ const jwt=require('jsonwebtoken');
 
 const HomeRoute=require('./routes/Home');
 const FilesRoute=require('./routes/Files');
+const ProfileRoutes=require('./routes/Profile');
+
+
 const Users = require('./models/Users');
 
 app.set('view engine', 'hbs');
@@ -20,6 +23,7 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 app.use('/',HomeRoute);
 app.use('/files',FilesRoute);
+app.use('/profile',ProfileRoutes);
 
 app.get('/', (req, res) => {
       res.render('index');
