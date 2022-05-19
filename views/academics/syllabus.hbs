@@ -80,20 +80,17 @@
       <div class="container" style="font-size: 0.8rem" id="container">
             <div class="row" style="margin-top: 100px">
                   <div class="col-3">
-                        <div class="list-group">
-                              <a href="/academics/notices" class="list-group-item list-group-item-action"><img
-                                          src="/assets/img/file-icon.png" alt="" style="height: 0.8rem"> Notices</a>
-                              <a href="/academics/syllabus" class="list-group-item list-group-item-action"><img
-                                          src="/assets/img/book.png" alt="" style="height: 0.8rem"> Syllabus</a>
-                              <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                              <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-                        </div>
+                        {{>sidemenus/academics}}
                   </div>
+
                   <div class="col-9" id="allsubjects">
                         <h1>All Subjects</h1>
                         <a href="/academics/addsyllabus">Add Syllabus</a>
+                        <hr>
                   </div>
+                  
             </div>
+            
       </div>
 
       {{>scripts}}
