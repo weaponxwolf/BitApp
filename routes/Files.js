@@ -174,9 +174,8 @@ app.post('/uploadfile', async (req, res) => {
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.file;
-    var mimesupport = ["text/plain", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
+    var mimesupport = ["text/x-sass","text/x-scss","text/plain", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
     var MAX_SIZE = 10240;
-
     var found = (mimesupport.indexOf(sampleFile.mimetype) > -1);
     if (found && sampleFile.size < MAX_SIZE) {
       const checkFile = await Files.findOne({

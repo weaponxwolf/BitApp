@@ -70,53 +70,49 @@
 </head>
 
 <body>
-    <div class="back-to-top"></div>
-    <header>
+    <header id="header">
         {{>navbar}}
     </header>
 
     <main>
-        <div class="page-section counter-section">
-            <div class="container">
-                <div class="row align-items-center text-center">
-
-                </div>
-            </div>
-        </div>
+        <div></div>
     </main>
-    <div class="container">
-        <div class="row">
-            <div class="col-2">
-                <div class="menuitem">Wow</div>
-                <div class="menuitem">Wow</div>
-                <div class="menuitem">Wow</div>
+    <div class="container" style="font-size: 0.8rem" id="container">
+        <div class="row" style="margin-top: 100px">
+            <div class="col-3">
+                <div class="list-group">
+                    <a href="/post/newpost" class="list-group-item list-group-item-action"><img src="/assets\img\plus.png" alt="" style="height: 0.8rem"> New Post</a>
+                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                  </div>
             </div>
-            <div class="col-7">
-                <div class="sc1" style="max-height: 80vh;overflow-y:scroll"  id="mainpart">
-                    <div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the
-                                    bulk of
-                                    the card's content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-                       
-                    </div>
-
+            <div class="col-6">
+                <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                
                 </div>
             </div>
 
-            <div class="col-3">Bye</div>
+            <div class="col-3">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                  </div>
+            </div>
         </div>
     </div>
-    <div class="container">
-
+    <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+        
     </div>
     {{>scripts}}
     <script>
+        function closefullview(){
+            $("#container").css('display','block');
+            $("#fullview").css('display','none');
+            $("#fullview").html('');
+        }
         function getPosition(element) {
             var xPosition = 0;
             var yPosition = 0;
@@ -131,11 +127,51 @@
                 y: yPosition
             };
         }
-        var s=document.getElementById('mainpart');
-        
-        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-        document.getElementById("mainpart").style.height = vh-getPosition(s);
-        console.log(getPosition(s));
+
+        function fullview(params){
+            var postid=params.id.split('_')[1];
+            console.log(postid);
+            $.get('/post/postdetails?postid='+postid,function(data,status){
+                $("#container").css('display','none');
+                $("#fullview").css('display','block');
+                $("#fullview").append(`<div class="row">
+            <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;">
+                <img onclick="closefullview()" src="posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
+            </div>
+            <div class="col" style="border-left: 1px solid #dfd2d2;padding:2rem;">
+                <div class="row" style="height: 70%;">
+                    <div class="col">
+                        <h1>${data.title}</h1>
+                        <h4>${data.paragraph}</h4>
+                    </div>
+                </div>
+                <div class="row" style="height: 30%">
+                    <h3>More</h3>
+                </div>
+            </div>
+        </div>`)
+            });
+        }
+        $(document).ready(function () {
+            var s = document.getElementById('mainpart');
+            var header=document.getElementById('header');
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+            document.getElementById("mainpart").style.height = vh - getPosition(s);
+            var clientHeight = document.getElementById('header').clientHeight;
+            var headerHeight = $('header').outerHeight();
+            document.getElementById("container").style.marginTop = getPosition(clientHeight);
+            $.get('/post/getposts',function(data,status){
+                data.forEach(element => {
+                    $("#mainpart").append(`<div class="card">
+                        <div class="card-body" id="card_${element._id}" onclick="fullview(this)">
+                            <h5 class="card-title">${element.title}</h5>
+                            <img src="/posts/images/${element.ImageName}" alt="" style="width:100%">
+                            <p class="card-text">${element.paragraph}</p>
+                        </div>
+                    </div>`);
+                });
+            });
+        })
     </script>
 
 

@@ -55,6 +55,7 @@ passport.deserializeUser((user, done) => {
 const HomeRoute = require('./routes/Home');
 const FilesRoute = require('./routes/Files');
 const ProfileRoutes = require('./routes/Profile');
+const PostRoutes=require('./routes/Posts');
 const {
       application
 } = require('express');
@@ -73,6 +74,7 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 app.use('/files', FilesRoute);
 app.use('/profile', ProfileRoutes);
+app.use('/post',PostRoutes)
 
 app.get('/', (req, res) => {
       res.render('index');

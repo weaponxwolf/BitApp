@@ -20,23 +20,24 @@ const GetName = (req) => {
 }
 
 
-// app.get('/', (req, res) => {
-//       res.render('profile/index');
-// });
 app.get('/', function(req, res) {
-      app.use(express.static('public/profile/btech10071-20/'));
+      var getname=GetName(req);
+      var getfoldername = getname.split('.').join('-').split('@')[0];
+      app.use(express.static(`public/profile/${getfoldername}/`));
       
-      if (!fs.existsSync(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'))) {
+      if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
             res.redirect('/profile/profilefiles/');
       }else{
-            res.sendFile(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'));
+            res.sendFile(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`));
       }
       
 });
 
 app.get('/profilefiles/:hello', (req, res) => {
       var profileindex=true;
-      if (!fs.existsSync(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'))) {
+      var getname=GetName(req);
+      var getfoldername = getname.split('.').join('-').split('@')[0];
+      if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
             res.render('profile/profilefiles');
       }else{
             res.render('profile/profilefiles',{profileindex : profileindex});
@@ -46,7 +47,9 @@ app.get('/profilefiles/:hello', (req, res) => {
 
 app.get('/profilefiles/', (req, res) => {
       var profileindex=true;
-      if (!fs.existsSync(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'))) {
+      var getname=GetName(req);
+      var getfoldername = getname.split('.').join('-').split('@')[0];
+      if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
             res.render('profile/profilefiles');
       }else{
             res.render('profile/profilefiles',{profileindex : profileindex});
@@ -111,7 +114,7 @@ app.post('/uploadfile', async (req, res) => {
             }
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
-            var mimesupport = ["text/javascript","image/svg+xml","text/html","text/plain","text/css", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
+            var mimesupport = ["application/octet-stream","text/x-sass","text/x-scss","text/javascript","image/svg+xml","text/html","text/plain","text/css", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
             var MAX_SIZE = 1024000;
             var found = (mimesupport.indexOf(sampleFile.mimetype) > -1);
             if (found && sampleFile.size < MAX_SIZE) {

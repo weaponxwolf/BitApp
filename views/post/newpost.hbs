@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .create div {
+                  border: 1px solid black;
+                  padding: 1rem;
+                  margin: 1rem;
+                  cursor: pointer;
+            }
+
+            .folders {
+                  cursor: pointer;
+            }
+
+            .files {
+                  cursor: pointer;
+            }
+
+            .delete-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+
+            }
+
+            .delete-icon:hover span {
+                  display: none;
+            }
+
+            .delete-icon:hover::before {
+                  content: "Delete";
+            }
+
+            .rename-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+            }
+
+            .rename-icon:hover span {
+                  display: none;
+            }
+
+            .rename-icon:hover::before {
+                  content: "Rename";
+            }
+      </style>
+</head>
+
+<body>
+      <div class="back-to-top"></div>
+      <header>
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div class="page-section counter-section">
+                  <div class="container">
+                        <div class="row align-items-center text-center">
+
+                        </div>
+                  </div>
+            </div>
+      </main>
+      <div class="container">
+            <form method="POST" enctype="multipart/form-data">
+
+
+                  <div class="row">
+                        <div class="col">
+                              <div class="form-group">
+                                    <input name="title" type="text" class="form-control" placeholder="Title">
+                              </div>
+                        </div>
+                        <div class="col">
+                              <div class="form-group">
+                                    <textarea name="paragraph" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Paragraph"></textarea>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label for="exampleFormControlFile1">Upload Image</label>
+                        <input name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
+                      </div>
+
+                  <hr>
+                  <div style="text-align: center">
+                        <button style="float:center" type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+            </form>
+
+      </div>
+      <div class="container">
+            {{message}}
+      </div>
+      {{>scripts}}
+
+
+</body>
+
+</html>
