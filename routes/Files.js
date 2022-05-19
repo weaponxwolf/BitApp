@@ -70,60 +70,7 @@ app.get('/folderlist', async (req, res) => {
 });
 
 app.post('/sharefolder', async (req, res) => {
-  try {
-    const Folder = await Folders.findOne({
-      _id: req.body.folderid
-    });
-    const nameoffolder = Folder.name.split(' ').join('%20');
-    const loco = Folder.location + "-" + nameoffolder;
-    var classname=req.body.branch+"_"+req.body.section;
-    console.log(classname);
-    var getname=GetName(req);
-    var getfoldername = getname.split('.').join('-').split('@')[0];
-    var accessto={
-      name :classname,
-      mountlocation : getfoldername
-    }
-    const ChildFolders = await Folders.updateMany({
-      isDeleted: false,
-      location: {
-        $regex: loco,
-        $options: 'i'
-      }
-    }, {
-      $push: {
-        accessto : accessto
-      }
-    });
-    const ChildLinks = await Links.updateMany({
-      isDeleted: false,
-      linklocation: {
-        $regex: loco,
-        $options: 'i'
-      }
-    }, {
-      $push: {
-        accessto :accessto
-      }
-    });
-    const ChildFiles = await Files.updateMany({
-      isDeleted: false,
-      filelocation: {
-        $regex: loco,
-        $options: 'i'
-      }
-    }, {
-      $push: {
-       accessto :accessto
-      }
-    });
-    
-    Folder.accessto.push(accessto);
-    await Folder.save();
-    res.send("Folder : '" + Folder.name + "' Deleted");
-  } catch (error) {
-    console.log(error);
-  }
+  
 });
 
 app.get('/fileslist', async (req, res) => {
@@ -200,8 +147,8 @@ app.post('/renamefolder', async (req, res) => {
       isDeleted: false,
     });
     var name = Folder.name.split(' ').join('%20');
-    var oldlocation = Folder.location + "-" + name;
-    var newlocation = (Folder.location + "-" + req.body.newname).split(' ').join('%20');
+    var oldlocation = Folder.location + "1x1" + name;
+    var newlocation = (Folder.location + "1x1" + req.body.newname).split(' ').join('%20');
     Folder.name = req.body.newname;
     const childFolders = await Folders.find({
       isDeleted: false,

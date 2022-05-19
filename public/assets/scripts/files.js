@@ -165,7 +165,7 @@ function hiii() {
 
 
 function enterfolder(params) {
-    var gotoloc=params.id.replace('_','$');
+    var gotoloc=params.id.replace('_','1x1');
     window.location.href = "/files/" + gotoloc;
 }
 
@@ -600,12 +600,12 @@ $(document).ready(function () {
     var pathname = window.location.pathname;
     var locarray = pathname.split("/");
     var folderLocation = locarray[2];
-    var myarray = folderLocation.split('$');
+    var myarray = folderLocation.split('1x1');
     console.log(myarray);
     var path = "root";
     myarray.forEach(element => {
         if (element == "root") {} else {
-            path = path + "$" + element;
+            path = path + "1x1" + element;
         }
         var element = element.split('%20').join(' ');
         $("#breadcrumb").append(
