@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .create div {
+                  border: 1px solid black;
+                  padding: 1rem;
+                  margin: 1rem;
+                  cursor: pointer;
+            }
+
+            .folders {
+                  cursor: pointer;
+            }
+
+            .files {
+                  cursor: pointer;
+            }
+
+            .delete-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+
+            }
+
+            .delete-icon:hover span {
+                  display: none;
+            }
+
+            .delete-icon:hover::before {
+                  content: "Delete";
+            }
+
+            .rename-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+            }
+
+            .rename-icon:hover span {
+                  display: none;
+            }
+
+            .rename-icon:hover::before {
+                  content: "Rename";
+            }
+      </style>
+</head>
+
+<body>
+      <div class="back-to-top"></div>
+      <header>
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div class="page-section counter-section">
+                  <div class="container">
+                        <div class="row align-items-center text-center">
+
+                        </div>
+                  </div>
+            </div>
+      </main>
+      <div class="container">
+            <form method="POST">
+                  <h5>Email : {{theuser.email}}</h5>
+                  <h5> Full Name : {{theuser.firstname}} {{theuser.lastname}}</h5>
+                  
+                        <hr>
+                        <div class="form-group col-12 d-flex">
+                              <span style="padding: 1rem">Branch:</span> 
+                              <select name="branch" class="form-control" id="exampleFormControlSelect1" placeholder="Semester">
+                                    <option value="CSE">Computer Science and Engineering</option>
+                                    <option value="ECE">Electronics and Communications Engineering</option>
+                                    <option value="IT">Information Technology</option>
+                                    <option value="EEE">Electrical and Electronics Engineering</option>
+                                    <option value="MECH">Mechanical Engineering</option>
+                                    <option value="CEE">Civil and Environment Engineering</option>
+                                    <option value="CME">Chemical Engineering</option>
+                              </select>
+                              <input name="section" type="text" class="form-control col-2" autocomplete="off"
+                              placeholder="Section">
+                            
+                               <span style="padding: 1rem">Semester:</span> 
+                              <select name="semester" class="form-control" id="exampleFormControlSelect1" placeholder="Semester">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                              </select>
+                        </div>
+                        <hr>
+
+                  <div class="row">
+                        <div class="col">
+                              <div class="form-group">
+                                    <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                                          placeholder="Password">
+                              </div>
+                        </div>
+                        <div class="col">
+                              <div class="form-group">
+                                    <input name="cpassword" type="password" class="form-control" id="exampleInputPassword1"
+                                          placeholder="Confirm Password">
+                              </div>
+                        </div>
+                  </div>
+
+                  <hr>
+                  <div style="text-align: center">
+                        <button style="float:center" type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+            </form>
+
+      </div>
+      <div class="container">
+
+      </div>
+      {{>scripts}}
+
+
+</body>
+
+</html>

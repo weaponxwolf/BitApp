@@ -35,7 +35,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/profilefiles/:hello', (req, res) => {
-      
+      var profileindex=true;
       if (!fs.existsSync(path.join(__dirname,"..", 'public/profile/btech10071-20/index.html'))) {
             res.render('profile/profilefiles');
       }else{
@@ -111,7 +111,7 @@ app.post('/uploadfile', async (req, res) => {
             }
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
-            var mimesupport = ["text/html","text/plain","text/css", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
+            var mimesupport = ["text/javascript","image/svg+xml","text/html","text/plain","text/css", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
             var MAX_SIZE = 1024000;
             var found = (mimesupport.indexOf(sampleFile.mimetype) > -1);
             if (found && sampleFile.size < MAX_SIZE) {
