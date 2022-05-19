@@ -154,7 +154,7 @@ app.post('/createuser',async(req,res)=>{
                               new: true
                         });
                         res.clearCookie("createuser");
-                        res.send("HHHH");
+                        res.redirect('/');
                   }else{
                         res.send("PASSWORD DOESN'T MATCH");
                   }
