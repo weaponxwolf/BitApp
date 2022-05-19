@@ -36,6 +36,23 @@
             content: "Delete";
         }
 
+        .share-icon {
+            float: right;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+
+        }
+
+        .share-icon:hover span {
+            display: none;
+        }
+
+        .share-icon:hover::before {
+            content: "Share";
+        }
+
         .rename-icon {
             float: right;
             background-color: white;
@@ -77,7 +94,11 @@
                 <div id="uploadfile">Upload file</div>
             </div>
             <div class="col-9">
-                <h1>Files</h1>
+                <h1>Files</h1> 
+                <span id="nameofuser">{{user.name}}</span>
+                - <span id="branch">{{user.branch}}</span>
+                '<span id="usersection">{{user.section}}</span>'
+                
                 <div style="background-color: #cbffd9;font-size: small;" id="messages">
 
                 </div>

@@ -7,7 +7,7 @@ function RefreshList() {
         data.forEach(element => {
             $("#filestructure ul").append(`<li class="list-group-item" id="folder_${element._id}">
                       <div class="row">
-                          <div class="col folders" onclick="enterfolder(this)" id="${element.location}-${element.name}">
+                          <div class="col folders" onclick="enterfolder(this)" id="${element.location}_${element.name}">
                               <img src="/assets/img/folder-icon.png" alt=""
                                   style="width: 1rem;margin-right: 1 rem;">
                               <span>${element.name}</span>
@@ -92,6 +92,40 @@ function removeoption(params) {
                       </span>`);
 }
 
+function sharetoclass(params){
+    var folderid = params.id.split("_")[1];
+    console.log(folderid);
+    var getname = $("#folder_" + folderid + " div div span").html();
+    $(".optionicons").html('');
+    $("#removeoption_" + folderid).remove();
+     var branch=params.id.split("_")[2];
+     var section=params.id.split("_")[3];
+    $.post('/files/sharefolder',{
+        folderid:folderid,
+        section : section,
+        branch : branch
+    },function(data,status){
+        console.log(data);
+    });
+}
+
+function sharefolder(params){
+    var folderid = params.id.split("_")[1];
+    var getname = $("#folder_" + folderid + " div div span").html();
+    $(".optionicons").html('');
+    $("#removeoption_" + folderid).remove();
+     var branch=$("#branch").html();
+     var section=$("#usersection").html();
+    $("#folder_" + folderid).append(`
+      <hr>
+                      <div class="row">
+                      <span style="float:left;margin-right:2rem;margin-left:2rem;">Share To : </span>
+                            <button type="button" class="btn btn-light" id="sharetoclass_${folderid}_${branch}_${section}" onclick="sharetoclass(this)"> ${branch} ${section}</button>
+                      </div>
+      
+      `);
+}
+
 function optionMenu(params) {
     var folderid = params.id.split("_")[1];
     $("#" + params.id).html("");
@@ -99,6 +133,7 @@ function optionMenu(params) {
     $("#folder_" + folderid).append(`
                       <div class="optionicons">
                           <hr>
+                          
                           <div class="delete-icon" id="delete_${folderid}" onclick="deletefolder(this)">
                               <span >
                                   <div><img src="/assets/img/dust-bin.png" alt=""
@@ -108,6 +143,12 @@ function optionMenu(params) {
                           <div class="rename-icon" id="rename_${folderid}" onclick="renamefolder(this)">
                               <span >
                                   <div><img src="/assets/img/rename.png" alt=""
+                                      style="height: 1.5rem;margin-right: 1 rem;"></div>
+                              </span>
+                          </div>
+                          <div class="share-icon" id="share_${folderid}" onclick="sharefolder(this)">
+                              <span >
+                                  <div><img src="/assets/img/share.png" alt=""
                                       style="height: 1.5rem;margin-right: 1 rem;"></div>
                               </span>
                           </div>
@@ -124,7 +165,8 @@ function hiii() {
 
 
 function enterfolder(params) {
-    window.location.href = "/files/" + params.id;
+    var gotoloc=params.id.replace('_','$');
+    window.location.href = "/files/" + gotoloc;
 }
 
 function createfolder() {
@@ -273,6 +315,12 @@ function fileoptionMenu(params) {
                                       style="height: 1.5rem;margin-right: 1 rem;"></div>
                               </span>
                           </div>
+                          <div class="delete-icon" id="delete_${fileid}" onclick="deletefile(this)">
+                              <span >
+                                  <div><img src="/assets/img/dust-bin.png" alt=""
+                                      style="height: 1.5rem;margin-right: 1 rem;"></div>
+                              </span>
+                          </div>
                           <div class="rename-icon" id="rename_${fileid}" onclick="renamefile(this)">
                               <span >
                                   <div><img src="/assets/img/rename.png" alt=""
@@ -360,6 +408,12 @@ function linkoptionMenu(params) {
                     style="height: 1.5rem;margin-right: 1 rem;"></div>
             </span>
         </div>
+        <div class="delete-icon" id="delete_${linkid}" onclick="deletelink(this)">
+            <span >
+                <div><img src="/assets/img/dust-bin.png" alt=""
+                    style="height: 1.5rem;margin-right: 1 rem;"></div>
+            </span>
+        </div>
         <div class="rename-icon" id="rename_${linkid}" onclick="renamelink(this)">
             <span >
                 <div><img src="/assets/img/rename.png" alt=""
@@ -439,7 +493,7 @@ $(document).ready(function () {
         data.forEach(element => {
             $("#filestructure ul").append(`<li class="list-group-item" id="folder_${element._id}">
                       <div class="row">
-                          <div class="col folders" onclick="enterfolder(this)" id="${element.location}-${element.name}">
+                          <div class="col folders" onclick="enterfolder(this)" id="${element.location}_${element.name}">
                               <img src="/assets/img/folder-icon.png" alt=""
                                   style="width: 1rem;margin-right: 1 rem;">
                               <span>${element.name}</span>
@@ -500,6 +554,7 @@ $(document).ready(function () {
                                       style="width: 1rem;margin-right: 1 rem;">
                               </span>
                           </div>
+                          
                       </div>
                   </li>`);
         });
@@ -545,11 +600,12 @@ $(document).ready(function () {
     var pathname = window.location.pathname;
     var locarray = pathname.split("/");
     var folderLocation = locarray[2];
-    var myarray = folderLocation.split('-');
+    var myarray = folderLocation.split('$');
+    console.log(myarray);
     var path = "root";
     myarray.forEach(element => {
         if (element == "root") {} else {
-            path = path + "-" + element;
+            path = path + "$" + element;
         }
         var element = element.split('%20').join(' ');
         $("#breadcrumb").append(

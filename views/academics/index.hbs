@@ -80,16 +80,11 @@
     <div class="container" style="font-size: 0.8rem" id="container">
         <div class="row" style="margin-top: 100px">
             <div class="col-3">
-                <div class="list-group">
-                    <a href="/academics/notices" class="list-group-item list-group-item-action"><img src="/assets\img\plus.png" alt="" style="height: 0.8rem"> Notices</a>
-                     <a href="/academics/syllabus" class="list-group-item list-group-item-action"><img src="/assets\img\book.png" alt="" style="height: 0.8rem">Syllabus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-                  </div>
+                {{>sidemenus/academics}}
             </div>
             <div class="col-6">
                 <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
-                
+
                 </div>
             </div>
 
@@ -99,20 +94,21 @@
                     <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
                     <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
                     <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-                  </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="container" id="fullview" style="display: none;margin-top: 100px;">
-        
+
     </div>
     {{>scripts}}
     <script>
-        function closefullview(){
-            $("#container").css('display','block');
-            $("#fullview").css('display','none');
+        function closefullview() {
+            $("#container").css('display', 'block');
+            $("#fullview").css('display', 'none');
             $("#fullview").html('');
         }
+
         function getPosition(element) {
             var xPosition = 0;
             var yPosition = 0;
@@ -130,7 +126,7 @@
 
         $(document).ready(function () {
             var s = document.getElementById('mainpart');
-            var header=document.getElementById('header');
+            var header = document.getElementById('header');
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
             document.getElementById("mainpart").style.height = vh - getPosition(s);
             var clientHeight = document.getElementById('header').clientHeight;

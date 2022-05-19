@@ -10,7 +10,6 @@ const LinksSchema=new mongoose.Schema({
     accessto :[
         {
             name : String,
-            email : String
         }
     ]
 });

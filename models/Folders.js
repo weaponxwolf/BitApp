@@ -6,12 +6,10 @@ const FolderSchema=new mongoose.Schema({
     createdon : Date,
     location : String,
     isDeleted : Boolean,
-    accessto :[
-        {
-            name : String,
-            email : String
-        }
-    ]
+    accessto :[{
+        name : String,
+        mountlocation : String
+    }]
 });
 
 module.exports=new mongoose.model("Folders",FolderSchema);

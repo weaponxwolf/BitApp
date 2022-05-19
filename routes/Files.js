@@ -3,13 +3,15 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
-const path=require('path');
+const path = require('path');
 
 const Folders = require('../models/Folders');
 const Files = require('../models/Files');
 const Links = require('../models/Links');
+const Users = require('../models/Users');
 
 const jwt = require('jsonwebtoken');
+const async = require('hbs/lib/async');
 
 app.use(cookieParser());
 app.use(fileUpload());
@@ -18,29 +20,107 @@ const GetName = (req) => {
   var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
   return decoded.email;
 }
+const GetUser = async (req) => {
+  var getname = GetName(req);
+  const User = await Users.findOne({
+    email: getname
+  });
 
+  return {
+    name: User.profile.displayName,
+    branch: User.branch,
+    email: User.email,
+    section: User.section
+  }
+}
 app.get('/', (req, res) => {
   res.redirect('/files/root');
 });
 
-app.get('/root', (req, res) => {
-  res.render('files/files');
+app.get('/root', async (req, res) => {
+  try {
+    var user = await GetUser(req);
+    res.render('files/files', {
+      user: user
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 
 app.get('/folderlist', async (req, res) => {
   try {
+    var getname = GetName(req);
     var folderlocation = req.query.location;
     folderlocation = folderlocation.split(" ").join('%20');
     const folders = await Folders.find({
       location: folderlocation,
-      isDeleted: false
+      isDeleted: false,
+      createdby: getname
     }).collation({
       locale: "en"
     }).sort({
       'name': 1
     });
     res.json(folders);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post('/sharefolder', async (req, res) => {
+  try {
+    const Folder = await Folders.findOne({
+      _id: req.body.folderid
+    });
+    const nameoffolder = Folder.name.split(' ').join('%20');
+    const loco = Folder.location + "-" + nameoffolder;
+    var classname=req.body.branch+"_"+req.body.section;
+    console.log(classname);
+    var getname=GetName(req);
+    var getfoldername = getname.split('.').join('-').split('@')[0];
+    var accessto={
+      name :classname,
+      mountlocation : getfoldername
+    }
+    const ChildFolders = await Folders.updateMany({
+      isDeleted: false,
+      location: {
+        $regex: loco,
+        $options: 'i'
+      }
+    }, {
+      $push: {
+        accessto : accessto
+      }
+    });
+    const ChildLinks = await Links.updateMany({
+      isDeleted: false,
+      linklocation: {
+        $regex: loco,
+        $options: 'i'
+      }
+    }, {
+      $push: {
+        accessto :accessto
+      }
+    });
+    const ChildFiles = await Files.updateMany({
+      isDeleted: false,
+      filelocation: {
+        $regex: loco,
+        $options: 'i'
+      }
+    }, {
+      $push: {
+       accessto :accessto
+      }
+    });
+    
+    Folder.accessto.push(accessto);
+    await Folder.save();
+    res.send("Folder : '" + Folder.name + "' Deleted");
   } catch (error) {
     console.log(error);
   }
@@ -174,7 +254,7 @@ app.post('/uploadfile', async (req, res) => {
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.file;
-    var mimesupport = ["text/x-sass","text/x-scss","text/plain", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
+    var mimesupport = ["text/x-sass", "text/x-scss", "text/plain", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
     var MAX_SIZE = 10240;
     var found = (mimesupport.indexOf(sampleFile.mimetype) > -1);
     if (found && sampleFile.size < MAX_SIZE) {
@@ -185,8 +265,8 @@ app.post('/uploadfile', async (req, res) => {
         createdby: getname
       });
       if (checkFile) {
-        res.send("File '"+checkFile.name+"' Already Exists");
-      }else{
+        res.send("File '" + checkFile.name + "' Already Exists");
+      } else {
         var fileext = sampleFile.name.split('.')[1];
         const newfile = await new Files({
           name: sampleFile.name,
@@ -197,24 +277,24 @@ app.post('/uploadfile', async (req, res) => {
           createdon: Date.now()
         });
         const filename = newfile.id;
-       var dir= path.join(__dirname,'..',"public/files/"+getfoldername);
+        var dir = path.join(__dirname, '..', "public/files/" + getfoldername);
         // var s=await sampleFile.mv(uploadPath);
         if (!fs.existsSync(dir)) {
           fs.mkdirSync(dir, {
             recursive: true
           });
         }
-        var uploadPath=dir+'/'+newfile._id+"."+fileext;
+        var uploadPath = dir + '/' + newfile._id + "." + fileext;
         await sampleFile.mv(uploadPath);
         newfile.save();
-        res.send("File '"+newfile.name+"' Uploaded !");
+        res.send("File '" + newfile.name + "' Uploaded !");
       }
     } else {
       res.send("INVALID FILE TYPE or FILE EXCEEDING 10Mb ")
     }
 
   } catch (error) {
-console.log(error);
+    console.log(error);
   }
 })
 
@@ -357,6 +437,7 @@ app.post('/createfolder', async (req, res) => {
 
 app.get('/:location', async (req, res) => {
   try {
+    var user = await GetUser(req);
     var folderlocation = await req.params.location;
     folderlocation = folderlocation.split(" ").join('%20');
     const folders = await Folders.find({
@@ -368,7 +449,7 @@ app.get('/:location', async (req, res) => {
       'name': 1
     });
     res.render('files/files', {
-      folders: folders
+      user : user
     });
   } catch (error) {
 
