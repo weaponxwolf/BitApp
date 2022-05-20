@@ -20,6 +20,15 @@ app.use(cookieParser());
 app.use(fileUpload());
 
 
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+
+const io = new Server(server);
+
+
+
+
 const Files = require('../models/Files');
 const Folders = require('../models/Folders');
 const Links = require('../models/Links');
@@ -344,5 +353,18 @@ app.get('/syllabuslist', async (req, res) => {
 
       }
 });
+
+app.get('/classchat',async (req,res)=>{
+      try {
+            var token=req.cookies.userdata;
+            var decoded=jwt.verify(req.cookies.userdata,'amitkumar');
+            res.render('academics/classchat',{userdata : decoded });
+      } catch (error) {
+            console.log(error);
+      }
+      
+})
+
+
 
 module.exports = app;

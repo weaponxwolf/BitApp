@@ -1,12 +1,19 @@
 require('./conn/mongo');
 const express = require('express');
 const app = express();
+const http = require('http');
 const port = 3000;
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const cookie=require('cookie');
+
+
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -134,6 +141,19 @@ app.get('/login', (req, res) => {
       res.render('login');
 });
 
+const GetUserDetails = async (email) => {
+      const User = await Users.findOne({
+            email: email
+      });
+
+      return {
+            name: User.profile.displayName,
+            branch: User.branch,
+            email: User.email,
+            section: User.section
+      }
+}
+
 app.get('/createuser', async (req, res) => {
       try {
             if (req.cookies['createuser']) {
@@ -212,7 +232,10 @@ app.post('/login', async (req, res) => {
             });
             if (User) {
                   var token = await jwt.sign({
-                        email: User.email
+                        email: User.email,
+                        name: User.profile.displayName,
+                        branch: User.branch,
+                        section: User.section
                   }, 'amitkumar');
                   await res.cookie('userdata', token);
                   res.redirect('home');
@@ -230,6 +253,18 @@ app.get('/logout', (req, res) => {
       res.redirect('/');
 });
 
-app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`)
+io.on('connection', (socket) => {
+      var cookies = cookie.parse(socket.handshake.headers.cookie); 
+      var decoded=jwt.verify(cookies.userdata,'amitkumar'); 
+      socket.broadcast.emit('user',{username : decoded.name , email : decoded.email })
+      socket.on('disconnect', () => {
+      });
+      socket.on('sendmessagetoclass',(data)=>{
+            console.log(data);
+            socket.broadcast.emit("newmessage",data);
+      })
+});
+
+server.listen(3000, () => {
+      console.log('Server Listening on http://localhost:3000');
 });

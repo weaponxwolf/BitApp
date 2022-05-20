@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .create div {
+                  border: 1px solid black;
+                  padding: 1rem;
+                  margin: 1rem;
+                  cursor: pointer;
+            }
+
+            .folders {
+                  cursor: pointer;
+            }
+
+            .files {
+                  cursor: pointer;
+            }
+
+            .delete-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+
+            }
+
+            .delete-icon:hover span {
+                  display: none;
+            }
+
+            .delete-icon:hover::before {
+                  content: "Delete";
+            }
+
+            .rename-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+            }
+
+            .rename-icon:hover span {
+                  display: none;
+            }
+
+            .rename-icon:hover::before {
+                  content: "Rename";
+            }
+
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-3">
+                        {{>sidemenus/academics}}
+                        <div>
+                              <a href="#" class="list-group-item list-group-item-action active" id="nameofuser">{{userdata.name}}</a>
+                              <a href="#" style="display: none" class="list-group-item list-group-item-action active"
+                                    id="emailofuser">{{userdata.email}}</a>
+                        </div>
+                  </div>
+                  <div class="col-6">
+                        <div class="sc1"
+                              style="max-height: 80vh;background-color: #f1f1f1;height:80vh;border-radius: 10px;"
+                              id="mainpart">
+                              <div style="height: 90%;overflow-y:scroll;word-wrap: break-word;" id="allmessages">
+
+                              </div>
+                              <div style="text-align: center;justify-content:center;align-items:center; display: flex;">
+                                    <textarea name="" id="message" class="col-9 row-2"></textarea><Button
+                                          class="col-2 row-2" style=" background-color: white;
+                              color: black;
+                              border: 2px solid #4CAF50;height: 45px;" onclick="sendtoclass()"
+                                          id="sendtoclass">Send</Button>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-3">
+                        <div class="list-group" id="activeusers" style="text-align: center;">
+                              <a href="#" class="list-group-item list-group-item-action active">ACTIVE USERS</a>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      {{>scripts}}
+      <script>
+            function closefullview() {
+                  $("#container").css('display', 'block');
+                  $("#fullview").css('display', 'none');
+                  $("#fullview").html('');
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+
+            })
+      </script>
+      <script src="/socket.io/socket.io.js"></script>
+      
+            
+        
+      <script>
+            var socket = io();
+
+            function sendtoclass() {
+                  var message = $("#message").val();
+                  var nameofuser = $("#nameofuser").html();
+                  var emailofuser = $("#emailofuser").html();
+                  $("#allmessages").append(`<div style="float:bottom"><li class="list-group-item">${nameofuser}: ${message}</li></div>`);
+                  socket.emit('sendmessagetoclass', {
+                        message: message,
+                        nameofuser: nameofuser,
+                        emailofuser: emailofuser
+                  });
+            }
+            socket.on('connect', () => {
+
+            });
+
+            socket.on('user', (data) => {
+                  var username = data.username.split(' ').join('_');
+                  $("." + username).remove();
+                  $("#activeusers").append(
+                        ` <a href="#" class="list-group-item list-group-item-action ${username}">${data.username} <img style="height: 0.5rem" src="/assets/img/active-icon.png"></a>`
+                  );
+            });
+
+            socket.on('newmessage',(data)=>{
+                  $("#allmessages").append(`<div style="float:bottom"><li class="list-group-item">${data.nameofuser}: ${data.message}</li></div>`);
+            });
+      </script>
+</body>
+
+</html>
