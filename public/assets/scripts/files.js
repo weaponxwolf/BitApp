@@ -32,6 +32,17 @@ function removemessage() {
 function renamethefolder(params) {
     var folderid = params.id.split("_")[1];
     var newname = $("#renametext").val();
+    newname=newname.replace(/\s\s+/g,' ');
+    newname.trim();
+    if (newname[0]==' ') {
+        newname= newname.slice(1);
+    }
+    if (newname[newname.length-1]==' ') {
+        newname = newname.slice(0, -1);
+    }
+    if (newname == "") {
+        newname = "New Folder";
+    }
     $.post('/files/renamefolder', {
         newname: newname,
         folderid: folderid
@@ -172,6 +183,14 @@ function enterfolder(params) {
 function createfolder() {
 
     var folderName = $("#foldername").val();
+    folderName=folderName.replace(/\s\s+/g,' ');
+    folderName.trim();
+    if (folderName[0]==' ') {
+        folderName = folderName.slice(1);
+    }
+    if (folderName[folderName.length-1]==' ') {
+        folderName = folderName.slice(0, -1);
+    }
     if (folderName == "") {
         folderName = "New Folder";
     }
