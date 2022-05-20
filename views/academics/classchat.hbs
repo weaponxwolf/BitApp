@@ -3,55 +3,9 @@
 
 <head>
       {{>head}}
+
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
       <style>
-            .create div {
-                  border: 1px solid black;
-                  padding: 1rem;
-                  margin: 1rem;
-                  cursor: pointer;
-            }
-
-            .folders {
-                  cursor: pointer;
-            }
-
-            .files {
-                  cursor: pointer;
-            }
-
-            .delete-icon {
-                  float: right;
-                  background-color: white;
-                  padding: 0.5rem;
-                  border-radius: 0.3rem;
-                  cursor: pointer;
-
-            }
-
-            .delete-icon:hover span {
-                  display: none;
-            }
-
-            .delete-icon:hover::before {
-                  content: "Delete";
-            }
-
-            .rename-icon {
-                  float: right;
-                  background-color: white;
-                  padding: 0.5rem;
-                  border-radius: 0.3rem;
-                  cursor: pointer;
-            }
-
-            .rename-icon:hover span {
-                  display: none;
-            }
-
-            .rename-icon:hover::before {
-                  content: "Rename";
-            }
-
             .sc1::-webkit-scrollbar {
                   width: 8px;
                   height: 8px;
@@ -82,34 +36,44 @@
                   <div class="col-3">
                         {{>sidemenus/academics}}
                         <div>
-                              <a href="#" class="list-group-item list-group-item-action active" id="nameofuser">{{userdata.name}}</a>
+                              <a href="#" class="list-group-item list-group-item-action active"
+                                    id="nameofuser">{{userdata.name}}</a>
                               <a href="#" style="display: none" class="list-group-item list-group-item-action active"
                                     id="emailofuser">{{userdata.email}}</a>
                         </div>
-                  </div>
-                  <div class="col-6">
-                        <div class="sc1"
-                              style="max-height: 80vh;background-color: #f1f1f1;height:80vh;border-radius: 10px;"
-                              id="mainpart">
-                              <div style="height: 90%;overflow-y:scroll;word-wrap: break-word;" id="allmessages">
-
-                              </div>
-                              <div style="text-align: center;justify-content:center;align-items:center; display: flex;">
-                                    <textarea name="" id="message" class="col-9 row-2"></textarea><Button
-                                          class="col-2 row-2" style=" background-color: white;
-                              color: black;
-                              border: 2px solid #4CAF50;height: 45px;" onclick="sendtoclass()"
-                                          id="sendtoclass">Send</Button>
+                        <hr>
+                        <div class="col-12">
+                              <div class="list-group" id="activeusers" style="text-align: center;font-size: 0.6rem">
+                                    <a href="#" class="list-group-item list-group-item-action active"><span>ACTIVE
+                                                USERS</span></a>
                               </div>
                         </div>
                   </div>
 
-                  <div class="col-3">
-                        <div class="list-group" id="activeusers" style="text-align: center;">
-                              <a href="#" class="list-group-item list-group-item-action active">ACTIVE USERS</a>
+                  <div class="col-9" style="height: 60vh">
+                        <div class="sc1"
+                              style="max-height: 80vh;background-color: #f1f1f1;height:70vh;border-radius: 10px;padding: 2rem;"
+                              id="mainpart">
+
+                        <div id="allmessages">
+
+                        </div>
+
+
+
+                        </div>
+                        <div style="text-align: center;justify-content:center;align-items:center; display: flex;">
+                              <textarea name="" id="message" class="col-9 row-2"></textarea><Button class="col-2 row-2"
+                                    style=" background-color: white;
+                              color: black;
+                              border: 2px solid #4CAF50;height: 45px;" onclick="sendtoclass()"
+                                    id="sendtoclass">Send</Button>
                         </div>
                   </div>
             </div>
+
+
+      </div>
       </div>
       <div class="container" id="fullview" style="display: none;margin-top: 100px;">
 
@@ -145,13 +109,12 @@
                   var clientHeight = document.getElementById('header').clientHeight;
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
-
-            })
+            });
       </script>
       <script src="/socket.io/socket.io.js"></script>
-      
-            
-        
+
+
+
       <script>
             var socket = io();
 
@@ -159,7 +122,12 @@
                   var message = $("#message").val();
                   var nameofuser = $("#nameofuser").html();
                   var emailofuser = $("#emailofuser").html();
-                  $("#allmessages").append(`<div style="float:bottom"><li class="list-group-item">${nameofuser}: ${message}</li></div>`);
+                  $("#allmessages").append(
+                        ` <div style="margin-left: 20%;margin-bottom: 1rem">
+                              <div style="text-align:end">You</div>
+                              <div style="width:100%;background-color:white;padding:1rem;border-radius:1rem ">${message}</div>
+                          </div>`
+                  );
                   socket.emit('sendmessagetoclass', {
                         message: message,
                         nameofuser: nameofuser,
@@ -178,8 +146,13 @@
                   );
             });
 
-            socket.on('newmessage',(data)=>{
-                  $("#allmessages").append(`<div style="float:bottom"><li class="list-group-item">${data.nameofuser}: ${data.message}</li></div>`);
+            socket.on('newmessage', (data) => {
+                  $("#allmessages").append(
+                        ` <div style="margin-bottom: 1rem">
+                                <div>${data.nameofuser}</div>
+                                <div style="width:80%;background-color:#271669;padding:1rem;border-radius:1rem ;color: white;">${data.message}</div>
+                          </div>`
+                  );
             });
       </script>
 </body>

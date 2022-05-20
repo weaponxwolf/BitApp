@@ -167,7 +167,6 @@ app.get('/sharedfolders/files', async (req, res) => {
                               var mntloc=location+'1x1'+element.name.split(' ').join('%20');
                               var s = obj.find((o) => o.name === accesssto);
                               if (s) {
-                                    console.log(element);
                                     if (s.mountlocation == mntloc){
                                           element.location=s.mountlocation;
                                           editedfiles.push(element);

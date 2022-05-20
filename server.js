@@ -74,6 +74,7 @@ const ProfileRoutes = require('./routes/Profile');
 const PostRoutes = require('./routes/Posts');
 const AcademicsRoute = require('./routes/Academics');
 
+const Messages=require('./models/Messages');
 
 const {
       application
@@ -254,14 +255,26 @@ app.get('/logout', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+      
       var cookies = cookie.parse(socket.handshake.headers.cookie); 
       var decoded=jwt.verify(cookies.userdata,'amitkumar'); 
-      socket.broadcast.emit('user',{username : decoded.name , email : decoded.email })
+      console.log(decoded.name+" CONNECTED");
+      socket.broadcast.emit('user',{username : decoded.name , email : decoded.email });
       socket.on('disconnect', () => {
+            console.log(decoded.name+" DISCONNECTED");
       });
+      
       socket.on('sendmessagetoclass',(data)=>{
-            console.log(data);
             socket.broadcast.emit("newmessage",data);
+            Messages.create( {
+                  message : data.message,
+                  messageby : data.nameofuser,
+                  messageto : "ECE_A",
+                  createdon : Date.now()
+             }, function (err, small) {
+                  if (err) return handleError(err);
+                  // saved!
+            });
       })
 });
 
