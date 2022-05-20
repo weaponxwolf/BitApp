@@ -73,7 +73,7 @@ const FilesRoute = require('./routes/Files');
 const ProfileRoutes = require('./routes/Profile');
 const PostRoutes = require('./routes/Posts');
 const AcademicsRoute = require('./routes/Academics');
-
+const ExploreRoute=require('./routes/Explore');
 const Messages=require('./models/Messages');
 
 const {
@@ -98,6 +98,7 @@ app.use('/files', FilesRoute);
 app.use('/profile', ProfileRoutes);
 app.use('/post', PostRoutes);
 app.use('/academics', AcademicsRoute);
+app.use('/explore',ExploreRoute);
 
 app.get('/', (req, res) => {
       var getname=GetName(req);

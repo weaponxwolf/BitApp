@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+
+      <style>
+            .create div {
+                  border: 1px solid black;
+                  padding: 1rem;
+                  margin: 1rem;
+                  cursor: pointer;
+            }
+
+            .folders {
+                  cursor: pointer;
+            }
+
+            .files {
+                  cursor: pointer;
+            }
+
+            .delete-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+
+            }
+
+            .delete-icon:hover span {
+                  display: none;
+            }
+
+            .delete-icon:hover::before {
+                  content: "Delete";
+            }
+
+            .rename-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+            }
+
+            .rename-icon:hover span {
+                  display: none;
+            }
+
+            .rename-icon:hover::before {
+                  content: "Rename";
+            }
+
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-3">
+                        {{>sidemenus/academics}}
+                        <a href="/academics/calender/" class="list-group-item list-group-item-action"><img
+                                    src="/assets/img/calender-icon.png" alt="" style="height: 0.8rem"> Calender</a>
+                  </div>
+                  <div class="col-9">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <div id="thecalender">
+                                    <div class="container" >
+                                          <div class="card" style="padding: 1rem;">
+                                                <h3 class="card-header" id="monthAndYear"></h3>
+                                                <table class="table table-bordered table-responsive-sm" id="calendar">
+                                                      <thead>
+                                                            <tr>
+                                                                  <th>Sun</th>
+                                                                  <th>Mon</th>
+                                                                  <th>Tue</th>
+                                                                  <th>Wed</th>
+                                                                  <th>Thu</th>
+                                                                  <th>Fri</th>
+                                                                  <th>Sat</th>
+                                                            </tr>
+                                                      </thead>
+
+                                                      <tbody id="calendar-body">
+
+                                                      </tbody>
+                                                </table>
+
+                                                <div class="form-inline" id="previousnext">
+
+                                                      <button class="btn btn-outline-primary col-sm-6" id="previous"
+                                                            onclick="previous()">Previous</button>
+
+                                                      <button class="btn btn-outline-primary col-sm-6" id="next"
+                                                            onclick="next()">Next</button>
+                                                </div>
+                                                <br />
+                                                <form class="form-inline" id="jumpto">
+                                                      <label class="lead mr-2 ml-2" for="month">Jump To: </label>
+                                                      <select class="form-control col-sm-4" name="month" id="month"
+                                                            onchange="jump()" style="margin-right: 1rem;">
+                                                            <option value=0>Jan</option>
+                                                            <option value=1>Feb</option>
+                                                            <option value=2>Mar</option>
+                                                            <option value=3>Apr</option>
+                                                            <option value=4>May</option>
+                                                            <option value=5>Jun</option>
+                                                            <option value=6>Jul</option>
+                                                            <option value=7>Aug</option>
+                                                            <option value=8>Sep</option>
+                                                            <option value=9>Oct</option>
+                                                            <option value=10>Nov</option>
+                                                            <option value=11>Dec</option>
+                                                      </select>
+
+
+                                                      <label for="year"></label><select class="form-control col-sm-4"
+                                                            name="year" id="year" onchange="jump()">
+                                                            <option value=2017>2017</option>
+                                                            <option value=2018>2018</option>
+                                                            <option value=2019>2019</option>
+                                                            <option value=2020>2020</option>
+                                                            <option value=2021>2021</option>
+                                                            <option value=2022>2022</option>
+                                                            <option value=2023>2023</option>
+                                                            <option value=2024>2024</option>
+                                                            <option value=2025>2025</option>
+                                                            <option value=2026>2026</option>
+                                                            
+                                                      </select></form>
+                                          </div>
+                                    </div>
+                              </div>
+                              <div id="thedays" style="display: none;">
+                                    <p onclick="getback()">Back</p>
+                                    <h1 id="theactualdate">Hello</h1>
+                                    <ul class="list-group col-3">
+                                          <li class="list-group-item">Cras justo odio</li>
+                                          <li class="list-group-item">Dapibus ac facilisis in</li>
+                                          <li class="list-group-item">Morbi leo risus</li>
+                                          <li class="list-group-item">Porta ac consectetur ac</li>
+                                          <li class="list-group-item">Vestibulum at eros</li>
+                                        </ul>
+                              </div>
+                        </div>
+                  </div>
+
+            </div>
+      </div>
+     
+      {{>scripts}}
+      <script>
+            function getback(){
+                  $("#previousnext").css('display','flex');
+                  $("#jumpto").css('display','flex');
+                  $("#thecalender").css('display','block');
+                  $("#thedays").css('display','none');
+            }
+
+            function getdatewa(params){
+                  $("#previousnext").css('display','none');
+                  $("#jumpto").css('display','none');
+                  $("#thecalender").css('display','none');
+                  $("#thedays").css('display','block');
+                  var monthandyear=$("#monthAndYear").html();
+                  $("#theactualdate").html(params.innerHTML+" "+monthandyear);
+            }
+
+            function closefullview() {
+                  $("#container").css('display', 'block');
+                  $("#fullview").css('display', 'none');
+                  $("#fullview").html('');
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            today = new Date();
+            currentMonth = today.getMonth();
+            currentYear = today.getFullYear();
+            selectYear = document.getElementById("year");
+            selectMonth = document.getElementById("month");
+
+            months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            monthAndYear = document.getElementById("monthAndYear");
+            showCalendar(currentMonth, currentYear);
+
+
+            function next() {
+                  currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+                  currentMonth = (currentMonth + 1) % 12;
+                  showCalendar(currentMonth, currentYear);
+            }
+
+            function previous() {
+                  currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+                  currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+                  showCalendar(currentMonth, currentYear);
+            }
+
+            function jump() {
+                  currentYear = parseInt(selectYear.value);
+                  currentMonth = parseInt(selectMonth.value);
+                  showCalendar(currentMonth, currentYear);
+            }
+
+            function showCalendar(month, year) {
+
+                  let firstDay = (new Date(year, month)).getDay();
+
+                  tbl = document.getElementById("calendar-body"); // body of the calendar
+
+                  // clearing all previous cells
+                  tbl.innerHTML = "";
+
+                  // filing data about month and in the page via DOM.
+                  monthAndYear.innerHTML = months[month] + " " + year;
+                  selectYear.value = year;
+                  selectMonth.value = month;
+
+                  // creating all cells
+                  let date = 1;
+                  for (let i = 0; i < 6; i++) {
+                        // creates a table row
+                        let row = document.createElement("tr");
+
+                        //creating individual cells, filing them up with data.
+                        for (let j = 0; j < 7; j++) {
+                              if (i === 0 && j < firstDay) {
+                                    cell = document.createElement("td");
+                                    cell.setAttribute('onclick','getdatewa(this)');
+                                    cellText = document.createTextNode("");
+                                    cell.appendChild(cellText);
+                                    row.appendChild(cell);
+                              } else if (date > daysInMonth(month, year)) {
+                                    break;
+                              } else {
+                                    cell = document.createElement("td");
+                                    cell.setAttribute('onclick','getdatewa(this)');
+                                    cellText = document.createTextNode(date);
+                                    cell.setAttribute('id',date.toString()+'_'+(month+1).toString()+'_'+year.toString());
+                                    if (date === today.getDate() && year === today.getFullYear() && month === today
+                                          .getMonth()) {
+                                          cell.classList.add("bg-info");
+                                    } // color today's date
+                                    cell.appendChild(cellText);
+                                    row.appendChild(cell);
+                                    date++;
+                              }
+
+
+                        }
+
+                        tbl.appendChild(row); // appending each row into calendar body.
+                  }
+
+            }
+
+
+            // check how many days in a month code from https://dzone.com/articles/determining-number-days-month
+            function daysInMonth(iMonth, iYear) {
+                  return 32 - new Date(iYear, iMonth, 32).getDate();
+            }
+
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  var thecalender=$('table').rows;
+                  console.log(thecalender);
+            })
+      </script>
+
+
+</body>
+
+</html>

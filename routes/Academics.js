@@ -378,6 +378,10 @@ app.get('/classmessages',async(req,res)=>{
       }
 });
 
+app.get('/calender',(req,res)=>{
+      res.render('academics/calender');
+})
+
 
 
 module.exports = app;

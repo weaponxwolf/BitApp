@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            .postimages{
+                  height: 20rem;
+                  margin: 1rem;
+                  max-width: 30%;
+            }
+
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div>
+
+            </div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-12" style="text-align: center;">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2e6e620ef850874eda4.jpg" alt="" class="postimages" >
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages" >
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                             <img src="/posts/images/6287b2dae620ef850874eda1.jpg" alt="" class="postimages">
+                        </div>
+                  </div>
+            </div>
+      </div>
+      {{>scripts}}
+      <script>
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+
+            })
+      </script>
+
+
+</body>
+
+</html>
