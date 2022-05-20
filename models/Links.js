@@ -10,6 +10,7 @@ const LinksSchema=new mongoose.Schema({
     accessto :[
         {
             name : String,
+            mountlocation : String
         }
     ]
 });

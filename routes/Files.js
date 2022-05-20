@@ -81,10 +81,12 @@ app.post('/sharefolder', async (req, res) => {
   var getfoldername = getname.split('.').join('-').split('@')[0];
   var name = Folder.name.split(' ').join('%20');
   var oldlocation = Folder.location;
+  var childrenlocation =Folder.location+'1x1'+name;
+  console.log(childrenlocation);
   console.log(oldlocation);
   console.log(Folder.location + '1x1');
   console.log(getfoldername + '1x1')
-  var newlocation = oldlocation.replace(Folder.location + '1x1', getfoldername + '1x1')
+  var newlocation = oldlocation.replace('root1x1', getfoldername + '1x1')
   console.log(newlocation);
   Folder.accessto.push({
     name: accesss,
@@ -94,15 +96,14 @@ app.post('/sharefolder', async (req, res) => {
   const childFolders = await Folders.find({
     isDeleted: false,
     location: {
-      $regex: oldlocation,
+      $regex: childrenlocation,
       $options: 'i'
     }
   });
-  // console.log(childFolders);
   const childLinks = await Links.find({
     isDeleted: false,
     linklocation: {
-      $regex: oldlocation,
+      $regex: childrenlocation,
       $options: 'i'
     }
   });
@@ -110,13 +111,34 @@ app.post('/sharefolder', async (req, res) => {
   const childFiles = await Files.find({
     isDeleted: false,
     filelocation: {
-      $regex: oldlocation,
+      $regex: childrenlocation,
       $options: 'i'
     }
   });
   // console.log(childFiles);
   childFolders.forEach(element => {
-    var s=element.location.replace(Folder.location + '1x1', getfoldername + '1x1')
+    var elementname =element.name.split(' ').join('%20');
+    var s=element.location.replace(Folder.location + '1x1', getfoldername + '1x1')+'1x1'+elementname;
+    element.accessto.push({
+      name :accesss,
+      mountlocation : s
+    });
+    console.log(element);
+    element.save();
+  });
+  childFiles.forEach(element => {
+    var elementname =element.name.split(' ').join('%20');
+    var s=element.filelocation.replace(Folder.location + '1x1', getfoldername + '1x1')+'1x1'+elementname;
+    element.accessto.push({
+      name :accesss,
+      mountlocation : s
+    });
+    console.log(element);
+    element.save();
+  });
+  childLinks.forEach(element => {
+    var elementname =element.name.split(' ').join('%20');
+    var s=element.linklocation.replace(Folder.location + '1x1', getfoldername + '1x1')+'1x1'+elementname;
     element.accessto.push({
       name :accesss,
       mountlocation : s

@@ -620,7 +620,6 @@ $(document).ready(function () {
     var locarray = pathname.split("/");
     var folderLocation = locarray[2];
     var myarray = folderLocation.split('1x1');
-    console.log(myarray);
     var path = "root";
     myarray.forEach(element => {
         if (element == "root") {} else {

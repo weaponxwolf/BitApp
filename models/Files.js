@@ -11,7 +11,8 @@ const FilesSchema=new mongoose.Schema({
     isDeleted : Boolean,
     accessto :[
         {
-            name : String
+            name : String,
+            mountlocation : String
         }
     ]
 });
