@@ -32,6 +32,8 @@ const io = new Server(server);
 const Files = require('../models/Files');
 const Folders = require('../models/Folders');
 const Links = require('../models/Links');
+const Messages=require('../models/Messages');
+
 
 const GetName = (req) => {
       var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
@@ -363,6 +365,18 @@ app.get('/classchat',async (req,res)=>{
       }
       
 })
+
+
+app.get('/classmessages',async(req,res)=>{
+      try {
+            const messages=await Messages.find({
+                  messageto : 'ECE_A'
+            });
+            res.send(messages);
+      } catch (error) {
+            
+      }
+});
 
 
 

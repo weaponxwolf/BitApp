@@ -35,14 +35,15 @@
             <div class="row" style="margin-top: 100px">
                   <div class="col-3">
                         {{>sidemenus/academics}}
-                        <div>
+                        <div style="text-align:center;">
+                              <hr>
                               <a href="#" class="list-group-item list-group-item-action active"
                                     id="nameofuser">{{userdata.name}}</a>
                               <a href="#" style="display: none" class="list-group-item list-group-item-action active"
                                     id="emailofuser">{{userdata.email}}</a>
                         </div>
                         <hr>
-                        <div class="col-12">
+                        <div class="col-12" style="max-height: 30vh">
                               <div class="list-group" id="activeusers" style="text-align: center;font-size: 0.6rem">
                                     <a href="#" class="list-group-item list-group-item-action active"><span>ACTIVE
                                                 USERS</span></a>
@@ -55,9 +56,9 @@
                               style="max-height: 80vh;background-color: #f1f1f1;height:70vh;border-radius: 10px;padding: 2rem;"
                               id="mainpart">
 
-                        <div id="allmessages">
+                              <div id="allmessages" class="sc1" style="overflow-y: scroll;max-height:60vh">
 
-                        </div>
+                              </div>
 
 
 
@@ -109,6 +110,29 @@
                   var clientHeight = document.getElementById('header').clientHeight;
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  $.get('/academics/classmessages', function (data, staus) {
+                        var emailofuser = $("#emailofuser").html();
+                        data.forEach(element => {
+                              console.log(data);
+                              if (element.byemail === emailofuser) {
+                                    $("#allmessages").append(
+                                          ` <div style="margin-left: 20%;margin-bottom: 1rem;margin-right:1rem">
+                              <div style="text-align:end">You</div>
+                              <div style="width:100%;background-color:white;padding:1rem;border-radius:1rem ">${element.message}</div>
+                          </div>`
+                                    );
+                              } else {
+                                    $("#allmessages").append(
+                                          ` <div style="margin-bottom: 1rem">
+                                <div>${element.messageby}</div>
+                                <div style="width:80%;background-color:#271669;padding:1rem;border-radius:1rem ;color: white;">${element.message}</div>
+                          </div>`
+                                    );
+                              }
+                        });
+                  });
+                  var objDiv = document.getElementById("allmessages");
+                  objDiv.scrollTop = objDiv.scrollHeight;
             });
       </script>
       <script src="/socket.io/socket.io.js"></script>
@@ -123,7 +147,7 @@
                   var nameofuser = $("#nameofuser").html();
                   var emailofuser = $("#emailofuser").html();
                   $("#allmessages").append(
-                        ` <div style="margin-left: 20%;margin-bottom: 1rem">
+                        ` <div style="margin-left: 20%;margin-bottom: 1rem;margin-right:1rem">
                               <div style="text-align:end">You</div>
                               <div style="width:100%;background-color:white;padding:1rem;border-radius:1rem ">${message}</div>
                           </div>`
@@ -133,6 +157,8 @@
                         nameofuser: nameofuser,
                         emailofuser: emailofuser
                   });
+                  var objDiv = document.getElementById("allmessages");
+                  objDiv.scrollTop = objDiv.scrollHeight;
             }
             socket.on('connect', () => {
 
@@ -153,6 +179,9 @@
                                 <div style="width:80%;background-color:#271669;padding:1rem;border-radius:1rem ;color: white;">${data.message}</div>
                           </div>`
                   );
+
+                  var objDiv = document.getElementById("allmessages");
+                  objDiv.scrollTop = objDiv.scrollHeight;
             });
       </script>
 </body>

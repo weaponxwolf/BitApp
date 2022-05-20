@@ -258,10 +258,8 @@ io.on('connection', (socket) => {
       
       var cookies = cookie.parse(socket.handshake.headers.cookie); 
       var decoded=jwt.verify(cookies.userdata,'amitkumar'); 
-      console.log(decoded.name+" CONNECTED");
       socket.broadcast.emit('user',{username : decoded.name , email : decoded.email });
       socket.on('disconnect', () => {
-            console.log(decoded.name+" DISCONNECTED");
       });
       
       socket.on('sendmessagetoclass',(data)=>{
@@ -269,6 +267,7 @@ io.on('connection', (socket) => {
             Messages.create( {
                   message : data.message,
                   messageby : data.nameofuser,
+                  byemail : data.emailofuser,
                   messageto : "ECE_A",
                   createdon : Date.now()
              }, function (err, small) {
