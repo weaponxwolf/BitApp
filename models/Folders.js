@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 const FolderSchema=new mongoose.Schema({
     name : String,
     createdby : String,
+    createdbyname : String,
     createdon : Date,
     location : String,
     isDeleted : Boolean,

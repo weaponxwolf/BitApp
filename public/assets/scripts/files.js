@@ -120,6 +120,23 @@ function sharetoclass(params){
     });
 }
 
+function sharefiletoclass(params){
+    var fileid = params.id.split("_")[1];
+    console.log(fileid);
+    var getname = $("#folder_" + fileid + " div div span").html();
+    $(".optionicons").html('');
+    $("#removeoption_" + fileid).remove();
+     var branch=params.id.split("_")[2];
+     var section=params.id.split("_")[3];
+    $.post('/files/sharefile',{
+        fileid: fileid,
+        section : section,
+        branch : branch
+    },function(data,status){
+        console.log(data);
+    });
+}
+
 function sharefolder(params){
     var folderid = params.id.split("_")[1];
     var getname = $("#folder_" + folderid + " div div span").html();
@@ -132,6 +149,23 @@ function sharefolder(params){
                       <div class="row">
                       <span style="float:left;margin-right:2rem;margin-left:2rem;">Share To : </span>
                             <button type="button" class="btn btn-light" id="sharetoclass_${folderid}_${branch}_${section}" onclick="sharetoclass(this)"> ${branch} ${section}</button>
+                      </div>
+      
+      `);
+}
+
+function sharefile(params){
+    var fileid = params.id.split("_")[1];
+    var getname = $("#file_" + fileid + " div div span").html();
+    $(".optionicons").html('');
+    $("#removeoption_" + fileid).remove();
+     var branch=$("#branch").html();
+     var section=$("#usersection").html();
+    $("#file_" + fileid).append(`
+      <hr>
+                      <div class="row">
+                      <span style="float:left;margin-right:2rem;margin-left:2rem;">Share To : </span>
+                            <button type="button" class="btn btn-light" id="sharefiletoclass_${fileid}_${branch}_${section}" onclick="sharefiletoclass(this)"> ${branch} ${section}</button>
                       </div>
       
       `);
@@ -333,16 +367,15 @@ function fileoptionMenu(params) {
                                   <div><img src="/assets/img/dust-bin.png" alt=""
                                       style="height: 1.5rem;margin-right: 1 rem;"></div>
                               </span>
-                          </div>
-                          <div class="delete-icon" id="delete_${fileid}" onclick="deletefile(this)">
+                          </div><div class="rename-icon" id="rename_${fileid}" onclick="renamefile(this)">
+                          <span >
+                              <div><img src="/assets/img/rename.png" alt=""
+                                  style="height: 1.5rem;margin-right: 1 rem;"></div>
+                          </span>
+                      </div>
+                          <div class="share-icon" id="share_${fileid}" onclick="sharefile(this)">
                               <span >
-                                  <div><img src="/assets/img/dust-bin.png" alt=""
-                                      style="height: 1.5rem;margin-right: 1 rem;"></div>
-                              </span>
-                          </div>
-                          <div class="rename-icon" id="rename_${fileid}" onclick="renamefile(this)">
-                              <span >
-                                  <div><img src="/assets/img/rename.png" alt=""
+                                  <div><img src="/assets/img/share.png" alt=""
                                       style="height: 1.5rem;margin-right: 1 rem;"></div>
                               </span>
                           </div>

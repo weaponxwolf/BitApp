@@ -5,6 +5,7 @@ const FilesSchema=new mongoose.Schema({
     filetype : String,
     size : Number,
     createdby : String,
+    createdbyname : String,
     createdon : Date,
     location : String,
     filelocation :String,

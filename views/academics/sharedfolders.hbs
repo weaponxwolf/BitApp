@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .create div {
+                  border: 1px solid black;
+                  padding: 1rem;
+                  margin: 1rem;
+                  cursor: pointer;
+            }
+
+            .folders {
+                  cursor: pointer;
+            }
+
+            .files {
+                  cursor: pointer;
+            }
+
+            .delete-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+
+            }
+
+            .delete-icon:hover span {
+                  display: none;
+            }
+
+            .delete-icon:hover::before {
+                  content: "Delete";
+            }
+
+            .rename-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+            }
+
+            .rename-icon:hover span {
+                  display: none;
+            }
+
+            .rename-icon:hover::before {
+                  content: "Rename";
+            }
+
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-3">
+                        {{>sidemenus/academics}}
+                  </div>
+
+                  <div class="col-9" id="allsubjects">
+                        <h1>Shared Folders</h1>
+                        <a href="/academics/addsyllabus"></a>
+                        <hr>
+                        <div id="allsharedfolders">
+                              
+                        </div>
+                        <div id="allsharedfiles">
+                              
+                        </div>
+                        <div id="allsharedlinks">
+                              
+                        </div>
+                  </div>
+
+                  
+            </div>
+            
+            
+      </div>
+
+      {{>scripts}}
+      <script>
+            function enterfolder(params){
+                  console.log(params.id);
+                  window.location.href='/academics/sharedfolders/folders/'+params.id;
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  var pathname=window.location.pathname;
+                  console.log(pathname);
+                  folderlocation="";
+                  $.get('/academics/sharedfolders/folders'+folderlocation,function(data,status){
+                        data.forEach(element => {
+                            $("#allsharedfolders").append(`<li class="list-group-item" id="folder_${element._id}">
+                      <div class="row">
+                          <div class="col folders" onclick="enterfolder(this)" id="${element.location}">
+                              <img src="/assets/img/folder-icon.png" alt=""
+                                  style="width: 1rem;margin-right: 1 rem;">
+                              <span>${element.name}</span>
+
+                          </div>
+                          <div class="col option">
+                              ${element.createdbyname}
+                              <span id="option_${element._id}" style="float: right;cursor: pointer;"
+                                  onclick="optionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
+                                      style="width: 1rem;margin-right: 1 rem;">
+                              </span>
+                          </div>
+                      </div>
+                  </li>`); 
+                        });
+                  });
+                  $.get('/academics/sharedfolders/files'+folderlocation,function(data,status){
+                        data.forEach(element => {
+                            $("#allsharedlinks").append(`<li class="list-group-item" id="folder_${element._id}">
+                      <div class="row">
+                          <div class="col folders" onclick="enterfolder(this)" id="${element.location}_${element.name}">
+                              <img src="/assets/img/file-icon.png" alt=""
+                                  style="width: 1rem;margin-right: 1 rem;">
+                              <span>${element.name}</span>
+
+                          </div>
+                          <div class="col option">
+                              ${element.createdbyname}
+                              <span id="option_${element._id}" style="float: right;cursor: pointer;"
+                                  onclick="optionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
+                                      style="width: 1rem;margin-right: 1 rem;">
+                              </span>
+                          </div>
+                      </div>
+                  </li>`); 
+                        });
+                  });
+                  $.get('/academics/sharedfolders/links'+folderlocation,function(data,status){
+                        data.forEach(element => {
+                            $("#allsharedlinks").append(`<li class="list-group-item" id="folder_${element._id}">
+                      <div class="row">
+                          <div class="col folders" onclick="enterfolder(this)" id="${element.location}_${element.name}">
+                              <img src="/assets/img/link-icon.png" alt=""
+                                  style="width: 1rem;margin-right: 1 rem;">
+                              <span>${element.name}</span>
+
+                          </div>
+                          <div class="col option">
+                              ${element.createdbyname}
+                              <span id="option_${element._id}" style="float: right;cursor: pointer;"
+                                  onclick="optionMenu(this)"> <img src="/assets/img/option-menu.png" alt=""
+                                      style="width: 1rem;margin-right: 1 rem;">
+                              </span>
+                          </div>
+                      </div>
+                  </li>`); 
+                        });
+                  });
+                  
+            });
+      </script>
+
+
+</body>
+
+</html>

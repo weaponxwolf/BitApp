@@ -4,6 +4,7 @@ const LinksSchema=new mongoose.Schema({
     name : String,
     link : String,
     createdby : String,
+    createdbyname : String,
     createdon : Date,
     linklocation :String,
     isDeleted : Boolean,

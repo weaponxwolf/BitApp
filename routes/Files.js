@@ -74,25 +74,18 @@ app.post('/sharefolder', async (req, res) => {
     _id: req.body.folderid,
     isDeleted: false,
   });
-  console.log(req.body);
   var getname = GetName(req);
-  // console.log(Folder);
   var accesss = req.body.branch + '_' + req.body.section;
   var getfoldername = getname.split('.').join('-').split('@')[0];
   var name = Folder.name.split(' ').join('%20');
   var oldlocation = Folder.location;
-  var childrenlocation =Folder.location+'1x1'+name;
-  console.log(childrenlocation);
-  console.log(oldlocation);
-  console.log(Folder.location + '1x1');
-  console.log(getfoldername + '1x1')
-  var newlocation = oldlocation.replace('root1x1', getfoldername + '1x1')
-  console.log(newlocation);
+  var childrenlocation = Folder.location + '1x1' + name;
+  var newlocation = childrenlocation.replace(childrenlocation, getfoldername + '1x1')
   Folder.accessto.push({
     name: accesss,
-    mountlocation: newlocation
+    mountlocation: newlocation + name
   });
-  console.log(Folder);
+  Folder.save();
   const childFolders = await Folders.find({
     isDeleted: false,
     location: {
@@ -107,7 +100,6 @@ app.post('/sharefolder', async (req, res) => {
       $options: 'i'
     }
   });
-  // console.log(childLinks);
   const childFiles = await Files.find({
     isDeleted: false,
     filelocation: {
@@ -115,47 +107,33 @@ app.post('/sharefolder', async (req, res) => {
       $options: 'i'
     }
   });
-  // console.log(childFiles);
   childFolders.forEach(element => {
-    var elementname =element.name.split(' ').join('%20');
-    var s=element.location.replace(Folder.location + '1x1', getfoldername + '1x1')+'1x1'+elementname;
+    var elementname = element.name.split(' ').join('%20');
+    var s = element.location.replace(Folder.location + '1x1', getfoldername + '1x1') + '1x1' + elementname;
     element.accessto.push({
-      name :accesss,
-      mountlocation : s
+      name: accesss,
+      mountlocation: s
     });
-    console.log(element);
     element.save();
   });
   childFiles.forEach(element => {
-    var elementname =element.name.split(' ').join('%20');
-    var s=element.filelocation.replace(Folder.location + '1x1', getfoldername + '1x1')+'1x1'+elementname;
+    var elementname = element.name.split(' ').join('%20');
+    var s = element.filelocation.replace(Folder.location + '1x1', getfoldername + '1x1') + '1x1' + elementname;
     element.accessto.push({
-      name :accesss,
-      mountlocation : s
+      name: accesss,
+      mountlocation: s
     });
-    console.log(element);
     element.save();
   });
   childLinks.forEach(element => {
-    var elementname =element.name.split(' ').join('%20');
-    var s=element.linklocation.replace(Folder.location + '1x1', getfoldername + '1x1')+'1x1'+elementname;
+    var elementname = element.name.split(' ').join('%20');
+    var s = element.linklocation.replace(Folder.location + '1x1', getfoldername + '1x1') + '1x1' + elementname;
     element.accessto.push({
-      name :accesss,
-      mountlocation : s
+      name: accesss,
+      mountlocation: s
     });
-    console.log(element);
     element.save();
   });
-  // childFiles.forEach(element => {
-  //   element.filelocation = element.filelocation.replace(oldlocation, newlocation);
-  //   element.save();
-  // });
-  // childLinks.forEach(element => {
-  //   element.linklocation = element.linklocation.replace(oldlocation, newlocation);
-  //   element.save();
-  // });
-
-  // await Folder.save();
   res.send("Folder : '" + name + "' Renamed to '" + Folder.name + "'");
 });
 
@@ -281,6 +259,7 @@ app.post('/renamefolder', async (req, res) => {
 app.post('/uploadfile', async (req, res) => {
   try {
     var getname = GetName(req);
+    var nameofuser=(await GetUser(req)).name;
     var getfoldername = getname.split('.').join('-').split('@')[0];
     var filelocation = req.body.location;
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -305,6 +284,7 @@ app.post('/uploadfile', async (req, res) => {
           name: sampleFile.name,
           filetype: sampleFile.mimetype,
           createdby: getname,
+          createdbyname :nameofuser,
           filelocation: filelocation,
           isDeleted: false,
           createdon: Date.now()
@@ -382,11 +362,13 @@ app.get('/linkslist', async (req, res) => {
 
 app.post('/createlink', async (req, res) => {
   try {
+    var nameofuser=(await GetUser(req)).name;
     const getname = GetName(req);
     const newLink = new Links({
       name: req.body.linkname,
       link: req.body.link,
       createdby: getname,
+      createdbyname:nameofuser,
       isDeleted: false,
       linklocation: req.body.folderLocation
     });
@@ -452,9 +434,11 @@ app.post('/createfolder', async (req, res) => {
       res.send("Folder Name :" + req.body.foldername + " Already Exists !")
     } else {
       const name = await GetName(req);
+      var nameofuser=(await GetUser(req)).name;
       const Folder = await new Folders({
         name: req.body.foldername,
         createdby: name,
+        createdbyname: nameofuser,
         createdon: Date.now(),
         isDeleted: false,
         location: req.body.location
@@ -467,6 +451,28 @@ app.post('/createfolder', async (req, res) => {
   }
 });
 
+app.post('/sharefile', async (req, res) => {
+  try {
+    const File = await Files.findOne({
+      _id: req.body.fileid,
+      isDeleted: false,
+    });
+    var getname = GetName(req);
+    var accesss = req.body.branch + '_' + req.body.section;
+    var getfoldername = getname.split('.').join('-').split('@')[0];
+    var name = File.name.split(' ').join('%20');
+    var childrenlocation = File.location + '1x1' + name;
+    var newlocation = childrenlocation.replace(childrenlocation, getfoldername + '1x1')
+    File.accessto.push({
+      name: accesss,
+      mountlocation: newlocation + name
+    });
+    File.save();
+    res.send("OK");
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 app.get('/:location', async (req, res) => {
   try {

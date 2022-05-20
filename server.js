@@ -15,6 +15,15 @@ const GOOGLE_CLIENT_SECRET = "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";
 
 const User = require('./models/Users');
 
+const GetName = (req) => {
+      if (req.cookies['userdata']) {
+            var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
+            return decoded.email;
+      }else
+      return null;
+}
+
+
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 app.use(cookieParser());
 
@@ -55,14 +64,16 @@ passport.deserializeUser((user, done) => {
 const HomeRoute = require('./routes/Home');
 const FilesRoute = require('./routes/Files');
 const ProfileRoutes = require('./routes/Profile');
-const PostRoutes=require('./routes/Posts');
-const AcademicsRoute=require('./routes/Academics');
+const PostRoutes = require('./routes/Posts');
+const AcademicsRoute = require('./routes/Academics');
 
 
 const {
       application
 } = require('express');
 const Users = require('./models/Users');
+const Files = require('./models/Files');
+const async = require('hbs/lib/async');
 
 
 
@@ -77,12 +88,18 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 app.use('/files', FilesRoute);
 app.use('/profile', ProfileRoutes);
-app.use('/post',PostRoutes);
-app.use('/academics',AcademicsRoute);
+app.use('/post', PostRoutes);
+app.use('/academics', AcademicsRoute);
 
 app.get('/', (req, res) => {
-      res.render('index');
+      var getname=GetName(req);
+      if (getname==null) {
+            res.render('index');
+      }else{
+            res.redirect('/home');
+      }
 });
+
 
 app.get('/auth/google',
       passport.authenticate('google', {
@@ -104,7 +121,12 @@ app.get('/auth/google/callback',
                   email: req.user.email
             }
             var token = jwt.sign(userdetails, 'amitkumar');
-            res.cookie('createuser',token, {maxAge: 90000000, httpOnly: true, secure: false, overwrite: true});
+            res.cookie('createuser', token, {
+                  maxAge: 90000000,
+                  httpOnly: true,
+                  secure: false,
+                  overwrite: true
+            });
             res.redirect('/createuser');
       });
 
@@ -117,17 +139,23 @@ app.get('/createuser', async (req, res) => {
             if (req.cookies['createuser']) {
                   var theusertoken = req.cookies['createuser'];
                   var decoded = jwt.verify(theusertoken, 'amitkumar');
-                  const checkUser=await Users.findOne({ id : decoded.id, email : decoded.email ,fullyCreated : false});
+                  const checkUser = await Users.findOne({
+                        id: decoded.id,
+                        email: decoded.email,
+                        fullyCreated: false
+                  });
                   if (checkUser) {
-                        var theuser={
-                              email : checkUser.email,
-                              firstname : checkUser.profile.name.givenName,
-                              lastname : checkUser.profile.name.familyName,
+                        var theuser = {
+                              email: checkUser.email,
+                              firstname: checkUser.profile.name.givenName,
+                              lastname: checkUser.profile.name.familyName,
                         }
-                        res.render('createuser',{theuser : theuser});
-                  }else{
+                        res.render('createuser', {
+                              theuser: theuser
+                        });
+                  } else {
                         res.redirect('/');
-                  }   
+                  }
             } else {
                   res.redirect('/');
             }
@@ -138,37 +166,39 @@ app.get('/createuser', async (req, res) => {
 });
 
 
-app.post('/createuser',async(req,res)=>{
+app.post('/createuser', async (req, res) => {
       try {
             var theusertoken = req.cookies['createuser'];
             var decoded = jwt.verify(theusertoken, 'amitkumar');
-            if (req.body.semester==""||req.body.section==""||req.body.branch==""||req.body.password.length<6||req.body.cpassword.length<6) {
+            if (req.body.semester == "" || req.body.section == "" || req.body.branch == "" || req.body.password.length < 6 || req.body.cpassword.length < 6) {
                   res.send("INVALID INPUTS");
-            }else{
-                  if (req.body.password===req.body.cpassword) {
+            } else {
+                  if (req.body.password === req.body.cpassword) {
                         const User = await Users.findOneAndUpdate({
-                              id : decoded.id, email : decoded.email ,fullyCreated : false
+                              id: decoded.id,
+                              email: decoded.email,
+                              fullyCreated: false
                         }, {
-                              
-                              semester : req.body.semester,
-                              branch : req.body.branch,
-                              section : req.body.section,
-                              password :req.body.password,
-                              fullyCreated : true
-      
+
+                              semester: req.body.semester,
+                              branch: req.body.branch,
+                              section: req.body.section,
+                              password: req.body.password,
+                              fullyCreated: true
+
                         }, {
                               new: true
                         });
                         res.clearCookie("createuser");
                         res.redirect('/');
-                  }else{
+                  } else {
                         res.send("PASSWORD DOESN'T MATCH");
                   }
-                  
+
             }
-            
+
       } catch (error) {
-            
+
       }
 });
 
@@ -195,7 +225,7 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get('/logout',(req,res)=>{
+app.get('/logout', (req, res) => {
       res.clearCookie('userdata');
       res.redirect('/');
 });
