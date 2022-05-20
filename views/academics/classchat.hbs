@@ -50,19 +50,14 @@
                               </div>
                         </div>
                   </div>
-
                   <div class="col-9" style="height: 60vh">
                         <div class="sc1"
                               style="max-height: 80vh;background-color: #f1f1f1;height:70vh;border-radius: 10px;padding: 2rem;"
                               id="mainpart">
-
                               <div id="allmessages" class="sc1" style="overflow-y: scroll;max-height:60vh">
-
                               </div>
-
-
-
                         </div>
+                        <hr>
                         <div style="text-align: center;justify-content:center;align-items:center; display: flex;">
                               <textarea name="" id="message" class="col-9 row-2"></textarea><Button class="col-2 row-2"
                                     style=" background-color: white;
@@ -72,12 +67,7 @@
                         </div>
                   </div>
             </div>
-
-
       </div>
-      </div>
-      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
-
       </div>
       {{>scripts}}
       <script>
@@ -113,12 +103,13 @@
                   $.get('/academics/classmessages', function (data, staus) {
                         var emailofuser = $("#emailofuser").html();
                         data.forEach(element => {
-                              console.log(data);
+                              var objDiv = document.getElementById("allmessages");
+                              objDiv.scrollTop = objDiv.scrollHeight;
                               if (element.byemail === emailofuser) {
                                     $("#allmessages").append(
                                           ` <div style="margin-left: 20%;margin-bottom: 1rem;margin-right:1rem">
                               <div style="text-align:end">You</div>
-                              <div style="width:100%;background-color:white;padding:1rem;border-radius:1rem ">${element.message}</div>
+                              <div style="width:100%;background-color:#6e2b6a;padding:1rem;border-radius:1rem;color:white ">${element.message}</div>
                           </div>`
                                     );
                               } else {
@@ -130,6 +121,8 @@
                                     );
                               }
                         });
+                        var objDiv = document.getElementById("allmessages");
+                        objDiv.scrollTop = objDiv.scrollHeight;
                   });
                   var objDiv = document.getElementById("allmessages");
                   objDiv.scrollTop = objDiv.scrollHeight;

@@ -79,17 +79,18 @@
     </main>
     <div class="container" style="font-size: 0.8rem" id="container">
         <div class="row" style="margin-top: 100px">
-            <div class="col-3">
+            <div class="col-2">
                 <div class="list-group">
-                    <a href="/post/newpost" class="list-group-item list-group-item-action"><img src="/assets\img\plus.png" alt="" style="height: 0.8rem"> New Post</a>
+                    <a href="/post/newpost" class="list-group-item list-group-item-action"><img
+                            src="/assets\img\plus.png" alt="" style="height: 0.8rem"> New Post</a>
                     <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
                     <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
                     <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-                  </div>
+                </div>
             </div>
-            <div class="col-6">
+            <div class="col-7">
                 <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
-                
+                    
                 </div>
             </div>
 
@@ -99,20 +100,23 @@
                     <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
                     <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
                     <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-                  </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="container" id="fullview" style="display: none;margin-top: 100px;">
-        
+
     </div>
     {{>scripts}}
     <script>
-        function closefullview(){
-            $("#container").css('display','block');
-            $("#fullview").css('display','none');
+        function closefullview() {
+            $("#container").css('display', 'block');
+            $("#fullview").css('display', 'none');
             $("#fullview").html('');
+            $("body").css('background-color','white');
+            $("#header").css('display','block');
         }
+
         function getPosition(element) {
             var xPosition = 0;
             var yPosition = 0;
@@ -128,21 +132,21 @@
             };
         }
 
-        function fullview(params){
-            var postid=params.id.split('_')[1];
+        function fullview(params) {
+            var postid = params.id.split('_')[1];
             console.log(postid);
-            $.get('/post/postdetails?postid='+postid,function(data,status){
-                $("#container").css('display','none');
-                $("#fullview").css('display','block');
+            $.get('/post/postdetails?postid=' + postid, function (data, status) {
+                $("#container").css('display', 'none');
+                $("#fullview").css('display', 'block');
                 $("#fullview").append(`<div class="row">
-            <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;">
+            <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;color:white">
                 <img onclick="closefullview()" src="posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
             </div>
             <div class="col" style="border-left: 1px solid #dfd2d2;padding:2rem;">
                 <div class="row" style="height: 70%;">
                     <div class="col">
-                        <h1>${data.title}</h1>
-                        <h4>${data.paragraph}</h4>
+                        <h1 style="color:white">${data.title}</h1>
+                        <h4 style="color:white">${data.paragraph}</h4>
                     </div>
                 </div>
                 <div class="row" style="height: 30%">
@@ -151,21 +155,28 @@
             </div>
         </div>`)
             });
+            $("body").css('background-color','black');
+            $("#header").css('display','none');
         }
         $(document).ready(function () {
             var s = document.getElementById('mainpart');
-            var header=document.getElementById('header');
+            var header = document.getElementById('header');
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
             document.getElementById("mainpart").style.height = vh - getPosition(s);
             var clientHeight = document.getElementById('header').clientHeight;
             var headerHeight = $('header').outerHeight();
             document.getElementById("container").style.marginTop = getPosition(clientHeight);
-            $.get('/post/getposts',function(data,status){
+            $.get('/post/getposts', function (data, status) {
                 data.forEach(element => {
                     $("#mainpart").append(`<div class="card">
-                        <div class="card-body" id="card_${element._id}" onclick="fullview(this)">
+                        <div class="card-body" id="card_${element._id}" onclick="fullview(this)"
+                            style="max-height: 80vh;">
                             <h5 class="card-title">${element.title}</h5>
-                            <img src="/posts/images/${element.ImageName}" alt="" style="width:100%">
+
+                            <div style="background-color: black;text-align:center">
+                                <img src="/posts/images/${element.ImageName}" alt=""
+                                    style="height:60vh;max-width:100%;">
+                            </div>
                             <p class="card-text">${element.paragraph}</p>
                         </div>
                     </div>`);

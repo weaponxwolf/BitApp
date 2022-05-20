@@ -32,8 +32,8 @@ app.get('/newpost', (req, res) => {
 
 app.get('/getposts',async(req,res)=>{
       try {
-            const posts=await Posts.find();
-            res.send(posts)
+            const posts=await Posts.find().sort({createdon : -1});
+            res.send(posts);
       } catch (error) {
             
       }
