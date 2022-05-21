@@ -1,11 +1,12 @@
 {
   "name": "bitappv2",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "start": "/usr/bin/node index.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -22,5 +23,15 @@
     "passport": "^0.5.3",
     "passport-google-oauth20": "^2.0.0",
     "socket.io": "^4.5.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weaponxwolf/BitAppv2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/weaponxwolf/BitAppv2/issues"
+  },
+  "homepage": "https://github.com/weaponxwolf/BitAppv2#readme",
+  "description": ""
 }
