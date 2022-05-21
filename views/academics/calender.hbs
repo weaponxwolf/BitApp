@@ -496,6 +496,7 @@
                   var monthandyear = $("#monthAndYear").html();
                   $("#theactualdate").html(date + " " + monthandyear);
                   $.get('/academics/calender/tasks?date=' + date + '-' + month + '-' + year, function (data, status) {
+                        $("#thetaskitems").html("");
                         data.forEach(element => {
                               $("#thetaskitems").append(
                                     `<li id="${element._id}" onclick="showtaskdetails(this)" class="list-group-item">${element.name}</li>`

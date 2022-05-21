@@ -392,11 +392,9 @@ app.get('/calender', (req, res) => {
 app.get('/calender/tasks', async (req, res) => {
       try {
             var all=req.query.date.split('-');
-            console.log(req.query.date);
             var day=parseInt(all[0]) ;
             var month=parseInt(all[1]);
             var year=parseInt(all[2]);
-            console.log(new Date(year, month, day));
             var getname = GetName(req);
             var tasks = await Tasks.find({
                   createdby: getname ,
@@ -405,7 +403,6 @@ app.get('/calender/tasks', async (req, res) => {
                               $lt: new Date(year , month, day+1)
                   }
             });
-            console.log(tasks);
             res.send(tasks);
       } catch (error) {
 
