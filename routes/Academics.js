@@ -22,7 +22,9 @@ app.use(fileUpload());
 
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+const {
+      Server
+} = require("socket.io");
 
 const io = new Server(server);
 
@@ -32,7 +34,11 @@ const io = new Server(server);
 const Files = require('../models/Files');
 const Folders = require('../models/Folders');
 const Links = require('../models/Links');
-const Messages=require('../models/Messages');
+const Messages = require('../models/Messages');
+const Tasks = require('../models/Tasks');
+const {
+      resolveSoa
+} = require('dns');
 
 
 const GetName = (req) => {
@@ -91,7 +97,7 @@ app.get('/sharedfolders/', (req, res) => {
 
 app.get('/sharedfolders/folders', async (req, res) => {
       try {
-            
+
             if (req.query.location) {
                   location = req.query.location;
                   location = location.split(' ').join('%20');
@@ -106,21 +112,21 @@ app.get('/sharedfolders/folders', async (req, res) => {
                         accesssname = 'ECE_A';
                         let obj = element.accessto;
                         if (obj) {
-                              var mntloc=location+'1x1'+element.name.split(' ').join('%20');
+                              var mntloc = location + '1x1' + element.name.split(' ').join('%20');
                               var s = obj.find((o) => o.name === accesssto);
                               if (s) {
-                                    if (s.mountlocation == mntloc){
-                                          element.location=s.mountlocation;
+                                    if (s.mountlocation == mntloc) {
+                                          element.location = s.mountlocation;
                                           editedfolder.push(element);
                                     }
                               }
                         }
                   });
                   res.send(editedfolder);
-            }else{
-                  var getname=await GetName(req);
-                  var getfolder=getname.split('@')[0].split('.').join('-');
-                  var location=getfolder+'1x1';
+            } else {
+                  var getname = await GetName(req);
+                  var getfolder = getname.split('@')[0].split('.').join('-');
+                  var location = getfolder + '1x1';
                   const user = await GetUser(req);
                   var accesssto = user.branch + "_" + user.section;
                   const folders = await Folders.find({
@@ -130,13 +136,13 @@ app.get('/sharedfolders/folders', async (req, res) => {
                   var editedfolder = [];
                   folders.forEach(element => {
                         accesssname = 'ECE_A';
-                        var foldername=location+element.name.split(' ').join('%20');
+                        var foldername = location + element.name.split(' ').join('%20');
                         let obj = element.accessto;
                         if (obj) {
                               var s = obj.find((o) => o.name === accesssto);
                               if (s) {
-                                    if (s.mountlocation == foldername){
-                                          element.location=s.mountlocation;
+                                    if (s.mountlocation == foldername) {
+                                          element.location = s.mountlocation;
                                           editedfolder.push(element);
                                     }
                               }
@@ -151,7 +157,7 @@ app.get('/sharedfolders/folders', async (req, res) => {
 });
 app.get('/sharedfolders/files', async (req, res) => {
       try {
-            
+
             if (req.query.location) {
                   location = req.query.location;
                   location = location.split(' ').join('%20');
@@ -166,21 +172,21 @@ app.get('/sharedfolders/files', async (req, res) => {
                         accesssname = 'ECE_A';
                         let obj = element.accessto;
                         if (obj) {
-                              var mntloc=location+'1x1'+element.name.split(' ').join('%20');
+                              var mntloc = location + '1x1' + element.name.split(' ').join('%20');
                               var s = obj.find((o) => o.name === accesssto);
                               if (s) {
-                                    if (s.mountlocation == mntloc){
-                                          element.location=s.mountlocation;
+                                    if (s.mountlocation == mntloc) {
+                                          element.location = s.mountlocation;
                                           editedfiles.push(element);
                                     }
                               }
                         }
                   });
                   res.send(editedfiles);
-            }else{
-                  var getname=await GetName(req);
-                  var getfolder=getname.split('@')[0].split('.').join('-');
-                  var location=getfolder+'1x1';
+            } else {
+                  var getname = await GetName(req);
+                  var getfolder = getname.split('@')[0].split('.').join('-');
+                  var location = getfolder + '1x1';
                   const user = await GetUser(req);
                   var accesssto = user.branch + "_" + user.section;
                   const files = await Files.find({
@@ -190,13 +196,13 @@ app.get('/sharedfolders/files', async (req, res) => {
                   var editedfiles = [];
                   files.forEach(element => {
                         accesssname = 'ECE_A';
-                        var foldername=location+element.name.split(' ').join('%20');
+                        var foldername = location + element.name.split(' ').join('%20');
                         let obj = element.accessto;
                         if (obj) {
                               var s = obj.find((o) => o.name === accesssto);
                               if (s) {
-                                    if (s.mountlocation == foldername){
-                                          element.location=s.mountlocation;
+                                    if (s.mountlocation == foldername) {
+                                          element.location = s.mountlocation;
                                           editedfolder.push(element);
                                     }
                               }
@@ -224,21 +230,21 @@ app.get('/sharedfolders/links', async (req, res) => {
                         accesssname = 'ECE_A';
                         let obj = element.accessto;
                         if (obj) {
-                              var mntloc=location+'1x1'+element.name.split(' ').join('%20');
+                              var mntloc = location + '1x1' + element.name.split(' ').join('%20');
                               var s = obj.find((o) => o.name === accesssto);
                               if (s) {
-                                    if (s.mountlocation == mntloc){
-                                          element.location=s.mountlocation;
+                                    if (s.mountlocation == mntloc) {
+                                          element.location = s.mountlocation;
                                           editedlinks.push(element);
                                     }
                               }
                         }
                   });
                   res.send(editedlinks);
-            }else{
-                  var getname=await GetName(req);
-                  var getfolder=getname.split('@')[0].split('.').join('-');
-                  var location=getfolder+'1x1';
+            } else {
+                  var getname = await GetName(req);
+                  var getfolder = getname.split('@')[0].split('.').join('-');
+                  var location = getfolder + '1x1';
                   const user = await GetUser(req);
                   var accesssto = user.branch + "_" + user.section;
                   const links = await Links.find({
@@ -248,13 +254,13 @@ app.get('/sharedfolders/links', async (req, res) => {
                   var editedlinks = [];
                   links.forEach(element => {
                         accesssname = 'ECE_A';
-                        var foldername=location+element.name.split(' ').join('%20');
+                        var foldername = location + element.name.split(' ').join('%20');
                         let obj = element.accessto;
                         if (obj) {
                               var s = obj.find((o) => o.name === accesssto);
                               if (s) {
-                                    if (s.mountlocation == foldername){
-                                          element.location=s.mountlocation;
+                                    if (s.mountlocation == foldername) {
+                                          element.location = s.mountlocation;
                                           editedfolder.push(element);
                                     }
                               }
@@ -355,33 +361,87 @@ app.get('/syllabuslist', async (req, res) => {
       }
 });
 
-app.get('/classchat',async (req,res)=>{
+app.get('/classchat', async (req, res) => {
       try {
-            var token=req.cookies.userdata;
-            var decoded=jwt.verify(req.cookies.userdata,'amitkumar');
-            res.render('academics/classchat',{userdata : decoded });
+            var token = req.cookies.userdata;
+            var decoded = jwt.verify(req.cookies.userdata, 'amitkumar');
+            res.render('academics/classchat', {
+                  userdata: decoded
+            });
       } catch (error) {
             console.log(error);
       }
-      
+
 })
 
 
-app.get('/classmessages',async(req,res)=>{
+app.get('/classmessages', async (req, res) => {
       try {
-            const messages=await Messages.find({
-                  messageto : 'ECE_A'
+            const messages = await Messages.find({
+                  messageto: 'ECE_A'
             });
             res.send(messages);
       } catch (error) {
-            
+
       }
 });
 
-app.get('/calender',(req,res)=>{
+app.get('/calender', (req, res) => {
       res.render('academics/calender');
 })
+app.get('/calender/tasks', async (req, res) => {
+      try {
+            var all=req.query.date.split('-');
+            console.log(req.query.date);
+            var day=parseInt(all[0]) ;
+            var month=parseInt(all[1]);
+            var year=parseInt(all[2]);
+            console.log(new Date(year, month, day));
+            var getname = GetName(req);
+            var tasks = await Tasks.find({
+                  createdby: getname ,
+                  dateoftask : {
+                              $gte: new Date(year, month, day), 
+                              $lt: new Date(year , month, day+1)
+                  }
+            });
+            console.log(tasks);
+            res.send(tasks);
+      } catch (error) {
 
+      }
+})
+app.get('/calender/taskdetails', async (req, res) => {
+      try {
+            var taskid = req.query.id;
+            var getname = GetName(req);
+            const tasks = await Tasks.findOne({
+                  _id: taskid,
+                  createdby: getname
+            });
+            res.send(tasks);
+      } catch (error) {
 
+      }
+})
+
+app.post('/calender/addtask', async (req, res) => {
+      try {
+            var getname = GetName(req);
+            const newTask = await new Tasks({
+                  name: req.body.taskname,
+                  taskdesc: req.body.taskdesc,
+                  createdon: Date.now(),
+                  isTaskDone: false,
+                  createdby: getname,
+                  dateoftask: req.body.taskdate,
+                  timeoftask: req.body.tasktime
+            });
+            await newTask.save();
+            res.send("Task '" + newTask.name + "' Created !");
+      } catch (error) {
+
+      }
+});
 
 module.exports = app;

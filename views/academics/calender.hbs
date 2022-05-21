@@ -3,7 +3,6 @@
 
 <head>
       {{>head}}
-
       <style>
             .create div {
                   border: 1px solid black;
@@ -67,6 +66,11 @@
                   background-color: #dfdfdf;
                   border-radius: 10px;
             }
+
+            td {
+                  cursor: pointer;
+                  border-color: green;
+            }
       </style>
 </head>
 
@@ -80,17 +84,12 @@
       </main>
       <div class="container" style="font-size: 0.8rem" id="container">
             <div class="row" style="margin-top: 100px">
-                  <div class="col-3">
-                        {{>sidemenus/academics}}
-                        <a href="/academics/calender/" class="list-group-item list-group-item-action"><img
-                                    src="/assets/img/calender-icon.png" alt="" style="height: 0.8rem"> Calender</a>
-                  </div>
-                  <div class="col-9">
+                  <div class="col-9" id="calendertablepart">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
                               <div id="thecalender">
-                                    <div class="container" >
+                                    <div class="container">
                                           <div class="card" style="padding: 1rem;">
-                                                <h3 class="card-header" id="monthAndYear"></h3>
+                                                <h3 class="card-header" id="monthAndYear" onclick="hidesidetask()"></h3>
                                                 <table class="table table-bordered table-responsive-sm" id="calendar">
                                                       <thead>
                                                             <tr>
@@ -149,44 +148,209 @@
                                                             <option value=2024>2024</option>
                                                             <option value=2025>2025</option>
                                                             <option value=2026>2026</option>
-                                                            
+
                                                       </select></form>
                                           </div>
                                     </div>
                               </div>
-                              <div id="thedays" style="display: none;">
-                                    <p onclick="getback()">Back</p>
-                                    <h1 id="theactualdate">Hello</h1>
-                                    <ul class="list-group col-3">
-                                          <li class="list-group-item">Cras justo odio</li>
-                                          <li class="list-group-item">Dapibus ac facilisis in</li>
-                                          <li class="list-group-item">Morbi leo risus</li>
-                                          <li class="list-group-item">Porta ac consectetur ac</li>
-                                          <li class="list-group-item">Vestibulum at eros</li>
-                                        </ul>
-                              </div>
+
                         </div>
+
+                  </div>
+                  <div class="col-3" id="rightsidemenu">
+                        <div class="list-group">
+                              <a href="/academics/" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/calender-icon.png" alt="" style="height: 0.8rem">
+                                    Calender</a>
+                        </div>
+
+                        <hr>
+                        <div>
+                              <h1 id="theactualdate" style="text-align: center;">Today's Task</h1>
+                        </div>
+
+                        <div>
+                              <div>
+                                    <hr>
+                                    <li class="list-group-item active" style="text-align: center" onclick="addnew()">Add
+                                          New</li>
+                                    <hr>
+                              </div>
+
+                              <ul class="list-group sc1" id="thetaskitems" style="overflow-y: scroll;height:40vh">
+
+                              </ul>
+                        </div>
+                  </div>
+
+                  <div id="thetask" class="col-4">
                   </div>
 
             </div>
       </div>
-     
+
       {{>scripts}}
+
       <script>
-            function getback(){
-                  $("#previousnext").css('display','flex');
-                  $("#jumpto").css('display','flex');
-                  $("#thecalender").css('display','block');
-                  $("#thedays").css('display','none');
+            function addthetask() {
+                  var taskname = $("#taskname").val();
+                  var taskdesc = $("#taskdesc").val();
+                  var taskdate = $("#taskdate").val();
+                  var tasktime = $("#tasktime").val();
+                  $.post('/academics/calender/addtask', {
+                        taskdate: taskdate,
+                        taskname: taskname,
+                        tasktime: tasktime,
+                        taskdesc: taskdesc
+                  }, function (data, status) {
+                        $("#thetask").html("");
+                        $("#thetask").append(
+                              `<li id="createdmessage"  class="list-group-item bg-dark text-white">${data}</li>`
+                        );
+                  });
+                  RefreshTasks();
             }
 
-            function getdatewa(params){
-                  $("#previousnext").css('display','none');
-                  $("#jumpto").css('display','none');
-                  $("#thecalender").css('display','none');
-                  $("#thedays").css('display','block');
-                  var monthandyear=$("#monthAndYear").html();
-                  $("#theactualdate").html(params.innerHTML+" "+monthandyear);
+
+            function getDate() {
+                  var today = new Date();
+                  document.getElementById("todaysdate").value = today.getFullYear() + '-' + ('0' + (today.getMonth() +
+                              1))
+                        .slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+
+            }
+
+            function createtask() {
+                  $("#thetask").html("");
+                  $("#createdmessage").remove();
+                  $("#thetask").append(`<button type="button" class="btn btn-dark" >Task</button>
+                  <button type="button" class="btn btn-light" onclick="createevent()">Event</button>
+                  <hr>
+                  <div class="form-group">
+                              <input type="text" name="taskname" id="taskname" class="form-control" 
+                                    placeholder="Enter Task Name">
+                        </div>
+                        <div class="form-group">
+                              <textarea name="taskdesc" class="form-control"  id="taskdesc"
+                                    placeholder="Enter Task Description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                              <input type="date" onload="getDate()" name="taskname" class="form-control" id="taskdate"
+                                     placeholder="Enter Task Name">
+                        </div>
+                        <div class="form-group">
+                              <input type="time" name="tasktime" id="tasktime" class="form-control" 
+                                     placeholder="Enter Task Name">
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addtask" onclick="addthetask()">Add Task</button>
+                  `);
+            }
+
+            function createevent() {
+                  $("#thetask").html("");
+                  $("#createdmessage").remove();
+
+                  $("#thetask").append(`<button type="button" class="btn btn-light"  onclick="createtask()">Task</button>
+                  <button type="button" class="btn btn-dark">Event</button>
+                  <hr>
+                        <div class="form-group">
+                              <input type="text" name="eventname" class="form-control" 
+                                    placeholder="Enter Event Name">
+                        </div>
+                        <div class="form-group">
+                              <input type="text" name="eventvenue" class="form-control" 
+                                     placeholder="Enter Event Venue">
+                        </div>
+                        <div class="form-group">
+                              <textarea name="eventdesc" class="form-control"
+                                    placeholder="Enter Event Description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                              <input type="date" onload="getDate()" value="22-05-2044" name="taskname" class="form-control" id="todaysdate"
+                                   >
+                        </div>
+                        <div class="form-group">
+                              <input type="time" name="taskname" class="form-control" 
+                                   >
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addevent">Add Event</button>
+                  
+                  `);
+            }
+
+            function addnew() {
+                  $("#createdmessage").remove();
+
+                  $("#calendertablepart").removeClass('col-9');
+                  $("#calendertablepart").addClass('col-5');
+                  $("#thetask").html("");
+                  $("#thetask").css('display', 'block');
+                  $("#thetask").append(`<button type="button" class="btn btn-dark" >Task</button>
+                  <button type="button" class="btn btn-light" onclick="createevent()">Event</button>
+                  <hr>
+                  <div class="form-group">
+                              <input type="text" name="taskname" id="taskname" class="form-control" 
+                                    placeholder="Enter Task Name">
+                        </div>
+                        <div class="form-group">
+                              <textarea name="taskdesc" class="form-control"  id="taskdesc"
+                                    placeholder="Enter Task Description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                              <input type="date" onload="getDate()" name="taskname" class="form-control" id="taskdate"
+                                     placeholder="Enter Task Name">
+                        </div>
+                        <div class="form-group">
+                              <input type="time" name="tasktime" id="tasktime" class="form-control" 
+                                     placeholder="Enter Task Name">
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addtask" onclick="addthetask()">Add Task</button>
+                  `);
+            }
+
+            function hidesidetask() {
+                  $("#thetask").css('display', 'none');
+                  $("#calendertablepart").removeClass('col-5');
+                  $("#calendertablepart").addClass('col-9');
+            }
+
+            function showtasks() {
+                  $("#calendertablepart").removeClass('col-9');
+                  $("#calendertablepart").addClass('col-5');
+                  $("#thetask").css('display', 'block');
+                  $("#monthAndYear").addClass('calenderheader');
+            }
+
+            function getback() {
+                  $("#previousnext").css('display', 'flex');
+                  $("#jumpto").css('display', 'flex');
+                  $("#thecalender").css('display', 'block');
+                  $("#thedays").css('display', 'none');
+                  $("#sidemenu").css('display', 'block');
+            }
+
+            function getdatewa(params) {
+                  $("#thedays").css('display', 'block');
+                  var monthandyear = $("#monthAndYear").html();
+                  $("#theactualdate").html(params.innerHTML + " " + monthandyear);
+                  $("#sidemenu").css('display', 'none');
+                  $("#rightsidemenu").css('display', 'block');
+                  $(".bg-info").removeClass('bg-info');
+                  $("#" + params.id).addClass('bg-info');
+                  $(".currentdate").addClass('bg-success');
+                  var day = params.id.split('_')[0];
+                  var month = parseInt(params.id.split('_')[1]) - 1;
+                  var year = params.id.split('_')[2];
+                  $.get('/academics/calender/tasks?date=' + day + '-' + month + '-' + year, function (data, status) {
+                        $("#thetaskitems").html("");
+                        data.forEach(element => {
+                              $("#thetaskitems").append(
+                                    `<li id="${element._id}" onclick="showtaskdetails(this)" class="list-group-item">${element.name}</li>`
+                              );
+                        });
+
+                  });
             }
 
             function closefullview() {
@@ -264,7 +428,7 @@
                         for (let j = 0; j < 7; j++) {
                               if (i === 0 && j < firstDay) {
                                     cell = document.createElement("td");
-                                    cell.setAttribute('onclick','getdatewa(this)');
+                                    cell.setAttribute('onclick', 'getdatewa(this)');
                                     cellText = document.createTextNode("");
                                     cell.appendChild(cellText);
                                     row.appendChild(cell);
@@ -272,19 +436,19 @@
                                     break;
                               } else {
                                     cell = document.createElement("td");
-                                    cell.setAttribute('onclick','getdatewa(this)');
+                                    cell.setAttribute('onclick', 'getdatewa(this)');
                                     cellText = document.createTextNode(date);
-                                    cell.setAttribute('id',date.toString()+'_'+(month+1).toString()+'_'+year.toString());
+                                    cell.setAttribute('id', date.toString() + '_' + (month + 1).toString() + '_' + year
+                                          .toString());
                                     if (date === today.getDate() && year === today.getFullYear() && month === today
                                           .getMonth()) {
                                           cell.classList.add("bg-info");
+                                          cell.classList.add("currentdate");
                                     } // color today's date
                                     cell.appendChild(cellText);
                                     row.appendChild(cell);
                                     date++;
                               }
-
-
                         }
 
                         tbl.appendChild(row); // appending each row into calendar body.
@@ -292,12 +456,54 @@
 
             }
 
+            function showtaskdetails(params) {
+                  $.get('/academics/calender/taskdetails?id=' + params.id, function (data, status) {
+                        var thedate = data.dateoftask.split('T')[0];
+                        $("#createdmessage").remove();
+                        $("#calendertablepart").removeClass('col-9');
 
-            // check how many days in a month code from https://dzone.com/articles/determining-number-days-month
+                        $(".theselectedtask").removeClass('active');
+                        $(".theselectedtask").removeClass('theselectedtask');
+
+                        $("#" + params.id).addClass('active');
+                        $("#" + params.id).addClass('theselectedtask');
+                        $("#calendertablepart").addClass('col-5');
+                        $("#thetask").css('display', 'block');
+                        $("#thetask").html("");
+                        $("#thetask").append(`
+                       <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                         <div class="card-header">${thedate}</div>
+                         <div class="card-body">
+                          <h5 class="card-title">${data.name}</h5>
+                          <p class="card-text">${data.taskdesc}</p>
+                           </div>
+                        </div>
+                  `);
+                  });
+            }
+
             function daysInMonth(iMonth, iYear) {
                   return 32 - new Date(iYear, iMonth, 32).getDate();
             }
 
+
+
+            function RefreshTasks() {
+                  var today = new Date();
+                  var date = today.getDate();
+                  var month = today.getMonth();
+                  var year = today.getFullYear();
+                  var monthandyear = $("#monthAndYear").html();
+                  $("#theactualdate").html(date + " " + monthandyear);
+                  $.get('/academics/calender/tasks?date=' + date + '-' + month + '-' + year, function (data, status) {
+                        data.forEach(element => {
+                              $("#thetaskitems").append(
+                                    `<li id="${element._id}" onclick="showtaskdetails(this)" class="list-group-item">${element.name}</li>`
+                              );
+                        });
+
+                  });
+            }
 
             $(document).ready(function () {
                   var s = document.getElementById('mainpart');
@@ -307,12 +513,26 @@
                   var clientHeight = document.getElementById('header').clientHeight;
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
-                  var thecalender=$('table').rows;
-                  console.log(thecalender);
-            })
+                  var thecalender = $('table').rows;
+                  var monthandyear = $("#monthAndYear").html();
+                  var today = new Date();
+                  var date = today.getDate();
+                  var month = today.getMonth();
+                  var year = today.getFullYear();
+                  $("#theactualdate").html(date + " " + monthandyear);
+                  $.get('/academics/calender/tasks?date=' + date + '-' + month + '-' + year, function (data,
+                        status) {
+                        data.forEach(element => {
+                              $("#thetaskitems").append(
+                                    `<li id="${element._id}" onclick="showtaskdetails(this)" class="list-group-item">${element.name}</li>`
+                              );
+                        });
+
+                  });
+
+
+            });
       </script>
-
-
 </body>
 
 </html>
