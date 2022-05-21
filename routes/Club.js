@@ -23,14 +23,11 @@ app.get('/members',(req,res)=>{
 
 app.get('/memberlist',async(req,res)=>{
       try {
-            console.log(req.cookies.clubdata);
             var token=req.cookies.clubdata;
             var decoded=jwt.verify(token,'amitkumar');
-            console.log(decoded);
             const clubs=await Clubs.findOne({
                   email : decoded.email
             });
-            console.log(clubs.members);
             res.send(clubs.members);
       } catch (error) {
             

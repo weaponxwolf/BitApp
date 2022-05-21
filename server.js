@@ -4,15 +4,18 @@ const app = express();
 const http = require('http');
 const port = 3000;
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+const {
+      Server
+} = require("socket.io");
 const io = new Server(server);
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const cookie=require('cookie');
-
+const cookie = require('cookie');
+const fs = require('fs')
+const path = require('path')
 
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -26,8 +29,8 @@ const GetName = (req) => {
       if (req.cookies['userdata']) {
             var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
             return decoded.email;
-      }else
-      return null;
+      } else
+            return null;
 }
 
 
@@ -73,9 +76,9 @@ const FilesRoute = require('./routes/Files');
 const ProfileRoutes = require('./routes/Profile');
 const PostRoutes = require('./routes/Posts');
 const AcademicsRoute = require('./routes/Academics');
-const ExploreRoute=require('./routes/Explore');
-const Messages=require('./models/Messages');
-const ClubsRoute=require('./routes/Club');
+const ExploreRoute = require('./routes/Explore');
+const Messages = require('./models/Messages');
+const ClubsRoute = require('./routes/Club');
 const {
       application
 } = require('express');
@@ -99,13 +102,13 @@ app.use('/files', FilesRoute);
 app.use('/profile', ProfileRoutes);
 app.use('/post', PostRoutes);
 app.use('/academics', AcademicsRoute);
-app.use('/explore',ExploreRoute);
+app.use('/explore', ExploreRoute);
 
 app.get('/', (req, res) => {
-      var getname=GetName(req);
-      if (getname==null) {
+      var getname = GetName(req);
+      if (getname == null) {
             res.render('index');
-      }else{
+      } else {
             res.redirect('/home');
       }
 });
@@ -253,15 +256,15 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get('/clublogin',(req,res)=>{
+app.get('/clublogin', (req, res) => {
       res.render('clublogin');
 })
 
-app.post('/clublogin',async(req,res)=>{
+app.post('/clublogin', async (req, res) => {
       try {
-            const club=await Clubs.findOne({
-                  email : req.body.email,
-                  password : req.body.password
+            const club = await Clubs.findOne({
+                  email: req.body.email,
+                  password: req.body.password
             });
             if (club) {
                   var token = await jwt.sign({
@@ -271,7 +274,7 @@ app.post('/clublogin',async(req,res)=>{
                   res.redirect('/club/admin');
             }
       } catch (error) {
-            
+
       }
 });
 
@@ -281,26 +284,44 @@ app.get('/logout', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-      
-      var cookies = cookie.parse(socket.handshake.headers.cookie); 
-      var decoded=jwt.verify(cookies.userdata,'amitkumar'); 
-      socket.broadcast.emit('user',{username : decoded.name , email : decoded.email });
-      socket.on('disconnect', () => {
+
+      var cookies = cookie.parse(socket.handshake.headers.cookie);
+      var decoded = jwt.verify(cookies.userdata, 'amitkumar');
+      socket.broadcast.emit('user', {
+            username: decoded.name,
+            email: decoded.email
       });
-      
-      socket.on('sendmessagetoclass',(data)=>{
-            socket.broadcast.emit("newmessage",data);
-            Messages.create( {
-                  message : data.message,
-                  messageby : data.nameofuser,
-                  byemail : data.emailofuser,
-                  messageto : "ECE_A",
-                  createdon : Date.now()
-             }, function (err, small) {
+      socket.on('disconnect', () => {});
+
+      socket.on('sendmessagetoclass', (data) => {
+            socket.broadcast.emit("newmessage", data);
+            Messages.create({
+                  message: data.message,
+                  messageby: data.nameofuser,
+                  byemail: data.emailofuser,
+                  messageto: "ECE_A",
+                  createdon: Date.now()
+            }, function (err, small) {
                   if (err) return handleError(err);
                   // saved!
             });
       })
+});
+
+app.get('/viewprofile/:rollno', async (req, res) => {
+      try {
+            var profilename = 'btech10071-20';
+            app.use(express.static(`public/profile/${profilename}/`));
+            console.log(path.join(__dirname, "..", `public/profile/${profilename}/index.html`));
+            if (!fs.existsSync(path.join(__dirname, "..", `public/profile/${profilename}/index.html`))) {
+                  console.log("NOT FOUND");
+                  res.redirect('/club/members/');
+            } else {
+                  res.sendFile(path.join(__dirname, "..", `public/profile/${profilename}/index.html`));
+            }
+      } catch (error) {
+            console.log(error);
+      }
 });
 
 server.listen(3000, () => {
