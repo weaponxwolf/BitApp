@@ -75,13 +75,14 @@ const PostRoutes = require('./routes/Posts');
 const AcademicsRoute = require('./routes/Academics');
 const ExploreRoute=require('./routes/Explore');
 const Messages=require('./models/Messages');
-
+const ClubsRoute=require('./routes/Club');
 const {
       application
 } = require('express');
 const Users = require('./models/Users');
 const Files = require('./models/Files');
 const async = require('hbs/lib/async');
+const Clubs = require('./models/Clubs');
 
 
 
@@ -224,7 +225,9 @@ app.post('/createuser', async (req, res) => {
       }
 });
 
+app.use('/club', ClubsRoute);
 app.use('/', HomeRoute);
+
 
 app.post('/login', async (req, res) => {
       try {
@@ -249,6 +252,28 @@ app.post('/login', async (req, res) => {
       }
 });
 
+
+app.get('/clublogin',(req,res)=>{
+      res.render('clublogin');
+})
+
+app.post('/clublogin',async(req,res)=>{
+      try {
+            const club=await Clubs.findOne({
+                  email : req.body.email,
+                  password : req.body.password
+            });
+            if (club) {
+                  var token = await jwt.sign({
+                        email: club.email,
+                  }, 'amitkumar');
+                  await res.cookie('clubdata', token);
+                  res.redirect('/club/admin');
+            }
+      } catch (error) {
+            
+      }
+});
 
 app.get('/logout', (req, res) => {
       res.clearCookie('userdata');
