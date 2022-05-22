@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-float">
+                  <div class="container">
+                        <a href="/club/admin" class="navbar-brand">Bit<span class="text-primary">App</span></a>
+
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="navbar-collapse collapse" id="navbarContent">
+                              <ul class="navbar-nav ml-lg-4 pt-3 pt-lg-0">
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="/club/members/">Members</a>
+                                    </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="/club/events/">Events</a>
+                                    </li>
+                              </ul>
+                              <div class="ml-auto">
+
+                                    <a href="#" onclick="chooseprofileaction()" id="profileoption"
+                                          class="btn btn-outline rounded-pill">Club Page</a>
+                                    <a href="/club/" style="display: none" id="profilebutton"
+                                          class="btn btn-outline rounded-pill">Club Page</a>
+                                    <a href="/club/pagefiles/" style="display: none" id="profileeditbutton"
+                                          class="btn btn-outline rounded-pill">Edit Club Page</a>
+                                    <a href="/logout" class="btn btn-outline rounded-pill">Log Out</a>
+                              </div>
+                        </div>
+                  </div>
+            </nav>
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/club/events" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Events</a>
+                        </div>
+                        <hr>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/addnew" class="list-group-item list-group-item-action"> Add New
+                                    Event </a>
+                        </div>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/manage" class="list-group-item list-group-item-action"> Manage
+                                    Events</a>
+                        </div>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/map" class="list-group-item list-group-item-action">Event Map</a>
+                        </div>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <h1>Events</h1>
+                              <div class="container">
+                                    <div class="row" style="max-height: 40vh;margin: 1rem;">
+                                          <div class="col-4">
+
+                                                <div class="card"
+                                                      style="padding: 1rem; background-image: linear-gradient(to bottom right, red, yellow); max-height: 40vh;">
+                                                      <div class="title">
+                                                            Hiii
+                                                      </div>
+                                                      <img src="/assets/img/Hanuman Jii.jpg" alt=""
+                                                            style="width: 100%;height: 40%;">
+                                                      <div class="body">
+                                                            Hiiii
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-8 sc1"
+                                                style="max-height: 40vh;overflow-y: scroll;background-image: linear-gradient(to bottom right, #c5fded, white); max-height: 40vh; padding: 1rem;">
+
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+                                                nostrum explicabo illum! Reprehenderit laudantium totam commodi iusto
+                                                vitae vel ullam officiis dolor, maxime, nihil quam assumenda. Deserunt
+                                                obcaecati sint possimus?
+                                                Voluptate exercitationem porro commodi eligendi quod! Vel quas,
+                                                voluptatum laboriosam eveniet culpa labore similique beatae architecto
+                                                praesentium corrupti ullam fugiat, harum delectus dolorum nam quaerat
+                                                ratione aspernatur. A, optio modi.
+                                                Quidem iste incidunt rem eaque ad accusamus fuga, assumenda placeat. Non
+                                                reiciendis quos itaque excepturi sapiente hic perspiciatis quis sint,
+                                                debitis pariatur ipsum consequatur repudiandae repellat, rem quibusdam!
+                                                Minus, sapiente.
+                                                Dolorum illo soluta ea culpa sit cumque recusandae hic maiores ipsa sint
+                                                odit provident atque quod nobis cum tempora, et quibusdam minus
+                                                consectetur dicta harum blanditiis. Magnam nulla sunt itaque?
+                                                Exercitationem deserunt repellendus nulla porro, molestias magni aperiam
+                                                voluptatem, atque magnam veniam commodi animi fuga eveniet delectus ipsa
+                                                fugiat eligendi veritatis alias recusandae minus temporibus sapiente!
+                                                Alias laudantium laborum cumque.
+                                                Dolor ullam commodi illum dolores deserunt. Ut non ipsam ea voluptas
+                                                autem saepe. Et reiciendis, nostrum modi cum, aliquid facilis numquam
+                                                doloribus dicta inventore quaerat repellat voluptatum nisi nulla
+                                                temporibus!
+                                                A, ipsa! Iure nam recusandae minus accusamus ratione consectetur impedit
+                                                consequatur rem atque ullam. Veritatis voluptate, labore ratione
+                                                accusamus excepturi sunt sed esse sint aliquid voluptatibus eligendi,
+                                                repellendus quos dolore!
+                                                Obcaecati quas, porro, recusandae illum nesciunt quos earum quibusdam,
+                                                consequatur repellendus officia labore excepturi deserunt. Maiores saepe
+                                                voluptatum recusandae repellat consequatur accusamus quam, dolores
+                                                assumenda, ipsum magnam beatae voluptatibus nihil!
+                                                Saepe ipsa magni, quam molestias voluptates numquam blanditiis provident
+                                                soluta, aliquam reprehenderit dicta ratione tempora quos! Quo,
+                                                reprehenderit amet, neque praesentium repudiandae blanditiis dolor
+                                                tenetur molestias consequuntur tempora culpa repellat!
+                                                Ad quibusdam odit, vero dolorum adipisci ea aliquid voluptatum incidunt.
+                                                Laboriosam labore expedita nesciunt inventore iusto error, cumque odit
+                                                sequi a quis officiis non rem, ducimus eaque in harum quibusdam?
+
+                                          </div>
+
+                                    </div>
+
+                              </div>
+                              <div class="container">
+                                    <div class="row" style="max-height: 40vh;margin: 1rem;">
+                                          <div class="col-4">
+
+                                                <div class="card"
+                                                      style="padding: 1rem; background-image: linear-gradient(to bottom right, red, yellow); max-height: 40vh;">
+                                                      <div class="title">
+                                                            Hiii
+                                                      </div>
+                                                      <img src="/assets/img/Hanuman Jii.jpg" alt=""
+                                                            style="width: 100%;height: 40%;">
+                                                      <div class="body">
+                                                            Hiiii
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-8 sc1"
+                                                style="max-height: 40vh;overflow-y: scroll;background-image: linear-gradient(to bottom right, #c5fded, white); max-height: 40vh; padding: 1rem;">
+
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+                                                nostrum explicabo illum! Reprehenderit laudantium totam commodi iusto
+                                                vitae vel ullam officiis dolor, maxime, nihil quam assumenda. Deserunt
+                                                obcaecati sint possimus?
+                                                Voluptate exercitationem porro commodi eligendi quod! Vel quas,
+                                                voluptatum laboriosam eveniet culpa labore similique beatae architecto
+                                                praesentium corrupti ullam fugiat, harum delectus dolorum nam quaerat
+                                                ratione aspernatur. A, optio modi.
+                                                Quidem iste incidunt rem eaque ad accusamus fuga, assumenda placeat. Non
+                                                reiciendis quos itaque excepturi sapiente hic perspiciatis quis sint,
+                                                debitis pariatur ipsum consequatur repudiandae repellat, rem quibusdam!
+                                                Minus, sapiente.
+                                                Dolorum illo soluta ea culpa sit cumque recusandae hic maiores ipsa sint
+                                                odit provident atque quod nobis cum tempora, et quibusdam minus
+                                                consectetur dicta harum blanditiis. Magnam nulla sunt itaque?
+                                                Exercitationem deserunt repellendus nulla porro, molestias magni aperiam
+                                                voluptatem, atque magnam veniam commodi animi fuga eveniet delectus ipsa
+                                                fugiat eligendi veritatis alias recusandae minus temporibus sapiente!
+                                                Alias laudantium laborum cumque.
+                                                Dolor ullam commodi illum dolores deserunt. Ut non ipsam ea voluptas
+                                                autem saepe. Et reiciendis, nostrum modi cum, aliquid facilis numquam
+                                                doloribus dicta inventore quaerat repellat voluptatum nisi nulla
+                                                temporibus!
+                                                A, ipsa! Iure nam recusandae minus accusamus ratione consectetur impedit
+                                                consequatur rem atque ullam. Veritatis voluptate, labore ratione
+                                                accusamus excepturi sunt sed esse sint aliquid voluptatibus eligendi,
+                                                repellendus quos dolore!
+                                                Obcaecati quas, porro, recusandae illum nesciunt quos earum quibusdam,
+                                                consequatur repellendus officia labore excepturi deserunt. Maiores saepe
+                                                voluptatum recusandae repellat consequatur accusamus quam, dolores
+                                                assumenda, ipsum magnam beatae voluptatibus nihil!
+                                                Saepe ipsa magni, quam molestias voluptates numquam blanditiis provident
+                                                soluta, aliquam reprehenderit dicta ratione tempora quos! Quo,
+                                                reprehenderit amet, neque praesentium repudiandae blanditiis dolor
+                                                tenetur molestias consequuntur tempora culpa repellat!
+                                                Ad quibusdam odit, vero dolorum adipisci ea aliquid voluptatum incidunt.
+                                                Laboriosam labore expedita nesciunt inventore iusto error, cumque odit
+                                                sequi a quis officiis non rem, ducimus eaque in harum quibusdam?
+
+                                          </div>
+
+                                    </div>
+
+                              </div>
+                              <div class="container">
+                                    <div class="row" style="max-height: 40vh;margin: 1rem;">
+                                          <div class="col-4">
+
+                                                <div class="card"
+                                                      style="padding: 1rem; background-image: linear-gradient(to bottom right, red, yellow); max-height: 40vh;">
+                                                      <div class="title">
+                                                            Hiii
+                                                      </div>
+                                                      <img src="/assets/img/Hanuman Jii.jpg" alt=""
+                                                            style="width: 100%;height: 40%;">
+                                                      <div class="body">
+                                                            Hiiii
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-8 sc1"
+                                                style="max-height: 40vh;overflow-y: scroll;background-image: linear-gradient(to bottom right, #c5fded, white); max-height: 40vh; padding: 1rem;">
+
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+                                                nostrum explicabo illum! Reprehenderit laudantium totam commodi iusto
+                                                vitae vel ullam officiis dolor, maxime, nihil quam assumenda. Deserunt
+                                                obcaecati sint possimus?
+                                                Voluptate exercitationem porro commodi eligendi quod! Vel quas,
+                                                voluptatum laboriosam eveniet culpa labore similique beatae architecto
+                                                praesentium corrupti ullam fugiat, harum delectus dolorum nam quaerat
+                                                ratione aspernatur. A, optio modi.
+                                                Quidem iste incidunt rem eaque ad accusamus fuga, assumenda placeat. Non
+                                                reiciendis quos itaque excepturi sapiente hic perspiciatis quis sint,
+                                                debitis pariatur ipsum consequatur repudiandae repellat, rem quibusdam!
+                                                Minus, sapiente.
+                                                Dolorum illo soluta ea culpa sit cumque recusandae hic maiores ipsa sint
+                                                odit provident atque quod nobis cum tempora, et quibusdam minus
+                                                consectetur dicta harum blanditiis. Magnam nulla sunt itaque?
+                                                Exercitationem deserunt repellendus nulla porro, molestias magni aperiam
+                                                voluptatem, atque magnam veniam commodi animi fuga eveniet delectus ipsa
+                                                fugiat eligendi veritatis alias recusandae minus temporibus sapiente!
+                                                Alias laudantium laborum cumque.
+                                                Dolor ullam commodi illum dolores deserunt. Ut non ipsam ea voluptas
+                                                autem saepe. Et reiciendis, nostrum modi cum, aliquid facilis numquam
+                                                doloribus dicta inventore quaerat repellat voluptatum nisi nulla
+                                                temporibus!
+                                                A, ipsa! Iure nam recusandae minus accusamus ratione consectetur impedit
+                                                consequatur rem atque ullam. Veritatis voluptate, labore ratione
+                                                accusamus excepturi sunt sed esse sint aliquid voluptatibus eligendi,
+                                                repellendus quos dolore!
+                                                Obcaecati quas, porro, recusandae illum nesciunt quos earum quibusdam,
+                                                consequatur repellendus officia labore excepturi deserunt. Maiores saepe
+                                                voluptatum recusandae repellat consequatur accusamus quam, dolores
+                                                assumenda, ipsum magnam beatae voluptatibus nihil!
+                                                Saepe ipsa magni, quam molestias voluptates numquam blanditiis provident
+                                                soluta, aliquam reprehenderit dicta ratione tempora quos! Quo,
+                                                reprehenderit amet, neque praesentium repudiandae blanditiis dolor
+                                                tenetur molestias consequuntur tempora culpa repellat!
+                                                Ad quibusdam odit, vero dolorum adipisci ea aliquid voluptatum incidunt.
+                                                Laboriosam labore expedita nesciunt inventore iusto error, cumque odit
+                                                sequi a quis officiis non rem, ducimus eaque in harum quibusdam?
+
+                                          </div>
+
+                                    </div>
+
+                              </div>
+                              <div class="container">
+                                    <div class="row" style="max-height: 40vh;margin: 1rem;">
+                                          <div class="col-4">
+
+                                                <div class="card"
+                                                      style="padding: 1rem; background-image: linear-gradient(to bottom right, red, yellow); max-height: 40vh;">
+                                                      <div class="title">
+                                                            Hiii
+                                                      </div>
+                                                      <img src="/assets/img/Hanuman Jii.jpg" alt=""
+                                                            style="width: 100%;height: 40%;">
+                                                      <div class="body">
+                                                            Hiiii
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-8 sc1"
+                                                style="max-height: 40vh;overflow-y: scroll;background-image: linear-gradient(to bottom right, #c5fded, white); max-height: 40vh; padding: 1rem;">
+
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+                                                nostrum explicabo illum! Reprehenderit laudantium totam commodi iusto
+                                                vitae vel ullam officiis dolor, maxime, nihil quam assumenda. Deserunt
+                                                obcaecati sint possimus?
+                                                Voluptate exercitationem porro commodi eligendi quod! Vel quas,
+                                                voluptatum laboriosam eveniet culpa labore similique beatae architecto
+                                                praesentium corrupti ullam fugiat, harum delectus dolorum nam quaerat
+                                                ratione aspernatur. A, optio modi.
+                                                Quidem iste incidunt rem eaque ad accusamus fuga, assumenda placeat. Non
+                                                reiciendis quos itaque excepturi sapiente hic perspiciatis quis sint,
+                                                debitis pariatur ipsum consequatur repudiandae repellat, rem quibusdam!
+                                                Minus, sapiente.
+                                                Dolorum illo soluta ea culpa sit cumque recusandae hic maiores ipsa sint
+                                                odit provident atque quod nobis cum tempora, et quibusdam minus
+                                                consectetur dicta harum blanditiis. Magnam nulla sunt itaque?
+                                                Exercitationem deserunt repellendus nulla porro, molestias magni aperiam
+                                                voluptatem, atque magnam veniam commodi animi fuga eveniet delectus ipsa
+                                                fugiat eligendi veritatis alias recusandae minus temporibus sapiente!
+                                                Alias laudantium laborum cumque.
+                                                Dolor ullam commodi illum dolores deserunt. Ut non ipsam ea voluptas
+                                                autem saepe. Et reiciendis, nostrum modi cum, aliquid facilis numquam
+                                                doloribus dicta inventore quaerat repellat voluptatum nisi nulla
+                                                temporibus!
+                                                A, ipsa! Iure nam recusandae minus accusamus ratione consectetur impedit
+                                                consequatur rem atque ullam. Veritatis voluptate, labore ratione
+                                                accusamus excepturi sunt sed esse sint aliquid voluptatibus eligendi,
+                                                repellendus quos dolore!
+                                                Obcaecati quas, porro, recusandae illum nesciunt quos earum quibusdam,
+                                                consequatur repellendus officia labore excepturi deserunt. Maiores saepe
+                                                voluptatum recusandae repellat consequatur accusamus quam, dolores
+                                                assumenda, ipsum magnam beatae voluptatibus nihil!
+                                                Saepe ipsa magni, quam molestias voluptates numquam blanditiis provident
+                                                soluta, aliquam reprehenderit dicta ratione tempora quos! Quo,
+                                                reprehenderit amet, neque praesentium repudiandae blanditiis dolor
+                                                tenetur molestias consequuntur tempora culpa repellat!
+                                                Ad quibusdam odit, vero dolorum adipisci ea aliquid voluptatum incidunt.
+                                                Laboriosam labore expedita nesciunt inventore iusto error, cumque odit
+                                                sequi a quis officiis non rem, ducimus eaque in harum quibusdam?
+
+                                          </div>
+
+                                    </div>
+
+                              </div>
+                              <div class="container">
+                                    <div class="row" style="max-height: 40vh;margin: 1rem;">
+                                          <div class="col-4">
+
+                                                <div class="card"
+                                                      style="padding: 1rem; background-image: linear-gradient(to bottom right, red, yellow); max-height: 40vh;">
+                                                      <div class="title">
+                                                            Hiii
+                                                      </div>
+                                                      <img src="/assets/img/Hanuman Jii.jpg" alt=""
+                                                            style="width: 100%;height: 40%;">
+                                                      <div class="body">
+                                                            Hiiii
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-8 sc1"
+                                                style="max-height: 40vh;overflow-y: scroll;background-image: linear-gradient(to bottom right, #c5fded, white); max-height: 40vh; padding: 1rem;">
+
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+                                                nostrum explicabo illum! Reprehenderit laudantium totam commodi iusto
+                                                vitae vel ullam officiis dolor, maxime, nihil quam assumenda. Deserunt
+                                                obcaecati sint possimus?
+                                                Voluptate exercitationem porro commodi eligendi quod! Vel quas,
+                                                voluptatum laboriosam eveniet culpa labore similique beatae architecto
+                                                praesentium corrupti ullam fugiat, harum delectus dolorum nam quaerat
+                                                ratione aspernatur. A, optio modi.
+                                                Quidem iste incidunt rem eaque ad accusamus fuga, assumenda placeat. Non
+                                                reiciendis quos itaque excepturi sapiente hic perspiciatis quis sint,
+                                                debitis pariatur ipsum consequatur repudiandae repellat, rem quibusdam!
+                                                Minus, sapiente.
+                                                Dolorum illo soluta ea culpa sit cumque recusandae hic maiores ipsa sint
+                                                odit provident atque quod nobis cum tempora, et quibusdam minus
+                                                consectetur dicta harum blanditiis. Magnam nulla sunt itaque?
+                                                Exercitationem deserunt repellendus nulla porro, molestias magni aperiam
+                                                voluptatem, atque magnam veniam commodi animi fuga eveniet delectus ipsa
+                                                fugiat eligendi veritatis alias recusandae minus temporibus sapiente!
+                                                Alias laudantium laborum cumque.
+                                                Dolor ullam commodi illum dolores deserunt. Ut non ipsam ea voluptas
+                                                autem saepe. Et reiciendis, nostrum modi cum, aliquid facilis numquam
+                                                doloribus dicta inventore quaerat repellat voluptatum nisi nulla
+                                                temporibus!
+                                                A, ipsa! Iure nam recusandae minus accusamus ratione consectetur impedit
+                                                consequatur rem atque ullam. Veritatis voluptate, labore ratione
+                                                accusamus excepturi sunt sed esse sint aliquid voluptatibus eligendi,
+                                                repellendus quos dolore!
+                                                Obcaecati quas, porro, recusandae illum nesciunt quos earum quibusdam,
+                                                consequatur repellendus officia labore excepturi deserunt. Maiores saepe
+                                                voluptatum recusandae repellat consequatur accusamus quam, dolores
+                                                assumenda, ipsum magnam beatae voluptatibus nihil!
+                                                Saepe ipsa magni, quam molestias voluptates numquam blanditiis provident
+                                                soluta, aliquam reprehenderit dicta ratione tempora quos! Quo,
+                                                reprehenderit amet, neque praesentium repudiandae blanditiis dolor
+                                                tenetur molestias consequuntur tempora culpa repellat!
+                                                Ad quibusdam odit, vero dolorum adipisci ea aliquid voluptatum incidunt.
+                                                Laboriosam labore expedita nesciunt inventore iusto error, cumque odit
+                                                sequi a quis officiis non rem, ducimus eaque in harum quibusdam?
+
+                                          </div>
+
+                                    </div>
+
+                              </div>
+                              <div class="container">
+                                    <div class="row" style="max-height: 40vh;margin: 1rem;">
+                                          <div class="col-4">
+
+                                                <div class="card"
+                                                      style="padding: 1rem; background-image: linear-gradient(to bottom right, red, yellow); max-height: 40vh;">
+                                                      <div class="title">
+                                                            Hiii
+                                                      </div>
+                                                      <img src="/assets/img/Hanuman Jii.jpg" alt=""
+                                                            style="width: 100%;height: 40%;">
+                                                      <div class="body">
+                                                            Hiiii
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-8 sc1"
+                                                style="max-height: 40vh;overflow-y: scroll;background-image: linear-gradient(to bottom right, #c5fded, white); max-height: 40vh; padding: 1rem;">
+
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+                                                nostrum explicabo illum! Reprehenderit laudantium totam commodi iusto
+                                                vitae vel ullam officiis dolor, maxime, nihil quam assumenda. Deserunt
+                                                obcaecati sint possimus?
+                                                Voluptate exercitationem porro commodi eligendi quod! Vel quas,
+                                                voluptatum laboriosam eveniet culpa labore similique beatae architecto
+                                                praesentium corrupti ullam fugiat, harum delectus dolorum nam quaerat
+                                                ratione aspernatur. A, optio modi.
+                                                Quidem iste incidunt rem eaque ad accusamus fuga, assumenda placeat. Non
+                                                reiciendis quos itaque excepturi sapiente hic perspiciatis quis sint,
+                                                debitis pariatur ipsum consequatur repudiandae repellat, rem quibusdam!
+                                                Minus, sapiente.
+                                                Dolorum illo soluta ea culpa sit cumque recusandae hic maiores ipsa sint
+                                                odit provident atque quod nobis cum tempora, et quibusdam minus
+                                                consectetur dicta harum blanditiis. Magnam nulla sunt itaque?
+                                                Exercitationem deserunt repellendus nulla porro, molestias magni aperiam
+                                                voluptatem, atque magnam veniam commodi animi fuga eveniet delectus ipsa
+                                                fugiat eligendi veritatis alias recusandae minus temporibus sapiente!
+                                                Alias laudantium laborum cumque.
+                                                Dolor ullam commodi illum dolores deserunt. Ut non ipsam ea voluptas
+                                                autem saepe. Et reiciendis, nostrum modi cum, aliquid facilis numquam
+                                                doloribus dicta inventore quaerat repellat voluptatum nisi nulla
+                                                temporibus!
+                                                A, ipsa! Iure nam recusandae minus accusamus ratione consectetur impedit
+                                                consequatur rem atque ullam. Veritatis voluptate, labore ratione
+                                                accusamus excepturi sunt sed esse sint aliquid voluptatibus eligendi,
+                                                repellendus quos dolore!
+                                                Obcaecati quas, porro, recusandae illum nesciunt quos earum quibusdam,
+                                                consequatur repellendus officia labore excepturi deserunt. Maiores saepe
+                                                voluptatum recusandae repellat consequatur accusamus quam, dolores
+                                                assumenda, ipsum magnam beatae voluptatibus nihil!
+                                                Saepe ipsa magni, quam molestias voluptates numquam blanditiis provident
+                                                soluta, aliquam reprehenderit dicta ratione tempora quos! Quo,
+                                                reprehenderit amet, neque praesentium repudiandae blanditiis dolor
+                                                tenetur molestias consequuntur tempora culpa repellat!
+                                                Ad quibusdam odit, vero dolorum adipisci ea aliquid voluptatum incidunt.
+                                                Laboriosam labore expedita nesciunt inventore iusto error, cumque odit
+                                                sequi a quis officiis non rem, ducimus eaque in harum quibusdam?
+
+                                          </div>
+
+                                    </div>
+
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      {{>scripts}}
+      <script>
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  var today = new Date();
+                  var thisyear = today.getFullYear();
+
+
+            })
+      </script>
+
+
+</body>
+
+</html>

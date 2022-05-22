@@ -63,6 +63,14 @@ app.get('/admin', (req, res) => {
       res.render('clubs/admin');
 });
 
+app.get('/events',(req,res)=>{
+      res.render('clubs/events');
+});
+
+app.get('/events/map',(req,res)=>{
+      res.render('clubs/eventmap')
+});
+
 app.get('/members', (req, res) => {
       res.render('clubs/members');
 });

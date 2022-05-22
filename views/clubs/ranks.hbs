@@ -407,6 +407,9 @@
                                     <li class="nav-item">
                                           <a class="nav-link" href="/club/members/">Members</a>
                                     </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="/club/events/">Events</a>
+                                    </li>
                               </ul>
                               <div class="ml-auto">
 
@@ -468,7 +471,7 @@
                                                       </tr>
                                                 </thead>
                                                 <tbody id="tablebody">
-                                                      
+
                                                 </tbody>
                                           </table>
                                     </div>
@@ -482,22 +485,24 @@
       </div>
       {{>scripts}}
       <script>
-            function updaterank(params){
+            function updaterank(params) {
                   console.log(params.id);
-                  var rollno=params.id.split('_')[2];
-                  $("#update_of_"+rollno).css("display","inline-block");
+                  var rollno = params.id.split('_')[2];
+                  $("#update_of_" + rollno).css("display", "inline-block");
             }
-            function updatetherank(params){
+
+            function updatetherank(params) {
                   console.log(params.id);
-                  var rollno=params.id.split('_')[2];
-                  var rank=$("#rank_of_"+rollno).val();
-                  $.post('/club/member/updaterank',{
-                        rollno : rollno ,
-                        rank : rank
-                  },function(data,success){
+                  var rollno = params.id.split('_')[2];
+                  var rank = $("#rank_of_" + rollno).val();
+                  $.post('/club/member/updaterank', {
+                        rollno: rollno,
+                        rank: rank
+                  }, function (data, success) {
                         RefreshRanks();
                   });
             }
+
             function getPosition(element) {
                   var xPosition = 0;
                   var yPosition = 0;
@@ -513,7 +518,7 @@
                   };
             }
 
-            function RefreshRanks(){
+            function RefreshRanks() {
                   $.get('/club/member/ranklist', function (data, status) {
                         var rank = 1;
                         $("#tablebody").html("");
@@ -564,7 +569,7 @@
                               rank++;
                         });
                   });
-                  
+
             });
       </script>
 

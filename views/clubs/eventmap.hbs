@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            .blinking {
+                  -webkit-animation: 1s blink ease infinite;
+                  -moz-animation: 1s blink ease infinite;
+                  -ms-animation: 1s blink ease infinite;
+                  -o-animation: 1s blink ease infinite;
+                  animation: 1s blink ease infinite;
+
+            }
+
+            .dot {
+                  height: 20px;
+                  width: 20px;
+                  background-color: rgb(208, 29, 29);
+                  border-radius: 50%;
+                  display: inline-block;
+                  position: absolute;
+                  z-index: 20;
+            }
+
+            @keyframes up-right {
+                  0% {
+                        transform: scale(1);
+                        opacity: .25
+                  }
+
+                  50% {
+                        transform: scale (1, 5);
+                        opacity: 1;
+                  }
+
+                  100% {
+                        transform: scale(1);
+                        opacity: .25;
+                  }
+            }
+
+            .circle {
+                  height: 79px;
+                  width: 230px;
+                  position: relative;
+                  margin-bottom: -79px;
+                  left: 405px;
+                  top: 311px;
+                  opacity: 45%;
+                  background-color: #5d896ca3;
+                  margin-bottom: -80px;
+            }
+
+            .red {
+                  -webkit-animation: up-right 1s infinite;
+                  -moz-animation: up-right 1s infinite;
+                  -o-animation: up-right 1s infinite;
+                  animation: up-right 1s infinite;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-float">
+                  <div class="container">
+                        <a href="/club/admin" class="navbar-brand">Bit<span class="text-primary">App</span></a>
+
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="navbar-collapse collapse" id="navbarContent">
+                              <ul class="navbar-nav ml-lg-4 pt-3 pt-lg-0">
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="/club/members/">Members</a>
+                                    </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="/club/events/">Events</a>
+                                    </li>
+                              </ul>
+                              <div class="ml-auto">
+
+                                    <a href="#" onclick="chooseprofileaction()" id="profileoption"
+                                          class="btn btn-outline rounded-pill">Club Page</a>
+                                    <a href="/club/" style="display: none" id="profilebutton"
+                                          class="btn btn-outline rounded-pill">Club Page</a>
+                                    <a href="/club/pagefiles/" style="display: none" id="profileeditbutton"
+                                          class="btn btn-outline rounded-pill">Edit Club Page</a>
+                                    <a href="/logout" class="btn btn-outline rounded-pill">Log Out</a>
+                              </div>
+                        </div>
+                  </div>
+            </nav>
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/club/events" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Events</a>
+                        </div>
+                        <hr>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/addnew" class="list-group-item list-group-item-action"> Add New
+                                    Event </a>
+                        </div>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/manage" class="list-group-item list-group-item-action"> Manage
+                                    Events</a>
+                        </div>
+                        <hr>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/map" class="list-group-item list-group-item-action">Event Map</a>
+                        </div>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <div class="container">
+                                    <div class="circle red"></div>
+                                    <div style="background-color: blue;
+                                    height: 226px;
+                                    width: 231px;
+                                    position: relative;
+                                    margin-bottom: -226px;
+                                    left: 523px;
+                                    top: 1653px;
+                                    transform: rotate(8deg);
+                                    opacity: 45%;" class="red">
+                                    </div>
+                                    <img src="/map/bitmesra.jpg" alt="" usemap="#workmap"
+                                          style="width: 882px;height:2016px;" id="themap">
+                                    <img src="workplace.jpg" alt="Workplace" usemap="#workmap" width="400" height="379">
+
+                                    <map name="workmap">
+                                          <area shape="rect" coords="34,44,270,350" alt="Computer" href="computer.htm">
+                                          <area shape="rect" coords="290,172,333,250" alt="Phone" href="phone.htm">
+                                          <area shape="circle" coords="337,300,44" alt="Cup of coffee"
+                                                href="coffee.htm">
+                                    </map>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      {{>scripts}}
+      <script>
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  var today = new Date();
+                  var thisyear = today.getFullYear();
+                  var img = document.getElementById('themap');
+                  var width = img.clientWidth;
+                  var height = img.clientHeight;
+                  console.log(width);
+                  console.log(height);
+            })
+      </script>
+
+
+</body>
+
+</html>
