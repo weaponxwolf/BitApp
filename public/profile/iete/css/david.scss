@@ -1,0 +1,511 @@
+#mainArea {
+	position: sticky;
+	margin: 0;
+	background: radial-gradient(ellipse farthest-corner at center top, #000000 0%, #414141 100%);
+	// background-image: url(../images/detective/andrew-kambel--x92Ig1Lsf4-unsplash.jpeg);
+	// background-image: linear-gradient(315deg, #000000 0%, #414141 74%);
+
+	// background-image: url(https://i.pinimg.com/originals/44/6e/3b/446e3b79395a287ca32f7977dd83b290.jpg);
+
+	// background: linear-gradient(297deg, #4b6cb7, #182848, #33c6a1);
+	// background-image: url(https://images.unsplash.com/photo-1474432978580-3d2a63f706e9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1500&q=80);
+	// background-size: 600% 600%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	// position: absolute;
+
+	// -webkit-animation: AnimationName 40s ease infinite;
+	// -moz-animation: AnimationName 40s ease infinite;
+	// animation: AnimationName 40s ease infinite;
+
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow-x: hidden;
+
+	color: #fff;
+}
+
+// @-webkit-keyframes AnimationName {
+// 	0% {
+// 		background-position: 0% 24%;
+// 	}
+// 	50% {
+// 		background-position: 100% 77%;
+// 	}
+// 	100% {
+// 		background-position: 0% 24%;
+// 	}
+// }
+// @-moz-keyframes AnimationName {
+// 	0% {
+// 		background-position: 0% 24%;
+// 	}
+// 	50% {
+// 		background-position: 100% 77%;
+// 	}
+// 	100% {
+// 		background-position: 0% 24%;
+// 	}
+// }
+// @keyframes AnimationName {
+// 	0% {
+// 		background-position: 0% 24%;
+// 	}
+// 	50% {
+// 		background-position: 100% 77%;
+// 	}
+// 	100% {
+// 		background-position: 0% 24%;
+// 	}
+// }
+
+.player-info {
+	position: relative;
+	// margin: 100px;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	// margin-right: 30%;
+	width: 500px;
+	// height: 400px;
+	text-align: center;
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+	border-radius: 3px;
+	margin: auto;
+	margin-top: 10px;
+
+	h5 {
+		position: relative;
+		line-height: 60px;
+		font-size: 36px;
+		// font-weight: bold;
+		// font-family: "Open Sans", sans-serif;
+		// text-transform: uppercase;
+		color: #fff;
+		text-align: center;
+		background: rgba(255, 255, 255, 0.05);
+		backdrop-filter: blur(10px);
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+		border-left: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+		margin-top: 0px;
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+		font-family: 'Varela Round', sans-serif;
+	}
+
+	&:hover {
+		transform: skewX(-1deg);
+		transition: transform 0.5s ease;
+	}
+}
+
+.form {
+	// text-align: center;
+
+	.field {
+		// position: relative;
+		margin: 0 50px;
+		// width: 180px;
+	}
+
+	&::-webkit-input-placeholder {
+		color: #ffffff;
+		font-family: 'Open Sans';
+	}
+
+	::placeholder {
+		/* Chrome, Firefox, Opera, Safari 10.1+ */
+		color: #fff;
+		opacity: 1; /* Firefox */
+	}
+
+	input[type='text'],
+	input[type='password'],
+	input[type='email'] {
+		font-family: 'Open Sans', Calibri, Arial, sans-serif;
+		font-size: 14px;
+		font-weight: 100;
+		padding: 15px 0px 15px 0px;
+		position: inherit;
+		width: 230px;
+		height: 24px;
+		text-align: center;
+
+		border: none;
+		background: rgba(255, 255, 255, 0.05);
+		backdrop-filter: blur(10px);
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+		border-left: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+		color: rgb(255, 255, 255);
+		transition: color 0.3s ease-out;
+		margin-bottom: 15px;
+	}
+	.sub-btn {
+		margin-top: 15px;
+		width: 100px;
+		text-align: center;
+		font-size: 14px;
+		font-family: 'Open Sans', sans-serif;
+		font-weight: bold;
+		padding: 12px 0;
+
+		color: #fff;
+		background: rgba(255, 255, 255, 0.05);
+		backdrop-filter: blur(10px);
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+		border-left: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+
+		text-transform: uppercase;
+		border: none;
+
+		margin-bottom: 20px;
+
+		&:hover {
+			// background-color: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+			background-color: rgb(51, 55, 67);
+			// transform: skewX(-10deg);
+			// transition: transform 0.5s ease;
+		}
+	}
+}
+
+.pdfs {
+	position: static;
+	margin: auto;
+}
+
+.pdflinks {
+	margin-bottom: 100px;
+	&:hover {
+		transform: scale(1.5);
+		transition: transform 0.5s ease;
+		cursor: pointer;
+	}
+}
+
+.leaderboard {
+	h1 {
+		color: #fff;
+	}
+}
+
+.card {
+	border-radius: 20px;
+	// box-shadow: 3px 3px 6px #b8b9be, -3px -3px 6px #fff;
+	background-color: rgba(255, 255, 255, 0.05);
+	background: rgba(255, 255, 255, 0.25);
+	// box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	// border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	&:hover {
+		transform: scale(1.05);
+		transition: transform 0.5s;
+	}
+}
+
+.card-img,
+.card-img-top {
+	border-radius: 20px;
+	margin-bottom: 10px;
+}
+
+.lin-card {
+	margin-left: 50%;
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 1024px) {
+	// #mainArea {
+	// 	position: sticky;
+	// 	margin: 0;
+	// 	// background: radial-gradient(ellipse farthest-corner at center top, #000000 0%, #414141 100%);
+	// 	// background-image: url(../images/detective/andrew-kambel--x92Ig1Lsf4-unsplash.jpeg);
+	// 	// background-image: linear-gradient(315deg, #000000 0%, #414141 74%);
+
+	// 	background-image: url(https://i.pinimg.com/originals/44/6e/3b/446e3b79395a287ca32f7977dd83b290.jpg);
+
+	// 	background-size: 400% 400%;
+	// 	animation: gradient 15s ease infinite;
+
+	// 	color: #fff;
+	// 	font-family: 'Open Sans', sans-serif;
+	// 	background-repeat: no-repeat;
+	// 	background-size: cover;
+	// }
+
+	// @keyframes gradient {
+	// 	0% {
+	// 		background-position: 0% 50%;
+	// 	}
+	// 	50% {
+	// 		background-position: 100% 50%;
+	// 	}
+	// 	100% {
+	// 		background-position: 0% 50%;
+	// 	}
+	// }
+}
+
+// .thumbnail {
+// 	/* The image used */
+// 	background-image: url('../images/detective/screenshot.png');
+// 	// background: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
+// 	// height: 100vh;
+
+// 	min-height: 100vh;
+// 	// background-blend-mode: color;
+
+// 	/* Create the parallax scrolling effect */
+// 	background-attachment: fixed;
+// 	background-position: center;
+// 	background-repeat: no-repeat;
+// 	background-size: cover;
+
+// 	background-position: top center;
+// 	margin-left: 0px;
+// 	margin-top: 0px;
+// 	margin-right: 0px;
+// 	background-repeat: no-repeat;
+// }
+
+// .hero-image {
+// 	/* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+// 	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+// 		url('../images/detective/screenshot.png');
+
+// 	/* Set a specific height */
+// 	height: 50%;
+
+// 	/* Position and center the image to scale nicely on all screens */
+// 	background-position: center;
+// 	background-repeat: no-repeat;
+// 	background-size: cover;
+// 	position: relative;
+// }
+
+.pdfs {
+	margin: auto;
+	p {
+		font-family: 'Dancing Script', cursive;
+	}
+}
+
+#footer {
+	margin-top: 0;
+}
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+
+// #hero {
+// 	width: 100%;
+// 	height: 100vh;
+// 	// background: url(../images/detective/screenshot.png) top center;
+// 	background-size: cover;
+// 	position: relative;
+// }
+
+// @media (min-width: 1024px) {
+// 	#hero {
+// 		background-attachment: fixed;
+// 	}
+// }
+
+// #hero:before {
+// 	content: '';
+// 	background: rgba(0, 0, 0, 0.6);
+// 	position: absolute;
+// 	bottom: 0;
+// 	top: 0;
+// 	left: 0;
+// 	right: 0;
+// }
+
+// #hero .hero-container {
+// 	position: absolute;
+// 	bottom: 0;
+// 	top: 200px;
+// 	left: 0;
+// 	right: 0;
+// 	display: inline;
+// 	justify-content: center;
+// 	align-items: center;
+// 	flex-direction: column;
+// 	text-align: center;
+// }
+
+// #hero h1 {
+// 	margin: 30px 0 10px 0;
+// 	font-size: 48px;
+// 	font-weight: 700;
+// 	line-height: 56px;
+// 	text-transform: uppercase;
+// 	color: #fff;
+// }
+
+// @media (max-width: 768px) {
+// 	#hero h1 {
+// 		font-size: 28px;
+// 		line-height: 36px;
+// 	}
+// }
+
+// #hero h2 {
+// 	color: #eee;
+// 	margin-bottom: 50px;
+// 	font-size: 24px;
+// }
+
+// @media (max-width: 768px) {
+// 	#hero h2 {
+// 		font-size: 18px;
+// 		line-height: 24px;
+// 		margin-bottom: 30px;
+// 	}
+// }
+
+// #hero .btn-get-started {
+// 	font-family: 'Poppins', sans-serif;
+// 	text-transform: uppercase;
+// 	font-weight: 500;
+// 	font-size: 16px;
+// 	letter-spacing: 1px;
+// 	display: inline-block;
+// 	padding: 8px 28px;
+// 	border-radius: 50px;
+// 	transition: 0.5s;
+// 	margin: 10px;
+// 	border: 2px solid #fff;
+// 	color: #fff;
+// }
+
+// #hero .btn-get-started:hover {
+// 	background: #ffa500;
+// 	border: 2px solid #ffa500;
+// 	font-weight: 700;
+// }
+// #ab {
+// 	margin: 150px 10px 10px 10px;
+// }
+// #ex {
+// 	margin: 150px 10px 10px 10px;
+// }
+// #al {
+// 	margin: 150px 10px 10px 10px;
+// }
+
+// #hero .zoom:hover {
+// 	transform: scale(
+// 		1.5
+// 	) !important; /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+// }
+
+// MEDIA QUERIES
+
+#footer {
+	// position: ;
+	// left: 0;
+	// bottom: 0;
+	// right: 0;
+}
+
+h1 {
+	font-family: 'Zen Tokyo Zoo', cursive;
+	font-size: 50px;
+}
+
+.card-title {
+	font-family: 'Varela Round', sans-serif;
+}
+
+.lin-card-large {
+	right: 20px;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 250px) and (max-device-width: 480px) {
+	.player-info {
+		width: 300px;
+	}
+	.form {
+		input[type='text'],
+		input[type='password'],
+		input[type='email'] {
+			width: 120px;
+		}
+	}
+	.dav-heading {
+		display: none;
+	}
+
+	.pdflinks {
+		&:hover {
+			transform: none;
+			cursor: pointer;
+		}
+	}
+
+	#instruction_large {
+		display: none;
+	}
+	#instruction_small {
+		display: block !important;
+	}
+	.header_large {
+		display: none;
+	}
+	.header_small {
+		display: block !important;
+	}
+	.display-4 {
+		font-size: 22px;
+	}
+
+	.lin-card-small {
+		display: block !important;
+		margin-left: 50%;
+		margin-top: 10px;
+	}
+	.lin-card-large {
+		display: none !important;
+	}
+	#board {
+		display: block;
+		margin-left: 11%;
+	}
+	
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+	.player-info {
+		width: 300px;
+	}
+	.form {
+		input[type='text'],
+		input[type='password'] input[type='email'] {
+			width: 100px;
+		}
+	}
+	.dav-heading {
+		display: none;
+	}
+	.pdflinks {
+		&:hover {
+			transform: none;
+			cursor: pointer;
+		}
+	}
+}

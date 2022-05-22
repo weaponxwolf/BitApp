@@ -1,0 +1,266 @@
+#mainArea {
+	position: sticky;
+	margin: 0;
+	background: radial-gradient(ellipse farthest-corner at center top, #000000 0%, #414141 100%);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow-x: hidden;
+	color: #fff;
+}
+
+.player-info {
+	position: relative;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	width: 500px;
+	text-align: center;
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+	border-radius: 3px;
+	margin: auto;
+	margin-top: 10px;
+}
+.player-info h5 {
+	position: relative;
+	line-height: 60px;
+	font-size: 36px;
+	color: #fff;
+	text-align: center;
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+	margin-top: 0px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	font-family: 'Varela Round', sans-serif;
+}
+.player-info:hover {
+	transform: skewX(-1deg);
+	transition: transform 0.5s ease;
+}
+
+/* .form .field {
+  margin: 0 50px;
+} */
+.form::-webkit-input-placeholder {
+	color: #ffffff;
+	font-family: 'Open Sans';
+}
+.form ::placeholder {
+	/* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #fff;
+	opacity: 1;
+	/* Firefox */
+}
+.form input[type='text'],
+.form input[type='password'],
+.form input[type='email'] {
+	font-family: 'Open Sans', Calibri, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: 100;
+	padding: 15px 0px 15px 0px;
+	position: inherit;
+	width: 230px;
+	height: 24px;
+	text-align: center;
+	border: none;
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+	color: white;
+	transition: color 0.3s ease-out;
+	margin-bottom: 15px;
+}
+.form .sub-btn {
+	margin-top: 15px;
+	width: 100px;
+	text-align: center;
+	font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+	padding: 12px 0;
+	color: #fff;
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+	text-transform: uppercase;
+	border: none;
+	margin-bottom: 20px;
+}
+.form .sub-btn:hover {
+	background-color: #333743;
+}
+
+.pdfs {
+	position: static;
+	margin: auto;
+}
+
+.pdflinks {
+	margin-bottom: 5px;
+}
+.pdflinks:hover {
+	transform: scale(1.5);
+	transition: transform 0.5s ease;
+	cursor: pointer;
+}
+
+.leaderboard h1 {
+	color: #fff;
+}
+
+.card {
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.05);
+	background: rgba(255, 255, 255, 0.25);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.card:hover {
+	transform: scale(1.05);
+	transition: transform 0.5s;
+}
+
+.card-img,
+.card-img-top {
+	border-radius: 20px;
+	margin-bottom: 10px;
+}
+
+.lin-card {
+	margin-left: 50%;
+}
+
+/* iPads (portrait and landscape) ----------- */
+.pdfs {
+	margin: auto;
+}
+.pdfs p {
+	font-family: 'Dancing Script', cursive;
+}
+
+#footer {
+	margin-top: 0;
+}
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+h1 {
+	font-family: 'Zen Tokyo Zoo', cursive;
+	font-size: 50px;
+}
+
+.card-title {
+	font-family: 'Varela Round', sans-serif;
+}
+
+.lin-card-large {
+	right: 20px;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 250px) and (max-device-width: 480px) {
+	.player-info {
+		width: 300px;
+	}
+
+	.form input[type='text'],
+	.form input[type='password'],
+	.form input[type='email'] {
+		width: 100%;
+	}
+
+	.dav-heading {
+		display: none;
+	}
+
+	.pdflinks:hover {
+		transform: none;
+		cursor: pointer;
+	}
+
+	#instruction_large {
+		display: none;
+	}
+
+	#instruction_small {
+		display: block !important;
+	}
+	.header_large {
+		display: none;
+	}
+	.header_small {
+		display: block !important;
+	}
+	.display-4 {
+		font-size: 25px;
+	}
+
+	.lin-card-small {
+		display: block !important;
+		margin-left: 50%;
+		margin-top: 10px;
+	}
+
+	.lin-card-large {
+		display: none !important;
+	}
+	#board {
+		display: block;
+		margin-left: 11%;
+	}
+	.winner-img {
+		padding: 20px;
+		width: 100%;
+		margin: auto;
+	}
+	.btn {
+		width: 100%;
+	}
+	.input-field {
+		width: 100%;
+	}
+	.card-body h5 {
+		text-align: center !important;
+	}
+}
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+	.player-info {
+		width: 300px;
+	}
+
+	.form input[type='text'],
+	.form input[type='password'] input[type='email'] {
+		width: 130px;
+	}
+
+	.dav-heading {
+		display: none;
+	}
+
+	.pdflinks:hover {
+		transform: none;
+		cursor: pointer;
+	}
+
+	.card-body h5 {
+		text-align: center !important;
+	}
+}
