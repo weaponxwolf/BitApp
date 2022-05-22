@@ -393,7 +393,7 @@
                         <div class="navbar-collapse collapse" id="navbarContent">
                               <ul class="navbar-nav ml-lg-4 pt-3 pt-lg-0">
                                     <li class="nav-item">
-                                          <a class="nav-link" href="/club/members/">Members</a>
+                                          <a class="nav-link" href="/club/members/">Member</a>
                                     </li>
                               </ul>
                               <div class="ml-auto">
@@ -434,13 +434,10 @@
                         <div class="list-group" style="text-align: center;">
                               <a href="/club/member/addnew" class="list-group-item list-group-item-action"> Add New Member </a>
                         </div>
-                        <div class="list-group" style="text-align: center;">
-                              <a href="/club/member/ranks" class="list-group-item list-group-item-action"> Manage Ranks </a>
-                        </div>
                   </div>
                   <div class="col-10">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
-                              <h1>Members</h1>
+                              <h1>Member Name</h1>
                               <div class="container">
                                     <div class="row" id="memberslist">
 
@@ -480,56 +477,8 @@
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
                   var today = new Date();
                   var thisyear = today.getFullYear();
-                  for (let i = 0; i < 5; i++) {
-                        year=thisyear - i - 1;
-                        $("#batchesyear").append(` <a href="#" class="list-group-item list-group-item-action"> ${year}</a>`);
-                        console.log(thisyear - i - 1);
-                  }
-                  console.log();
-                  $.get("/club/memberlist", function (data, status) {
-                        data.forEach(element => {
-                              var rollno = element.email.split('@')[0].split('.')
-                                    .join('-');
-                                    var batch=element.batch.toString().replace('0','Kl').split('l');
-                              $("#memberslist").append(` <div class="col-lg-6">
-                                                <div class="card card-margin">
-                                                      <div class="card-header no-border">
-                                                            <h5 class="card-title">${element.designation}</h5>
-                                                      </div>
-                                                      <div class="card-body pt-0">
-                                                            <div class="widget-49">
-                                                                  <div class="widget-49-title-wrapper">
-                                                                        <div class="widget-49-date-primary">
-                                                                              <span class="widget-49-date-month">${batch[0]}</span>
-                                                                              <span
-                                                                                    class="widget-49-date-day">${batch[1]}</span>
-                                                                        </div>
-                                                                        <div class="widget-49-meeting-info">
-                                                                              <span class="widget-49-pro-title">${element.name}</span>
-                                                                              <span class="widget-49-meeting-time">${element.email}</span>
-                                                                        </div>
-                                                                  </div>
-                                                                  <ol class="widget-49-meeting-points">
-                                                                        <li class="widget-49-meeting-item"><span>Expand
-                                                                                    module is removed</span></li>
-                                                                        <li class="widget-49-meeting-item"><span>Data
-                                                                                    migration is in scope</span></li>
-                                                                        <li class="widget-49-meeting-item"><span>Session
-                                                                                    timeout increase to 30
-                                                                                    minutes</span></li>
-                                                                  </ol>
-                                                                  <div class="widget-49-meeting-action">
-                                                                        <a href="/viewprofile/${rollno}/"
-                                                                              class="btn btn-sm btn-flash-border-primary">VIEW PROFILE</a>
-                                                                  </div>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>`);
-                        });
-                  });
-
-            })
+                 
+            });
       </script>
 
 

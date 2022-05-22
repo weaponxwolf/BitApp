@@ -1,5 +1,5 @@
 const express = require('express');
-const app=express();
+const app = express();
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -17,17 +17,45 @@ app.use(bodyParser.urlencoded({
 }));
 
 
+function dynamicSortMultiple() {
+      var props = arguments;
+      return function (obj1, obj2) {
+            var i = 0,
+                  result = 0,
+                  numberOfProperties = props.length;
+            while (result === 0 && i < numberOfProperties) {
+                  result = dynamicSort(props[i])(obj1, obj2);
+                  i++;
+            }
+            return result;
+      }
+}
 
-app.get('/', function(req, res) {
-      var token =  req.cookies['clubdata'];
-      var decoded =  jwt.verify(token, 'amitkumar');
+function dynamicSort(property) {
+      var sortOrder = 1;
+      if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+      }
+      return function (a, b) {
+            /* next line works with strings and numbers, 
+             * and you may want to customize it to your needs
+             */
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+      }
+}
+
+app.get('/', function (req, res) {
+      var token = req.cookies['clubdata'];
+      var decoded = jwt.verify(token, 'amitkumar');
       var getname = decoded.email;
       var getfoldername = getname.split('.').join('-').split('@')[0];
       app.use(express.static(`public/profile/${getfoldername}/`));
-      if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
+      if (!fs.existsSync(path.join(__dirname, "..", `public/profile/${getfoldername}/index.html`))) {
             res.redirect('/profile/profilefiles/');
-      }else{
-            res.sendFile(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`));
+      } else {
+            res.sendFile(path.join(__dirname, "..", `public/profile/${getfoldername}/index.html`));
       }
 });
 
@@ -46,9 +74,70 @@ app.get('/memberlist', async (req, res) => {
             const clubs = await Clubs.findOne({
                   email: decoded.email
             });
-            res.send(clubs.members);
+            var s = clubs.members;
+            s.sort(dynamicSort("rank"));
+            res.send(s);
       } catch (error) {
 
+      }
+});
+
+app.get('/member/addnew', (req, res) => {
+      res.render('clubs/addnewmember');
+});
+
+app.post('/member/addnew', async (req, res) => {
+      try {
+            var token = await req.cookies['clubdata'];
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            var club = await Clubs.findOne({
+                  email: getname
+            });
+            club.members.push(req.body);
+            club.save();
+            res.redirect('/club/members');
+      } catch (error) {
+
+      }
+});
+
+app.get('/member/ranks', (req, res) => {
+      res.render('clubs/ranks');
+});
+
+app.post('/member/updaterank', async (req, res) => {
+      try {
+            var token = await req.cookies['clubdata'];
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            var email = req.body.rollno.split('-').join('.') + '@bitmesra.ac.in';
+            const s = await Clubs.update({
+                  email: getname,
+                  'members.email': email
+            }, {
+                  '$set': {
+                        'members.$.rank': req.body.rank,
+                  }
+            });
+            res.send("OK");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.get('/member/ranklist', async (req, res) => {
+      try {
+            var token = req.cookies.clubdata;
+            var decoded = jwt.verify(token, 'amitkumar');
+            const clubs = await Clubs.findOne({
+                  email: decoded.email
+            });
+            var s = clubs.members;
+            s.sort(dynamicSort("rank"));
+            res.send(s);
+      } catch (error) {
+            console.log(error);
       }
 });
 
@@ -115,13 +204,13 @@ app.post('/deletefolder', async (req, res) => {
 });
 
 
-app.post('/deletefile',(req,res)=>{
+app.post('/deletefile', (req, res) => {
       try {
             var appenddir = req.body.filelocation;
-            var filename =req.body.filename;
-            var token =  req.cookies['clubdata'];
-      var decoded =  jwt.verify(token, 'amitkumar');
-      var getname = decoded.email;
+            var filename = req.body.filename;
+            var token = req.cookies['clubdata'];
+            var decoded = jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
             var middir = "";
             if (req.body.location) {
                   middir = "/" + req.body.location;
@@ -129,16 +218,16 @@ app.post('/deletefile',(req,res)=>{
                   middir = "/" + middir;
             }
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            if (appenddir=="/profile/profilefiles/"||appenddir=="/profile/profilefiles/") {
+            if (appenddir == "/profile/profilefiles/" || appenddir == "/profile/profilefiles/") {
                   dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + filename);
-                 
-            }else{
+
+            } else {
                   dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + filename);
             }
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
             fs.unlinkSync(dir);
-            res.send("File '"+filename+"' Deleted ");
+            res.send("File '" + filename + "' Deleted ");
       } catch (error) {
             console.log(error);
       }
