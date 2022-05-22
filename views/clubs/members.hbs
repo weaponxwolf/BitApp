@@ -400,9 +400,9 @@
 
                                     <a href="#" onclick="chooseprofileaction()" id="profileoption"
                                           class="btn btn-outline rounded-pill">Club Page</a>
-                                    <a href="/profile/" style="display: none" id="profilebutton"
+                                    <a href="/club/" style="display: none" id="profilebutton"
                                           class="btn btn-outline rounded-pill">Club Page</a>
-                                    <a href="/profile/profilefiles/" style="display: none" id="profileeditbutton"
+                                    <a href="/club/pagefiles/" style="display: none" id="profileeditbutton"
                                           class="btn btn-outline rounded-pill">Edit Club Page</a>
                                     <a href="/logout" class="btn btn-outline rounded-pill">Log Out</a>
                               </div>
@@ -476,7 +476,10 @@
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
                   $.get("/club/memberlist", function (data, status) {
+
                         data.forEach(element => {
+                              var rollno = element.email.split('@')[0].split('.')
+                                    .join('-');
                               $("#memberslist").append(` <div class="col-lg-6">
                                                 <div class="card card-margin">
                                                       <div class="card-header no-border">
@@ -505,7 +508,7 @@
                                                                                     minutes</span></li>
                                                                   </ol>
                                                                   <div class="widget-49-meeting-action">
-                                                                        <a href="/viewprofile/btech10071-20/"
+                                                                        <a href="/viewprofile/${rollno}/"
                                                                               class="btn btn-sm btn-flash-border-primary">VIEW PROFILE</a>
                                                                   </div>
                                                             </div>

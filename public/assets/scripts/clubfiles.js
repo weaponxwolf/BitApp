@@ -2,14 +2,15 @@ function RefreshList() {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      var pathanalysis = window.location.pathname.replace("/profile/profilefiles", '');
-      $.get("/profile/folderlist?location=" + folderLocation, function (data, status) {
+      var pathanalysis = window.location.pathname.replace("/club/pagefiles", '');
+      $.get("/club/folderlist?location=" + folderLocation, function (data, status) {
             $("#filestructure ul").html("");
+            console.log(data);
             data.forEach(element => {
                   if (pathanalysis) {
-                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
+                        var folderid = 'pagefiles' + pathanalysis + '$' + element;
                   } else {
-                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
+                        var folderid = 'pagefiles' + pathanalysis + '$' + element;
                   }
                   var makeid = element.split(' ').join('_');
                   $("#filestructure ul").append(`<li class="list-group-item" name="" id="folder_${makeid}">
@@ -32,7 +33,6 @@ function RefreshList() {
       });
 }
 
-
 function removemessage() {
       $("#messages").html('');
 }
@@ -40,7 +40,7 @@ function removemessage() {
 function renamethefolder(params) {
       var folderid = params.id.split("_")[1];
       var newname = $("#renametext").val();
-      $.post('/profile/profilefiles/renamefolder', {
+      $.post('/club/pagefiles/renamefolder', {
             newname: newname,
             folderid: folderid
       }, function (data, status) {
@@ -78,7 +78,8 @@ function deletefolder(params) {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      $.post('/profile/deletefolder', {
+      console.log(params);
+      $.post('/club/deletefolder', {
             foldername: foldername,
             location: folderLocation
       }, function (data, status) {
@@ -126,7 +127,7 @@ function optionMenu(params) {
 
 
 function enterfolder(params) {
-      window.location.href = "/profile/" + params.id;
+      window.location.href = "/club/" + params.id;
 }
 
 function createfolder() {
@@ -137,7 +138,7 @@ function createfolder() {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      $.post("/profile/createfolder", {
+      $.post("/club/createfolder", {
             foldername: folderName,
             location: folderLocation,
       }, function (data, success) {
@@ -158,7 +159,7 @@ function submitfile() {
       $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "/profile/uploadfile",
+            url: "/club/uploadfile",
             data: data,
             processData: false,
             contentType: false,
@@ -172,7 +173,6 @@ function submitfile() {
               
                   $("#inputs").html("");
                   RefreshFiles();
-                  console.log(data);
                   if (data.search('index.html')!=-1) {
                         window.location.reload();
                   }
@@ -184,7 +184,7 @@ function RefreshFiles() {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      $.get("/profile/fileslist?location=" + folderLocation, function (data, status) {
+      $.get("/club/fileslist?location=" + folderLocation, function (data, status) {
             $("#filesstructure ul").html("");
             data.forEach(element => {
                   var makeid=element.split('.').join('_');
@@ -213,12 +213,12 @@ function RefreshFiles() {
 function deletefile(params) {
       var fileid=params.id.replace('_','$').split('$')[1];
       var fileLocation=window.location.pathname;
-      if (fileLocation=="/profile/profilefiles/"||fileLocation=="/profile/profilefiles") {
+      if (fileLocation=="/club/pagefiles/"||fileLocation=="/club/pagefiles") {
       }else{
             fileLocation = window.location.pathname.replace('/$',' ').split(' ')[1].split('$').join('/');
       }
       var filename=$("#file_"+fileid+" div div span").html();
-      $.post('/profile/deletefile', {
+      $.post('/club/deletefile', {
             filename :filename,
             filelocation: fileLocation
       }, function (data, status) {
@@ -240,7 +240,7 @@ function renamethefile(params) {
       var locarray = pathname.split("/");
       var fileLocation = locarray[2];
       var newname = $("#renametext").val();
-      $.post('/profile/profilefiles/renamefile', {
+      $.post('/club/pagefiles/renamefile', {
             fileid: fileid,
             newname: newname,
             filelocation: fileLocation
@@ -300,14 +300,14 @@ $(document).ready(function () {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      var pathanalysis = window.location.pathname.replace("/profile/profilefiles", '');
-      $.get("/profile/folderlist?location=" + folderLocation, function (data, status) {
+      var pathanalysis = window.location.pathname.replace("/club/pagefiles", '');
+      $.get("/club/folderlist?location=" + folderLocation, function (data, status) {
             $("#filestructure ul").html("");
             data.forEach(element => {
                   if (pathanalysis) {
-                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
+                        var folderid = 'pagefiles' + pathanalysis + '$' + element;
                   } else {
-                        var folderid = 'profilefiles' + pathanalysis + '$' + element;
+                        var folderid = 'page' + pathanalysis + '$' + element;
                   }
                   var makeid = element.split(' ').join('_');
                   $("#filestructure ul").append(`<li class="list-group-item" name="" id="folder_${makeid}">
@@ -331,7 +331,7 @@ $(document).ready(function () {
       var pathname = window.location.pathname;
       var locarray = pathname.split("/");
       var folderLocation = locarray[3];
-      $.get("/profile/fileslist?location=" + folderLocation, function (data, status) {
+      $.get("/club/fileslist?location=" + folderLocation, function (data, status) {
             $("#filesstructure ul").html("");
             data.forEach(element => {
                   var makeid=element.split('.').join('_');
@@ -380,22 +380,25 @@ $(document).ready(function () {
 
 
       $("#breadcrumb").append(
-            `<li class="breadcrumb-item"><a href="/profile/profilefiles/">Profile Files </a></li>`);
+            `<li class="breadcrumb-item"><a href="/club/pagefiles/">Page Files </a></li>`);
 
       
       var pathname = window.location.pathname;
-      if (pathname == '/profile/profilefiles/' || pathname == '/profile/profilefiles') {
+      if (pathname == '/page/pagefiles/' || pathname == '/club/pagefiles') {
             
       }else{
             var linkpaths = "";
-            pathname = pathname.replace('$', ' ').split(' ')[1].split('$');
-            pathname.forEach(element => {
-                  element = element.split('%20').join(' ');
-                  linkpaths = linkpaths + '$' + element;
-                  $("#breadcrumb").append(
-                        `<li class="breadcrumb-item"><a href="/profile/profilefiles/${linkpaths}">${element}</a></li>`);
-                  
-            })
+            if (pathname.replace('$', ' ').split(' ')[1]) {
+                  pathname = pathname.replace('$', ' ').split(' ')[1].split('$');
+                  pathname.forEach(element => {
+                        element = element.split('%20').join(' ');
+                        linkpaths = linkpaths + '$' + element;
+                        $("#breadcrumb").append(
+                              `<li class="breadcrumb-item"><a href="/club/pagefiles/${linkpaths}">${element}</a></li>`);
+                        
+                  })
+            }
+            
       }
 
 

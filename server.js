@@ -16,7 +16,7 @@ const passport = require('passport');
 const cookie = require('cookie');
 const fs = require('fs')
 const path = require('path')
-
+const ViewProfileRoute=require('./routes/ViewProfile');
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -146,6 +146,7 @@ app.get('/auth/google/callback',
 app.get('/login', (req, res) => {
       res.render('login');
 });
+app.use('/viewprofile',ViewProfileRoute);
 
 const GetUserDetails = async (email) => {
       const User = await Users.findOne({
@@ -308,21 +309,6 @@ io.on('connection', (socket) => {
       })
 });
 
-app.get('/viewprofile/:rollno', async (req, res) => {
-      try {
-            var profilename = 'btech10071-20';
-            app.use(express.static(`public/profile/${profilename}/`));
-            console.log(path.join(__dirname, "..", `public/profile/${profilename}/index.html`));
-            if (!fs.existsSync(path.join(__dirname, "..", `public/profile/${profilename}/index.html`))) {
-                  console.log("NOT FOUND");
-                  res.redirect('/club/members/');
-            } else {
-                  res.sendFile(path.join(__dirname, "..", `public/profile/${profilename}/index.html`));
-            }
-      } catch (error) {
-            console.log(error);
-      }
-});
 
 server.listen(3000, () => {
       console.log('Server Listening on http://localhost:3000');

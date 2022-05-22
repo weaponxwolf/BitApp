@@ -15,8 +15,13 @@ app.use(cookieParser());
 app.use(fileUpload());
 
 const GetName = (req) => {
-      var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
-      return decoded.email;
+      if (req.cookies['userdata']) {
+            var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
+            return decoded.email;
+      }else{
+            return "";
+      }
+      
 }
 
 
