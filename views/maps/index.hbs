@@ -74,6 +74,9 @@
                                     </div>
 
                               </div>
+                              <div id="upcomingevents">
+                                    
+                              </div>
                         </div>
                   </div>
 
@@ -82,15 +85,22 @@
 
       {{>scripts}}
       <script>
-            function zoomin(params) {
-                  console.log(params);
+           
+            function goback() {
                   $("#thefullimage").html("");
-                  $.get('/maps/location/id?id='+params.id,function(data,success){
-                       $("#thefullimage").append(`<img src="/map/${data._id}.jpg" alt="" usemap="#workmap"
+                  $("#allareasandloc").html("");
+                  $("#thefullimage").html(`<img src="/map/bitmesra.jpg" onclick="goback()" alt="" usemap="#workmap"
                                                 style="width:100%" id="themap">`);
-                 });
-                 $("#allareasandloc").css('display','none');
+                  window.location.reload();
+            }
 
+            function zoomin(params) {
+                  $("#thefullimage").html("");
+                  $.get('/maps/location/id?id=' + params.id, function (data, success) {
+                        $("#thefullimage").append(`<img src="/map/${data._id}.jpg" onclick="goback()" alt="" usemap="#workmap"
+                                                style="width:100%" id="themap">`);
+                  });
+                  $("#allareasandloc").html("");
             }
 
             function getPosition(element) {
@@ -133,7 +143,7 @@
                               } else {
                                     $("#allareasandloc").append(
                                           ` <div onclick="zoomin(this)" id="${element._id}" style="background-color: #ffffff36;height: ${element.height}px;width: ${element.width}px;position: relative;margin-bottom: -${element.height}px;left: ${element.left}px;top: ${element.top}px;opacity: 45%;" class="red"></div>`
-                                          );
+                                    );
                               }
 
 

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .create div {
+                  border: 1px solid black;
+                  padding: 1rem;
+                  margin: 1rem;
+                  cursor: pointer;
+            }
+
+            .folders {
+                  cursor: pointer;
+            }
+
+            .files {
+                  cursor: pointer;
+            }
+
+            .delete-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+
+            }
+
+            .delete-icon:hover span {
+                  display: none;
+            }
+
+            .delete-icon:hover::before {
+                  content: "Delete";
+            }
+
+            .rename-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+            }
+
+            .rename-icon:hover span {
+                  display: none;
+            }
+
+            .rename-icon:hover::before {
+                  content: "Rename";
+            }
+
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+
+            .tilesWrap {
+                  padding: 0;
+                  margin: 50px auto;
+                  list-style: none;
+                  text-align: center;
+            }
+
+            .tilesWrap li {
+                  display: inline-block;
+                  width: 20%;
+                  min-width: 200px;
+                  max-width: 230px;
+                  padding: 80px 20px 40px;
+                  position: relative;
+                  vertical-align: top;
+                  margin: 10px;
+                  font-family: 'helvetica', san-serif;
+                  min-height: 25vh;
+                  background: #262a2b;
+                  border: 1px solid #252727;
+                  text-align: left;
+            }
+
+            .tilesWrap li h2 {
+                  font-size: 114px;
+                  margin: 0;
+                  position: absolute;
+                  opacity: 0.2;
+                  top: 50px;
+                  right: 10px;
+                  transition: all 0.3s ease-in-out;
+            }
+
+            .tilesWrap li h3 {
+                  font-size: 20px;
+                  color: #b7b7b7;
+                  margin-bottom: 5px;
+            }
+
+            .tilesWrap li p {
+                  font-size: 16px;
+                  line-height: 18px;
+                  color: #b7b7b7;
+                  margin-top: 5px;
+            }
+
+            .tilesWrap li button {
+                  background: transparent;
+                  border: 1px solid #b7b7b7;
+                  padding: 10px 20px;
+                  color: #b7b7b7;
+                  border-radius: 3px;
+                  position: relative;
+                  transition: all 0.3s ease-in-out;
+                  transform: translateY(-40px);
+                  opacity: 0;
+                  cursor: pointer;
+                  overflow: hidden;
+            }
+
+            .tilesWrap li button:before {
+                  content: '';
+                  position: absolute;
+                  height: 100%;
+                  width: 120%;
+                  background: #b7b7b7;
+                  top: 0;
+                  opacity: 0;
+                  left: -140px;
+                  border-radius: 0 20px 20px 0;
+                  z-index: -1;
+                  transition: all 0.3s ease-in-out;
+
+            }
+
+            .tilesWrap li:hover button {
+                  transform: translateY(5px);
+                  opacity: 1;
+            }
+
+            .tilesWrap li button:hover {
+                  color: #262a2b;
+            }
+
+            .tilesWrap li button:hover:before {
+                  left: 0;
+                  opacity: 1;
+            }
+
+            .tilesWrap li:hover h2 {
+                  top: 0px;
+                  opacity: 0.6;
+            }
+
+            .tilesWrap li:before {
+                  content: '';
+                  position: absolute;
+                  top: -2px;
+                  left: -2px;
+                  right: -2px;
+                  bottom: -2px;
+                  z-index: -1;
+                  background: #fff;
+                  transform: skew(2deg, 2deg);
+            }
+
+            .tilesWrap li:after {
+                  content: '';
+                  position: absolute;
+                  width: 40%;
+                  height: 100%;
+                  left: 0;
+                  top: 0;
+                  background: rgba(255, 255, 255, 0.02);
+            }
+
+            .tilesWrap li:nth-child(1):before {
+                  background: #C9FFBF;
+                  background: -webkit-linear-gradient(to right, #FFAFBD, #C9FFBF);
+                  background: linear-gradient(to right, #FFAFBD, #C9FFBF);
+            }
+
+            .tilesWrap li:nth-child(2):before {
+                  background: #f2709c;
+                  background: -webkit-linear-gradient(to right, #ff9472, #f2709c);
+                  background: linear-gradient(to right, #ff9472, #f2709c);
+            }
+
+            .tilesWrap li:nth-child(3):before {
+                  background: #c21500;
+                  background: -webkit-linear-gradient(to right, #ffc500, #c21500);
+                  background: linear-gradient(to right, #ffc500, #c21500);
+            }
+
+            .tilesWrap li:nth-child(4):before {
+                  background: #FC354C;
+                  background: -webkit-linear-gradient(to right, #0ABFBC, #FC354C);
+                  background: linear-gradient(to right, #0ABFBC, #FC354C);
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-3">
+                        {{>sidemenus/academics}}
+                  </div>
+                  <div class="col-9">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <div >
+                                    <ul class="tilesWrap" id="classmates">
+                                          
+                                    </ul>
+                              </div>
+                        </div>
+                  </div>
+
+            </div>
+      </div>
+      </div>
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      {{>scripts}}
+      <script>
+            function closefullview() {
+                  $("#container").css('display', 'block');
+                  $("#fullview").css('display', 'none');
+                  $("#fullview").html('');
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  $.get('/academics/classmates/list',function(data,status){
+                        console.log(data);
+                        data.forEach(element => {
+                              var rollno=element.email.split('@')[0].replace('.','-');
+                              var shortrollno=element.email.split('@')[0].split('.')[0].split('10')[1];
+                              $("#classmates").append(`<li>
+                                                <h2>${shortrollno}</h2>
+                                                <h3>${element.name}</h3>
+                                                <p>
+                                                      Lorem Ipsum is simply dummy text of the printing and typesetting
+                                                      industry. Lorem Ipsum has been the industry's standard dummy text
+                                                      ever
+                                                      since the 1500s.
+                                                </p>
+                                                <a href="/viewprofile/${rollno}"><button>View Profile</button> </a>
+                                                
+                                          </li>`);
+                        });
+                       
+                  });
+            });
+      </script>
+
+
+</body>
+
+</html>

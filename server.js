@@ -80,6 +80,7 @@ const ExploreRoute = require('./routes/Explore');
 const Messages = require('./models/Messages');
 const ClubsRoute = require('./routes/Club');
 const MapsRoute=require('./routes/Maps');
+const NewsRoute=require('./routes/News');
 
 
 const {
@@ -106,6 +107,7 @@ app.use('/profile', ProfileRoutes);
 app.use('/post', PostRoutes);
 app.use('/academics', AcademicsRoute);
 app.use('/explore', ExploreRoute);
+app.use('/news',NewsRoute);
 
 app.get('/', (req, res) => {
       var getname = GetName(req);

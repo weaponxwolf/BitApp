@@ -93,6 +93,28 @@ app.get('/sharedfolders/', (req, res) => {
       res.render('academics/sharedfolders');
 });
 
+app.get('/classmates',(req,res)=>{
+      res.render('academics/classmates');
+});
+
+app.get('/classmates/list',async (req,res)=>{
+      try {
+            const classmates=await Users.find();
+            var s=[];
+            classmates.forEach(element=>{
+                  var classmate={
+                        name : element.profile.displayName,
+                        email : element.email
+                  }
+                  s.push(classmate);
+            });
+            res.send(s);
+      } catch (error) {
+            
+      }
+});
+
+
 
 
 app.get('/sharedfolders/folders', async (req, res) => {
