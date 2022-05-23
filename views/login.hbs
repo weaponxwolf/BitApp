@@ -1,21 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-        {{>head}}
-    </head>
+    {{>head}}
+</head>
+
 <body>
-
-    <!-- Back to top button -->
     <div class="back-to-top"></div>
-
     <header>
 
         <nav class="navbar navbar-expand-lg navbar-light navbar-float">
             <div class="container">
-                <a href="/home" class="navbar-brand">Crockery<span class="text-primary">Palace</span></a>
+                <a href="/home" class="navbar-brand">Bit<span class="text-primary">App</span></a>
 
-                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
@@ -28,15 +27,32 @@
                         <form method="POST" action="/login">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" placeholder="Enter email">
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with
+                                    anyone else.</small>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password</label>
-                                <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                                    placeholder="Password">
                             </div>
                             <button type="submit" class="btn btn-primary">Log In</button>
                         </form>
+                        {{#if message}}
+                        <hr>
+                        <div class="alert alert-warning" role="alert">
+                            {{message}}
+                        </div>
+                        <div style="text-align: center;padding-top: 1rem;padding-bottom: 1rem;" class="card">
+                            If Not A BitApp User
+                            <hr>
+                            <a href="/"> <button type="button" class="btn btn-primary">Sign Up</button>
+                            </a>
+                        </div>
+                        {{/if}}
+
+
                     </div>
                     <div class="col-lg-6 py-3 wow zoomIn">
                         <div class="img-place">

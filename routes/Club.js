@@ -352,7 +352,6 @@ app.get('/folderlist', async (req, res) => {
             var getname = decoded.email;
             var getfoldername = getname.split('.').join('-').split('@')[0];
             var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + appenddir);
-            console.log(dir);
             if (!fs.existsSync(dir)) {
                   fs.mkdirSync(dir, {
                         recursive: true

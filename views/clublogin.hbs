@@ -1,21 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-        {{>head}}
-    </head>
+    {{>head}}
+</head>
+
 <body>
 
-    <!-- Back to top button -->
     <div class="back-to-top"></div>
 
     <header>
 
         <nav class="navbar navbar-expand-lg navbar-light navbar-float">
             <div class="container">
-                <a href="/home" class="navbar-brand">Crockery<span class="text-primary">Palace</span></a>
+                <a href="/home" class="navbar-brand">Bit<span class="text-primary">App</span></a>
 
-                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
@@ -23,20 +24,34 @@
 
         <div class="page-banner home-banner">
             <div class="container h-100">
-                <div class="row align-items-center h-100">
+                <div class="row align-items-center h-100" style="margin-top: 100px;"> 
                     <div class="col-lg-6 py-3 wow fadeInUp">
                         <form method="POST" action="/clublogin">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Club Email</label>
-                                <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Club email">
+                                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" placeholder="Enter Club email">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Enter Your Email </label>
+                                <input type="email" name="memberemail" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" placeholder="Enter Your Email">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password</label>
-                                <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <input type="password" name="memberpassword" class="form-control"
+                                    id="exampleInputPassword1" placeholder="Password">
                             </div>
                             <button type="submit" class="btn btn-primary">Log In</button>
                         </form>
+                        {{#if message}}
+                        <hr>
+                        <div class="alert alert-warning" role="alert">
+                            {{message}} <a href="/">Back To Login </a>
+                        </div>
+                        {{/if}}
                     </div>
+
                     <div class="col-lg-6 py-3 wow zoomIn">
                         <div class="img-place">
                             <img src="assets/img/bg_image_1.png" alt="">
