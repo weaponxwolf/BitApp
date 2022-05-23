@@ -9,6 +9,7 @@ const path = require('path');
 const fileUpload = require('express-fileupload');
 
 const Clubs = require('../models/Clubs');
+const Locations = require('../models/Locations');
 
 app.use(fileUpload());
 app.use(cookieParser());
@@ -63,11 +64,11 @@ app.get('/admin', (req, res) => {
       res.render('clubs/admin');
 });
 
-app.get('/events',(req,res)=>{
+app.get('/events', (req, res) => {
       res.render('clubs/events');
 });
 
-app.get('/events/map',(req,res)=>{
+app.get('/events/map', (req, res) => {
       res.render('clubs/eventmap')
 });
 
@@ -133,6 +134,59 @@ app.post('/member/updaterank', async (req, res) => {
             console.log(error);
       }
 });
+
+app.get('/members/listbyyear', async (req, res) => {
+      try {
+            var token = req.cookies.clubdata;
+            var decoded = jwt.verify(token, 'amitkumar');
+            const clubs = await Clubs.findOne({
+                  email: decoded.email
+            });
+            var s = clubs.members;
+            s.sort(dynamicSort("rank"));
+            res.send(s);
+      } catch (error) {
+
+      }
+});
+
+app.get('/events/manageareaandpos', (req, res) => {
+      res.render('clubs/manageareaandpos');
+});
+
+app.get('/events/areasandpos/list', async (req, res) => {
+      try {
+            const locations =await Locations.find();
+            res.send(locations);
+      } catch (error) {
+            console.log(error);
+
+      }
+});
+
+app.post('/events/manageareaandpos', async (req, res) => {
+      try {
+            if (req.body.placename!="") {
+                  const location = new Locations({
+                        name: req.body.placename,
+                        height: req.body.height,
+                        width: req.body.width,
+                        top: req.body.top,
+                        left: req.body.left,
+                        color: req.body.color,
+                        type: req.body.type
+                  });
+                  location.save();
+                  res.render('clubs/manageareaandpos');
+            }else{
+                  res.render('clubs/manageareaandpos');
+            }
+      } catch (error) {
+
+      }
+});
+
+
 
 app.get('/member/ranklist', async (req, res) => {
       try {

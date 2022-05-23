@@ -131,83 +131,88 @@
                   <div class="col-10">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
                               <div class="container">
+                                    <form action="" method="post">
+                                          <div class="form-group">
+                                                <input type="text" class="form-control" name="placename"
+                                                      placeholder="Place Name">
+                                                <input type="text" class="form-control" name="height"
+                                                      placeholder="Height">
+                                                <input type="text" class="form-control" name="width"
+                                                      placeholder="Width">
+                                                <input type="text" class="form-control" name="left" placeholder="Left">
+                                                <input type="text" class="form-control" name="top" placeholder="Top">
+                                                <input type="text" class="form-control" name="color"
+                                                      placeholder="Color">
+                                                <select class="form-select" name="type" aria-label="Default select example">
+                                                      <option selected>Open this select menu</option>
+                                                      <option value="point">Point</option>
+                                                      <option value="area">Area</option>
+                                                </select>
+                                                <hr>
+                                                <button type="submit" class="btn btn-primary">Create Area</button>
+                                          </div>
+                                    </form>
+                              </div>
+                              <div class="container">
 
-                                    <div id="allareasandloc">
 
+                                    <img class="red" src="\assets\img\location-icon.png" alt="" style="height:30px; 
+                                    width:30px;position:relative;margin-bottom:-30px;top: 0px;left: 0px;">
+
+
+                                    <div id="locator" style="    background-color: rgb(255, 0, 0);
+                                    height: 178px;
+                                    width: 81px;
+                                    position: relative;
+                                    margin-bottom: -178px;
+                                    left: 389px;
+                                    top: 620px;
+                                    opacity: 45%;">
                                     </div>
-                                    <div>
-                                          <img src="/map/bitmesra.jpg" alt="" usemap="#workmap"
-                                                style="width: 882px;height:2016px;" id="themap">
 
-                                    </div>
-
+                                    <img src="/map/bitmesra.jpg" alt="" usemap="#workmap"
+                                          style="width: 882px;height:2016px;" id="themap">
 
                               </div>
                         </div>
                   </div>
-            </div>
-      </div>
-      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+                  <div class="container" id="fullview" style="display: none;margin-top: 100px;">
 
-      </div>
-      {{>scripts}}
-      <script>
-            function getPosition(element) {
-                  var xPosition = 0;
-                  var yPosition = 0;
+                  </div>
+                  {{>scripts}}
+                  <script>
+                        function getPosition(element) {
+                              var xPosition = 0;
+                              var yPosition = 0;
 
-                  while (element) {
-                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-                        element = element.offsetParent;
-                  }
-                  return {
-                        x: xPosition,
-                        y: yPosition
-                  };
-            }
-
-            function HElllo(params) {
-                  console.log(params.id);
-            }
-
-            $(document).ready(function () {
-                  var s = document.getElementById('mainpart');
-                  var header = document.getElementById('header');
-                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-                  document.getElementById("mainpart").style.height = vh - getPosition(s);
-                  var clientHeight = document.getElementById('header').clientHeight;
-                  var headerHeight = $('header').outerHeight();
-                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
-
-                  $.get('/club/events/areasandpos/list', function (data, status) {
-                        data.forEach(element => {
-                              tabind = 1;
-                              height = parseInt(element.height) + parseInt(element
-                                    .top);
-                              width = parseInt(element.width) + parseInt(element
-                                    .left);
-                              if (element.type === 'point') {
-                                    $("#allareasandloc").append(`
-                                    <img class="red" src="/assets/img/location-icon.png" alt="" style="height:${element.height}px; 
-                                    width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`);
-                              } else {
-                                    $("#allareasandloc").append(` <div onclick="HElllo(this)" id="${element._id}" style="background-color: ${element.color};
-                                          height: ${element.height}px;
-                                          width: ${element.width}px;
-                                          position: relative;
-                                          margin-bottom: -${element.height}px;
-                                          left: ${element.left}px;
-                                          top: ${element.top}px;
-                                          opacity: 45%;" class="red"></div>`);
+                              while (element) {
+                                    xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                                    yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                                    element = element.offsetParent;
                               }
+                              return {
+                                    x: xPosition,
+                                    y: yPosition
+                              };
+                        }
 
+                        function HElllo() {
+                              console.log("hidiiddidid");
+                        }
 
-                              tabind++;
+                        $(document).ready(function () {
+                              var s = document.getElementById('mainpart');
+                              var header = document.getElementById('header');
+                              const vh = Math.max(document.documentElement.clientHeight || 0, window
+                                    .innerHeight || 0)
+                              document.getElementById("mainpart").style.height = vh - getPosition(s);
+                              var clientHeight = document.getElementById('header').clientHeight;
+                              var headerHeight = $('header').outerHeight();
+                              document.getElementById("container").style.marginTop = getPosition(
+                                    clientHeight);
+
                         });
-                  });
-            })
-      </script>
+                  </script>
 
 
 </body>
