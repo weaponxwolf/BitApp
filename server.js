@@ -16,7 +16,7 @@ const passport = require('passport');
 const cookie = require('cookie');
 const fs = require('fs')
 const path = require('path')
-const ViewProfileRoute=require('./routes/ViewProfile');
+const ViewProfileRoute = require('./routes/ViewProfile');
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -79,8 +79,8 @@ const AcademicsRoute = require('./routes/Academics');
 const ExploreRoute = require('./routes/Explore');
 const Messages = require('./models/Messages');
 const ClubsRoute = require('./routes/Club');
-const MapsRoute=require('./routes/Maps');
-const NewsRoute=require('./routes/News');
+const MapsRoute = require('./routes/Maps');
+const NewsRoute = require('./routes/News');
 
 
 const {
@@ -107,7 +107,7 @@ app.use('/profile', ProfileRoutes);
 app.use('/post', PostRoutes);
 app.use('/academics', AcademicsRoute);
 app.use('/explore', ExploreRoute);
-app.use('/news',NewsRoute);
+app.use('/news', NewsRoute);
 
 app.get('/', (req, res) => {
       var getname = GetName(req);
@@ -151,7 +151,7 @@ app.get('/auth/google/callback',
 app.get('/login', (req, res) => {
       res.render('login');
 });
-app.use('/viewprofile',ViewProfileRoute);
+app.use('/viewprofile', ViewProfileRoute);
 
 const GetUserDetails = async (email) => {
       const User = await Users.findOne({
@@ -165,6 +165,10 @@ const GetUserDetails = async (email) => {
             section: User.section
       }
 }
+
+app.get('/notifications/create', (req, res) => {
+      res.render('createnotifications');
+});
 
 app.get('/createuser', async (req, res) => {
       try {
@@ -235,7 +239,7 @@ app.post('/createuser', async (req, res) => {
 });
 
 app.use('/club', ClubsRoute);
-app.use('/maps',MapsRoute);
+app.use('/maps', MapsRoute);
 app.use('/', HomeRoute);
 
 
@@ -312,7 +316,11 @@ io.on('connection', (socket) => {
                   if (err) return handleError(err);
                   // saved!
             });
-      })
+      });
+      socket.on('broadcastnotification',(data)=>{
+            console.log("hisdssis");
+            socket.broadcast.emit('notification',data);
+      });
 });
 
 

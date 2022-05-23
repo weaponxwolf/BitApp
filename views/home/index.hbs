@@ -4,53 +4,7 @@
 <head>
     {{>head}}
     <style>
-        .create div {
-            border: 1px solid black;
-            padding: 1rem;
-            margin: 1rem;
-            cursor: pointer;
-        }
-
-        .folders {
-            cursor: pointer;
-        }
-
-        .files {
-            cursor: pointer;
-        }
-
-        .delete-icon {
-            float: right;
-            background-color: white;
-            padding: 0.5rem;
-            border-radius: 0.3rem;
-            cursor: pointer;
-
-        }
-
-        .delete-icon:hover span {
-            display: none;
-        }
-
-        .delete-icon:hover::before {
-            content: "Delete";
-        }
-
-        .rename-icon {
-            float: right;
-            background-color: white;
-            padding: 0.5rem;
-            border-radius: 0.3rem;
-            cursor: pointer;
-        }
-
-        .rename-icon:hover span {
-            display: none;
-        }
-
-        .rename-icon:hover::before {
-            content: "Rename";
-        }
+       
 
         .sc1::-webkit-scrollbar {
             width: 8px;
@@ -90,7 +44,7 @@
             </div>
             <div class="col-7">
                 <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
-                    
+
                 </div>
             </div>
 
@@ -107,14 +61,15 @@
     <div class="container" id="fullview" style="display: none;margin-top: 100px;">
 
     </div>
+
+    <div id="notificationstoast" style="background-color:white;position:fixed;min-width:400px;padding:1rem;right: 0px;top: 100px; border: 1px solid red;display: none; ">
+        
+    </div>
     {{>scripts}}
     <script>
-        function closefullview() {
-            $("#container").css('display', 'block');
-            $("#fullview").css('display', 'none');
-            $("#fullview").html('');
-            $("body").css('background-color','white');
-            $("#header").css('display','block');
+        function closenotification(){
+            $("#notificationstoast").html("");
+            $("#notificationstoast").css('display','none');
         }
 
         function getPosition(element) {
@@ -155,8 +110,8 @@
             </div>
         </div>`)
             });
-            $("body").css('background-color','black');
-            $("#header").css('display','none');
+            $("body").css('background-color', 'black');
+            $("#header").css('display', 'none');
         }
         $(document).ready(function () {
             var s = document.getElementById('mainpart');
@@ -183,6 +138,19 @@
                 });
             });
         })
+    </script>
+    <script>
+        var socket = io();
+        socket.on('connect', function (data) {
+        });
+        socket.on('notification', (data) => {
+            $("#notificationstoast").html("");
+            $("#notificationstoast").css('display','block');
+            $("#notificationstoast").append(`<span style="float: right"><img
+            src="/assets/img/cross.png" alt="" onclick="closenotification()" style="height: 0.8rem"></span>
+        <h1>${data.title}</h1>
+        <h1>${data.body}</h1>`);
+        });
     </script>
 
 

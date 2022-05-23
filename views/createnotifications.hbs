@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-float">
+                  <div class="container">
+                        <a href="/home" class="navbar-brand">Bit<span class="text-primary">App</span></a>
+                  </div>
+            </nav>
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/post/newpost" class="list-group-item list-group-item-action"><img
+                                          src="/assets\img\plus.png" alt="" style="height: 0.8rem"> New Post</a>
+                              <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                              <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                              <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                        </div>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+
+                              <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Title" id="title">
+                              </div>
+                              <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Body" id="body">
+                              </div>
+                              <button type="submit" id="createnotification" class="btn btn-primary">Create
+                                    Notification</button>
+
+                        </div>
+                  </div>
+
+            </div>
+      </div>
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      {{>scripts}}
+
+      <script>
+            var socket = io();
+            socket.on('connect', function (data) {
+                  console.log("CONNECTED");
+            });
+
+            function closefullview() {
+                  $("#container").css('display', 'block');
+                  $("#fullview").css('display', 'none');
+                  $("#fullview").html('');
+                  $("body").css('background-color', 'white');
+                  $("#header").css('display', 'block');
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            function fullview(params) {
+                  var postid = params.id.split('_')[1];
+                  console.log(postid);
+                  $.get('/post/postdetails?postid=' + postid, function (data, status) {
+                        $("#container").css('display', 'none');
+                        $("#fullview").css('display', 'block');
+                        $("#fullview").append(`<div class="row">
+            <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;color:white">
+                <img onclick="closefullview()" src="posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
+            </div>
+            <div class="col" style="border-left: 1px solid #dfd2d2;padding:2rem;">
+                <div class="row" style="height: 70%;">
+                    <div class="col">
+                        <h1 style="color:white">${data.title}</h1>
+                        <h4 style="color:white">${data.paragraph}</h4>
+                    </div>
+                </div>
+                <div class="row" style="height: 30%">
+                    <h3>More</h3>
+                </div>
+            </div>
+        </div>`)
+                  });
+                  $("body").css('background-color', 'black');
+                  $("#header").css('display', 'none');
+            }
+            socket.on('notification', (data) => {
+                  console.log(data);
+            });
+
+            $("#createnotification").click(function () {
+                  var title = $("#title").val();
+                  var body = $("#body").val();
+                  console.log("hiii");
+                  socket.emit('broadcastnotification', {
+                        title: title,
+                        body: body
+                  });
+            });
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+
+            });
+      </script>
+
+
+
+</body>
+
+</html>
