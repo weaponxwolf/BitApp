@@ -6,8 +6,8 @@ const {
       find
 } = require('cheerio/lib/api/traversing');
 const jwt = require('jsonwebtoken');
-const Subjects = require('../models/Subjects');
-const Users = require('../models/Users');
+const Subjects = require('../../models/Subjects');
+const Users = require('../../models/Users');
 const cookieParser = require('cookie-parser');
 const async = require('hbs/lib/async');
 const fileUpload = require('express-fileupload');
@@ -31,11 +31,11 @@ const io = new Server(server);
 
 
 
-const Files = require('../models/Files');
-const Folders = require('../models/Folders');
-const Links = require('../models/Links');
-const Messages = require('../models/Messages');
-const Tasks = require('../models/Tasks');
+const Files = require('../../models/Files');
+const Folders = require('../../models/Folders');
+const Links = require('../../models/Links');
+const Messages = require('../../models/Messages');
+const Tasks = require('../../models/Tasks');
 const {
       resolveSoa
 } = require('dns');

@@ -15,6 +15,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const cookie = require('cookie');
 require('dotenv').config()
+const async = require('hbs/lib/async');
 
 //IMPORTANT MIDDLEWARES
 app.use(cookieParser());
@@ -29,7 +30,7 @@ hbs.registerPartials(__dirname + '/views/partials');
 //MODELS
 const Users = require('./models/Users');
 const Clubs = require('./models/Clubs');
-
+const Messages = require('./models/Messages');
 
 //CHECK LOG IN FUNCTION
 var IsLoggedIn = async (req, res, next) => {
@@ -70,18 +71,17 @@ const GetUserDetails = async (email) => {
 }
 
 //ALL ROUTES
-const HomeRoute = require('./routes/Home');
-const FilesRoute = require('./routes/Files');
-const ProfileRoutes = require('./routes/Profile');
-const PostRoutes = require('./routes/Posts');
-const AcademicsRoute = require('./routes/Academics');
-const ViewProfileRoute = require('./routes/ViewProfile');
-const ExploreRoute = require('./routes/Explore');
-const Messages = require('./models/Messages');
-const ClubsRoute = require('./routes/Club');
-const MapsRoute = require('./routes/Maps');
-const NewsRoute = require('./routes/News');
-const async = require('hbs/lib/async');
+const HomeRoute = require('./routes/Students/Home');
+const FilesRoute = require('./routes/Students/Files');
+const ProfileRoutes = require('./routes/Students/Profile');
+const PostRoutes = require('./routes/Students/Posts');
+const AcademicsRoute = require('./routes/Students/Academics');
+const ViewProfileRoute = require('./routes/Students/ViewProfile');
+const ExploreRoute = require('./routes/Students/Explore');
+const ClubsRoute = require('./routes/Clubs/Club');
+const MapsRoute = require('./routes/Students/Maps');
+const NewsRoute = require('./routes/Students/News');
+
 
 //ALL CLUB ACCESS ROUTES
 app.use('/club', ClubsRoute);

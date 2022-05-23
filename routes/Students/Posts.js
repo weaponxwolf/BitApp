@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const path=require('path');
 
-const Posts = require('../models/Posts');
+const Posts = require('../../models/Posts');
 const async = require('hbs/lib/async');
 
 app.use(cookieParser());

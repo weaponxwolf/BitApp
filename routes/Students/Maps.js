@@ -4,8 +4,9 @@ const fs = require('fs');
 const async = require("hbs/lib/async");
 const path = require('path');
 const fileUpload = require('express-fileupload');
-const Locations = require('../models/Locations');
 const { send } = require("process");
+
+const Locations = require('../../models/Locations');
 
 const app = express()
 app.use(fileUpload());

@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 
-const ProfileFolders = require('../models/ProfileFolders');
-const ProfileFiles = require('../models/ProfileFiles');
+const ProfileFolders = require('../../models/ProfileFolders');
+const ProfileFiles = require('../../models/ProfileFiles');
 
 const async = require('hbs/lib/async');
 

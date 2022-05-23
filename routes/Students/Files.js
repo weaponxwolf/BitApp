@@ -5,10 +5,10 @@ const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 
-const Folders = require('../models/Folders');
-const Files = require('../models/Files');
-const Links = require('../models/Links');
-const Users = require('../models/Users');
+const Folders = require('../../models/Folders');
+const Files = require('../../models/Files');
+const Links = require('../../models/Links');
+const Users = require('../../models/Users');
 
 const jwt = require('jsonwebtoken');
 const async = require('hbs/lib/async');
@@ -290,7 +290,7 @@ app.post('/uploadfile', async (req, res) => {
           createdon: Date.now()
         });
         const filename = newfile.id;
-        var dir = path.join(__dirname, '..', "public/files/" + getfoldername);
+        var dir = path.join(__dirname, '..','..', "public/files/" + getfoldername);
         // var s=await sampleFile.mv(uploadPath);
         if (!fs.existsSync(dir)) {
           fs.mkdirSync(dir, {

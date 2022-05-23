@@ -8,8 +8,8 @@ const fs = require('fs')
 const path = require('path');
 const fileUpload = require('express-fileupload');
 
-const Clubs = require('../models/Clubs');
-const Locations = require('../models/Locations');
+const Clubs = require('../../models/Clubs');
+const Locations = require('../../models/Locations');
 
 app.use(fileUpload());
 app.use(cookieParser());
