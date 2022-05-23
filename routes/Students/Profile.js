@@ -30,19 +30,19 @@ app.get('/', function(req, res) {
       var getfoldername = getname.split('.').join('-').split('@')[0];
       app.use(express.static(`public/profile/${getfoldername}/`));
       
-      if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
+      if (!fs.existsSync(path.join(__dirname,"..",'..', `public/profile/${getfoldername}/index.html`))) {
             res.redirect('/profile/profilefiles/');
       }else{
-            res.sendFile(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`));
+            res.sendFile(path.join(__dirname,"..",'..', `public/profile/${getfoldername}/index.html`));
       }
       
 });
 
 app.get('/profilefiles/:hello', (req, res) => {
-      var profileindex=true;
+      var profileindex=true; 
       var getname=GetName(req);
       var getfoldername = getname.split('.').join('-').split('@')[0];
-      if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
+      if (!fs.existsSync(path.join(__dirname,"..",'..', `public/profile/${getfoldername}/index.html`))) {
             res.render('profile/profilefiles');
       }else{
             res.render('profile/profilefiles',{profileindex : profileindex});
@@ -54,7 +54,7 @@ app.get('/profilefiles/', (req, res) => {
       var profileindex=true;
       var getname=GetName(req);
       var getfoldername = getname.split('.').join('-').split('@')[0];
-      if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
+      if (!fs.existsSync(path.join(__dirname,"..", '..',`public/profile/${getfoldername}/index.html`))) {
             res.render('profile/profilefiles');
       }else{
             res.render('profile/profilefiles',{profileindex : profileindex});
@@ -74,7 +74,7 @@ app.post('/createfolder', async (req, res) => {
             }
 
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + appenddir);
+            var dir = path.join(__dirname, "..",'..', "public/profile/" + getfoldername + middir + '/' + appenddir);
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
             if (!fs.existsSync(dir)) {
@@ -113,9 +113,9 @@ app.post('/uploadfile', async (req, res) => {
             var getfoldername = getname.split('.').join('-').split('@')[0];
             dir="";
             if (middir=="/undefined") {
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + nameoffile);
+                  dir = path.join(__dirname, "..",'..', "public/profile/" + getfoldername + '/' + nameoffile);
             }else{
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + nameoffile);
+                  dir = path.join(__dirname, "..", '..',"public/profile/" + getfoldername + middir + '/' + nameoffile);
             }
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
@@ -152,7 +152,7 @@ app.get('/fileslist', async (req, res) => {
             }
             var getname = GetName(req);
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + appenddir);
+            var dir = path.join(__dirname, "..",'..', "public/profile/" + getfoldername + '/' + appenddir);
             var files = [];
             var allfiles = await fs.readdirSync(dir);
             allfiles.forEach(element => {
@@ -179,7 +179,7 @@ app.post('/deletefolder', async (req, res) => {
             }
 
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + appenddir);
+            var dir = path.join(__dirname, "..", '..',"public/profile/" + getfoldername + middir + '/' + appenddir);
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
             await ProfileFolders.deleteOne({
@@ -207,7 +207,7 @@ app.get('/folderlist', async (req, res) => {
             }
             var getname = GetName(req);
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + appenddir);
+            var dir = path.join(__dirname, "..",'..', "public/profile/" + getfoldername + '/' + appenddir);
             if (!fs.existsSync(dir)) {
                   fs.mkdirSync(dir, {
                         recursive: true
@@ -239,11 +239,12 @@ app.post('/deletefile',(req,res)=>{
             }
             var getfoldername = getname.split('.').join('-').split('@')[0];
             if (appenddir=="/profile/profilefiles/"||appenddir=="/profile/profilefiles/") {
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + filename);
+                  dir = path.join(__dirname, "..",'..', "public/profile/" + getfoldername + '/' + filename);
                  
             }else{
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + filename);
+                  dir = path.join(__dirname, "..",'..', "public/profile/" + getfoldername + middir + '/' + filename);
             }
+            console.log(dir);
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
             fs.unlinkSync(dir);
