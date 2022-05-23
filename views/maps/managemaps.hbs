@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            @keyframes up-right {
+                  0% {
+                        transform: scale(1);
+                        opacity: .25
+                  }
+
+                  50% {
+                        transform: scale (1, 5);
+                        opacity: 1;
+                  }
+
+                  100% {
+                        transform: scale(1);
+                        opacity: .25;
+                  }
+            }
+
+
+            .red {
+                  -webkit-animation: up-right 1s infinite;
+                  -moz-animation: up-right 1s infinite;
+                  -o-animation: up-right 1s infinite;
+                  animation: up-right 1s infinite;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/maps/managemaps" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/plus.png" alt="" style="height: 0.8rem">Manage Maps</a>
+                        </div>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <form method="POST" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                          <input type="text" onkeyup="getlocationlist()" class="form-control"
+                                                placeholder="Enter Location Name" id="locationname" name="locname">
+                                          <input name="locid" type="text" id="locid" style="display:none;">
+                                    </div>
+
+                                    <ul class="list-group" id="locationlist">
+
+                                    </ul>
+                                    <hr>
+                                    <div class="form-group">
+                                          <label for="exampleFormControlFile1">Map Upload</label>
+                                          <input name="map" type="file" class="form-control-file" id="exampleFormControlFile1">
+                                    </div>
+
+                                    <hr>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                              </form>
+                        </div>
+                  </div>
+
+            </div>
+      </div>
+      {{>scripts}}
+      <script>
+            function setinput(params) {
+                  $("#locid").val(params.id);
+                  $("#locationname").val(params.innerHTML);
+                  $("#locationlist").html("");
+            }
+
+            function getlocationlist() {
+                  var locationname = $("#locationname").val();
+                  $.get('/maps/location/names?location=' + locationname, function (data, status) {
+                        $("#locationlist").html("");
+                        data.forEach(element => {
+                              $("#locationlist").append(
+                                    `<li onclick="setinput(this)" id="${element._id}" class="list-group-item">${element.name}</li>`
+                              )
+                        });
+                  });
+            }
+
+            function zoomin(params) {
+                  console.log(params);
+                  $("#thefullimage").html("");
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+
+            });
+      </script>
+
+
+</body>
+
+</html>

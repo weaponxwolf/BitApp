@@ -79,6 +79,9 @@ const AcademicsRoute = require('./routes/Academics');
 const ExploreRoute = require('./routes/Explore');
 const Messages = require('./models/Messages');
 const ClubsRoute = require('./routes/Club');
+const MapsRoute=require('./routes/Maps');
+
+
 const {
       application
 } = require('express');
@@ -230,6 +233,7 @@ app.post('/createuser', async (req, res) => {
 });
 
 app.use('/club', ClubsRoute);
+app.use('/maps',MapsRoute);
 app.use('/', HomeRoute);
 
 

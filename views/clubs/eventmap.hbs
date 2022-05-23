@@ -138,9 +138,7 @@
                                     <div>
                                           <img src="/map/bitmesra.jpg" alt="" usemap="#workmap"
                                                 style="width: 882px;height:2016px;" id="themap">
-
                                     </div>
-
 
                               </div>
                         </div>
@@ -188,9 +186,11 @@
                               width = parseInt(element.width) + parseInt(element
                                     .left);
                               if (element.type === 'point') {
-                                    $("#allareasandloc").append(`
+                                    $("#allareasandloc").append(
+                                          `
                                     <img class="red" src="/assets/img/location-icon.png" alt="" style="height:${element.height}px; 
-                                    width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`);
+                                    width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`
+                                          );
                               } else {
                                     $("#allareasandloc").append(` <div onclick="HElllo(this)" id="${element._id}" style="background-color: ${element.color};
                                           height: ${element.height}px;

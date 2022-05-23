@@ -137,16 +137,21 @@ app.post('/member/updaterank', async (req, res) => {
 
 app.get('/members/listbyyear', async (req, res) => {
       try {
+        
             var token = req.cookies.clubdata;
             var decoded = jwt.verify(token, 'amitkumar');
-            const clubs = await Clubs.findOne({
+            const club = await Clubs.findOne({
                   email: decoded.email
             });
-            var s = clubs.members;
-            s.sort(dynamicSort("rank"));
-            res.send(s);
+            var members=[];
+            club.members.forEach(element=>{
+                  if (element.batch===req.query.year) {
+                        members.push(element);
+                  }
+            });
+            res.send(members);
       } catch (error) {
-
+            console.log(error);
       }
 });
 

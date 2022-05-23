@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            @keyframes up-right {
+                  0% {
+                        transform: scale(1);
+                        opacity: .25
+                  }
+
+                  50% {
+                        transform: scale (1, 5);
+                        opacity: 1;
+                  }
+
+                  100% {
+                        transform: scale(1);
+                        opacity: .25;
+                  }
+            }
+
+
+            .red {
+                  -webkit-animation: up-right 1s infinite;
+                  -moz-animation: up-right 1s infinite;
+                  -o-animation: up-right 1s infinite;
+                  animation: up-right 1s infinite;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/maps/managemaps" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/plus.png" alt="" style="height: 0.8rem">Manage Maps</a>
+                        </div>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <div class="container">
+                                    <div id="allareasandloc">
+
+                                    </div>
+                                    <div id="thefullimage">
+                                          <img src="/map/bitmesra.jpg" alt="" usemap="#workmap"
+                                                style="width: 882px;height:2016px;" id="themap">
+                                    </div>
+
+                              </div>
+                        </div>
+                  </div>
+
+            </div>
+      </div>
+
+      {{>scripts}}
+      <script>
+            function zoomin(params) {
+                  console.log(params);
+                  $("#thefullimage").html("");
+                  $.get('/maps/location/id?id='+params.id,function(data,success){
+                       $("#thefullimage").append(`<img src="/map/${data._id}.jpg" alt="" usemap="#workmap"
+                                                style="width:100%" id="themap">`);
+                 });
+                 $("#allareasandloc").css('display','none');
+
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  $.get('/club/events/areasandpos/list', function (data, status) {
+                        data.forEach(element => {
+                              tabind = 1;
+                              height = parseInt(element.height) + parseInt(element
+                                    .top);
+                              width = parseInt(element.width) + parseInt(element
+                                    .left);
+                              if (element.type === 'point') {
+                                    $("#allareasandloc").append(
+                                          `
+                                    <img class="red" src="/assets/img/location-icon.png" alt="" style="height:${element.height}px; 
+                                    width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`
+                                    );
+                              } else {
+                                    $("#allareasandloc").append(
+                                          ` <div onclick="zoomin(this)" id="${element._id}" style="background-color: #ffffff36;height: ${element.height}px;width: ${element.width}px;position: relative;margin-bottom: -${element.height}px;left: ${element.left}px;top: ${element.top}px;opacity: 45%;" class="red"></div>`
+                                          );
+                              }
+
+
+                              tabind++;
+                        });
+                  });
+            });
+      </script>
+
+
+</body>
+
+</html>
