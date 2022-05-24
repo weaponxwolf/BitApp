@@ -1,0 +1,273 @@
+[33mcommit bd9e04520fae4a4c331d1331e144d26e25cf9057[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Tue May 24 13:27:02 2022 +0530
+
+    BitApp3.2.4 - In Progress Create Post
+
+[33mcommit 6e4685c5bfce7379f7ef7d055b410d9a33182adc[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Tue May 24 08:24:47 2022 +0530
+
+    BitAppv3.2.3 - Add Event Feature Is Added
+
+[33mcommit 8d40bbbc97db7cb428bebc7a79abfecedb20b5bd[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Tue May 24 07:08:51 2022 +0530
+
+    BitAppv3.2.3 - Home Page Modified Improved
+
+[33mcommit 1cdd2bb4be47f82afaf1aec812735714141b6567[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Tue May 24 00:18:05 2022 +0530
+
+    BitAppv3.1.3 - Minor Files Bug Fixes
+
+[33mcommit 80088d553bd4e373ee833915a4d4d9bc898cca2f[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Tue May 24 00:07:31 2022 +0530
+
+    BitAppv3.2.2 - Updated Route Locations
+
+[33mcommit e89e10c6392e201e226e0c0d7a403182d514f0a9[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Mon May 23 23:50:25 2022 +0530
+
+    BitAppv3.2.1 - Added Login Security and Improved UI of Lig In Page and Handling
+
+[33mcommit f80fce495167a7283beda649fc102c2e1d9c7f72[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Mon May 23 18:38:16 2022 +0530
+
+    BitAppv3.1.15 - Created Icons and Notifications
+
+[33mcommit 9ee7935787ef5316106517c801bf20fd00eb9577[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Mon May 23 15:33:43 2022 +0530
+
+    BitAppv3.1.14 - Added Classmate Feature
+
+[33mcommit dd0d3c0a40c253bba531aaa097492f68d7d0bf1a[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Mon May 23 13:47:11 2022 +0530
+
+    BitAppv3.1.13 - Add Locations And Map Of Locations
+
+[33mcommit a6675449da166731c73e2bf74fcdd0c1fa2e0e96[m
+Merge: 436931c ea97b1a
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Mon May 23 08:28:45 2022 +0530
+
+    Merge branch 'master' of https://github.com/weaponxwolf/BitAppv2
+
+[33mcommit 436931c03ea3d68c0af384e67bc64bdc80892e82[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Mon May 23 08:28:35 2022 +0530
+
+    BitAppv3.1.12 - Improved Manage Maps
+
+[33mcommit ea97b1abd22c7805fe87af2254f6f43989fe8164[m
+Author: Amit  Kumart Mahato <65853379+weaponxwolf@users.noreply.github.com>
+Date:   Sun May 22 21:47:58 2022 +0530
+
+    Create README.md
+
+[33mcommit 68dd4d38eabb45050e048b212811a83c0d0889e9[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sun May 22 21:36:36 2022 +0530
+
+    BitAppv3.1.11- Added Event Map
+
+[33mcommit a6c91a37e7e7434588dd157c2e990ecf6863d3fe[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sun May 22 13:23:22 2022 +0530
+
+    BitAppv3.1.10 -  Club Members added
+
+[33mcommit f0c8ae5629ff6bd985d8be3e2d73b89631af856f[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sun May 22 08:42:06 2022 +0530
+
+    IETE Page Added
+
+[33mcommit 163089bd62d6572e76a5d9842e9a32580b5ac518[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sun May 22 08:22:42 2022 +0530
+
+    Created Custom Pages For Every Clubs
+
+[33mcommit 93ca2708852905e7e07b6b8c437ae9f0f5eb04a0[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sat May 21 22:37:26 2022 +0530
+
+    fhfdhdhjdfdjhd
+
+[33mcommit 618e08e6cbf10b7f4bc6571a9c689faa0c300cd0[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sat May 21 21:21:56 2022 +0530
+
+    Members list page created
+
+[33mcommit 56a7f12bfaf86b6eee7630df23e875cd83b6db90[m
+Merge: 4afd957 24a9d84
+Author: Amit  Kumart Mahato <65853379+weaponxwolf@users.noreply.github.com>
+Date:   Sat May 21 20:06:41 2022 +0530
+
+    Merge pull request #1 from weaponxwolf/Trying-In-UBUNTU
+    
+    Trying in ubuntu
+
+[33mcommit 24a9d84c124ae17a3381611092379c12fecc4bab[m[33m ([m[1;31morigin/Trying-In-UBUNTU[m[33m)[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sat May 21 20:03:28 2022 +0530
+
+    just trying
+
+[33mcommit daffdf418ad637d982b4d8bd7415e8722e4d78e3[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sat May 21 18:36:29 2022 +0530
+
+    trying
+
+[33mcommit 4afd95754fbe0cdea313bba01b4b50875ba48453[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sat May 21 17:10:42 2022 +0530
+
+    BitAppv3.1.9 - Added Tasks Feature
+
+[33mcommit d8a3873e3c395050187ac48336638f0d9801e4c4[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Sat May 21 04:31:07 2022 +0530
+
+    BitAppv3.1.8 - Added Calender
+
+[33mcommit e4489668690f694fd93a73a5653ffebd34a734c4[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Fri May 20 21:59:16 2022 +0530
+
+    BitAppv3.1.7 - Improved Homepage
+
+[33mcommit 11692e729fd758f292735a8a59169dc02fa174fa[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Fri May 20 20:25:35 2022 +0530
+
+    BitAppv3.1.6 - Chats Have Now Database
+
+[33mcommit 1f81a01a541a8439eb42cb68bb13eed1460fc730[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Fri May 20 19:51:09 2022 +0530
+
+    BitAppv3.1.6 - Completed UI of Class Group
+
+[33mcommit ddf8f5e20b5ee28f045a5ae98c9bbb6868ddec21[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Fri May 20 17:32:26 2022 +0530
+
+    BitAppv3.1.5 - Class Chat Started
+
+[33mcommit d9a3ee0bd2cd40cf6d03effd7eaca01b569448f7[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Fri May 20 13:38:11 2022 +0530
+
+    BitAppv3.1.4 - Improved Shared System
+
+[33mcommit 89df1e558a004d7326c201b6912fa06dbcb5473a[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Fri May 20 08:29:15 2022 +0530
+
+    BitAppv3.1.4 - Share is Working Well Now
+
+[33mcommit 7c0170ad732b38040df9948519f1cb7d254aff74[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Fri May 20 07:49:52 2022 +0530
+
+    BitAppv3.1.4 - Improved File System - Now Handles Whitespaces
+
+[33mcommit 691618f2a3b890002cb8da8821d67efad8c29dee[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Thu May 19 22:12:24 2022 +0530
+
+    BitAppv3.1.3- Bug Fixes Filesystem
+
+[33mcommit ddf31aeb7c8fda86b29f8037264ffb2ab8650204[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Thu May 19 20:31:13 2022 +0530
+
+    BitAppv3.2.0 - Improved File System
+
+[33mcommit bba61c0f1f2e980f4260e4e2296be5f38fd4a9f6[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Thu May 19 18:18:31 2022 +0530
+
+    BitAppv3.1.3- Completed Syllabus Pages
+
+[33mcommit ded1604cf0fd3a77a6ff45d790d71bd68209451d[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Thu May 19 18:11:20 2022 +0530
+
+    BitAppv3.1.2- Created Syllabus Show and Create
+
+[33mcommit 8f36e9907e1c57a3d0ed7a945be7116290205b01[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Thu May 19 14:34:37 2022 +0530
+
+    BitAppv3.1.1- Full Post View Created
+
+[33mcommit e29e6ba24796caf6ddc2b6bf55f999c0e86e2d7c[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Thu May 19 11:14:48 2022 +0530
+
+    BitAppv3.1.1- Started Working On HomePage
+
+[33mcommit 0e6f86372cb5508967308ea3e3c67e0a942eecb3[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Thu May 19 10:35:41 2022 +0530
+
+    BitAppv3.1.0 - Added Create Users using Google Oauth
+
+[33mcommit 042c8ca52cec6abfb85d11634dfbdfb5979f5011[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 17:23:31 2022 +0530
+
+    BitAppv3.0.0 - Custom Profile Pages Added
+
+[33mcommit 2a73d11a32a03e94a038a3e438045086097c1fe9[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 16:27:26 2022 +0530
+
+    BitAppv2.1.3 - Files Upload And Deletion
+
+[33mcommit d9bd553a95c889c6cb8a4729468edf3899b4e582[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 14:25:35 2022 +0530
+
+    BitAppv2.1.2- BreadCrumb Created
+
+[33mcommit af443dc3b838b786bea67e2f69d1a9da03633cc4[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 13:36:53 2022 +0530
+
+    BitAppv2.1.1 - Improved Deletion
+
+[33mcommit a49031d130210db885b77364eec062c496411a62[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 13:26:07 2022 +0530
+
+    BitAppv2.1.0- Deletion Completed
+
+[33mcommit fefaf0dc4de7a7cd85352c9d54f58fb08a5354ee[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 12:04:16 2022 +0530
+
+    BitAppv2.0.1- Folder Creation Completed
+
+[33mcommit 52517da79f5f818964a2bae7bcc8c5c71ca4411b[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 08:18:29 2022 +0530
+
+    v.2.0.1 - Everything Tested
+
+[33mcommit 859f95a618d5e6ea43c2a37677ec0493576a85f4[m
+Author: AMIT KUMAR MAHATO <miamitkumar98@gmail.com>
+Date:   Wed May 18 08:15:23 2022 +0530
+
+    BitApp v2.0.0 - Release
