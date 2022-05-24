@@ -136,25 +136,22 @@
             <div class="row" style="margin-top: 100px">
                   <div class="col-2">
                         <div class="list-group">
-                              <a href="/club/events" class="list-group-item list-group-item-action"><img
-                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Events</a>
+                              <a href="/club/posts/" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Posts</a>
                         </div>
                         <hr>
                         <div class="list-group" style="text-align: center;">
-                              <a href="/club/events/addnew" class="list-group-item list-group-item-action"> Add New
-                                    Event </a>
+                              <a href="/club/posts/addnew" class="list-group-item list-group-item-action"> Add New
+                                    Post </a>
                         </div>
                         <div class="list-group" style="text-align: center;">
-                              <a href="/club/events/manage" class="list-group-item list-group-item-action"> Manage
-                                    Events</a>
-                        </div>
-                        <div class="list-group" style="text-align: center;">
-                              <a href="/club/events/map" class="list-group-item list-group-item-action">Event Map</a>
+                              <a href="/club/posts/manage" class="list-group-item list-group-item-action"> Manage
+                                    Posts</a>
                         </div>
                   </div>
                   <div class="col-10">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
-                              <h1>Events</h1>
+                              <h1>Posts</h1>
 
                               <body>
                                     <div class="container" id="eventslist">
@@ -198,7 +195,7 @@
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
 
-                  $.get('/club/events/list', (data, status) => {
+                  $.get('/club/posts/list', (data, status) => {
                         console.log(data);
                         data.forEach(element => {
                               desc = element.description.split('\r\n').join('<br>');

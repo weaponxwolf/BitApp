@@ -92,6 +92,9 @@
                                     <li class="nav-item">
                                           <a class="nav-link" href="/club/events/">Events</a>
                                     </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="/club/posts/">Posts</a>
+                                    </li>
                               </ul>
                               <div class="ml-auto">
 
@@ -122,75 +125,58 @@
                   </div>
                   <div class="col-10">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
-                              <h1>Add Event</h1>
-                              <div class="container">
+
+                              <div class="container" id="createpost">
                                     <form method="POST" enctype="multipart/form-data">
                                           <div class="mb-3 row">
-                                                <input type="text" name="name" id="eventname" class="form-control col-5"
-                                                      placeholder="Enter Event Name">
-                                                <input type="text" name="location" id="location"
-                                                      class="form-control col-5" onkeyup="listlocation(this)"
-                                                      placeholder="Enter Event Location">
-                                                <input type="text" name="locid" id="locid" style="display: none">
+                                                <input type="text" name="title" id="title" class="form-control col-10"
+                                                      placeholder="Enter Post Name">
                                           </div>
+                                          <div class="row">
+                                                <div class="form-group col-7" style="margin-right: 1rem">
+                                                      <label for="exampleFormControlTextarea1">Enter POST BODY :</label>
+                                                      <textarea class="form-control" id="postbody" rows="10"></textarea>
+                                                </div>
+                                                <div class="col-4">
+                                                      <div class="row" style="margin-bottom: 1rem">
+                                                            <button type="button" onclick="insertLink()"
+                                                                  class="btn btn-primary">Insert Link</button>
 
-                                          <div>
-                                                <ul class="list-group" id="locationslist">
-                                                </ul>
-                                          </div>
-                                          <div class="mb-3 row">
-                                                <div class="form-group col-5">
-                                                      <label for="exampleInputEmail1">Event Start Date :</label>
-                                                      <input type="date" name="startdate" class="form-control">
-                                                </div>
-                                                <div class="form-group col-5">
-                                                      <label for="exampleInputEmail1">Event End Date :</label>
-                                                      <input type="date" name="enddate" class="form-control">
-                                                </div>
-                                          </div>
-                                          <div class="mb-3 row">
-                                                <div class="form-group col-5">
-                                                      <label for="exampleInputEmail1">Event Start Time :</label>
-                                                      <input type="time" name="starttime" class="form-control">
-                                                </div>
-                                                <div class=" form-group col-5">
-                                                      <label for="exampleInputEmail1">Event End Time :</label>
-                                                      <input type="time" name="endtime" class="form-control">
-                                                </div>
-                                          </div>
+                                                      </div>
+                                                      <div class="row" style="margin-bottom: 1rem">
+                                                            <button type="button" onclick="insertLink()"
+                                                                  class="btn btn-primary"></button>
 
-                                          <div class="mb-3 row">
-                                                <div class="form-group col-5">
-                                                      <label name="eventfor" for="exampleFormControlSelect1"> Event
-                                                            For</label>
-                                                      <select class="form-control" id="exampleFormControlSelect1">
-                                                            <option value="clubmembers">Club Members </option>
-                                                            <option value="everyone">Everyone </option>
-                                                            <option value="batch">Batch </option>
-                                                            <option value="staff">Staff </option>
-                                                      </select>
-                                                </div>
-                                          </div>
-                                          <div class="mb-3 row">
-                                                <div class="form-group col-5">
-                                                      <label for="exampleFormControlFile1">Event Image :</label>
-                                                      <input type="file" name="eventimage" class="form-control-file"
-                                                            id="exampleFormControlFile1">
-                                                </div>
-                                                <div class="form-group col-5">
-                                                      <label for="exampleFormControlFile1">Event Icon :</label>
-                                                      <input type="file" name="eventicon" class="form-control-file"
-                                                            id="exampleFormControlFile1">
+                                                      </div>
+                                                      <div class="row">
+                                                            <select onchange="insertHeading()" id="insertheading"
+                                                                  class="form-select text-white bg-primary"
+                                                                  style="height: 2.5rem;font-size: 1rem;border-radius: 0.3rem;text-align: center;"
+                                                                  aria-label="Default select example">
+                                                                  <option value='h0' selected>Insert Heading</option>
+                                                                  <option value="h1">H1</option>
+                                                                  <option value="h2">H2</option>
+                                                                  <option value="h3">H3</option>
+                                                                  <option value="h4">H4</option>
+                                                                  <option value="h5">H5</option>
+                                                                  <option value="h6">H6</option>
+                                                            </select>
+                                                      </div>
                                                 </div>
 
                                           </div>
-                                          <div class="form-group col-8">
-                                                <textarea name="description" class="form-control"
-                                                      id="exampleFormControlTextarea1" rows="3"
-                                                      placeholder="Event Description"></textarea>
-                                          </div>
-                                          <button type="submit" class="btn btn-primary">Create Event</button>
+
                                     </form>
+                                    <button type="submit" onclick="previewpost()" class="btn btn-primary">Preview
+                                          Post</button>
+                              </div>
+                              <hr>
+
+                              <div class="container" style="display: none;" id="preview">
+                                    <div class="card">
+                                          <button type="submit" class="btn btn-primary">Create Post</button>
+                                          <button type="submit" class="btn btn-dark">Go Back</button>
+                                    </div>
                               </div>
                         </div>
                   </div>
@@ -201,6 +187,68 @@
       </div>
       {{>scripts}}
       <script>
+            function previewpost() {
+                  $("#preview").css('display', 'block');
+                  
+            }
+
+            function insertAtCaret(areaId, text) {
+                  var txtarea = document.getElementById(areaId);
+                  if (!txtarea) {
+                        return;
+                  }
+
+                  var scrollPos = txtarea.scrollTop;
+                  var strPos = 0;
+                  var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+                        "ff" : (document.selection ? "ie" : false));
+                  if (br == "ie") {
+                        txtarea.focus();
+                        var range = document.selection.createRange();
+                        range.moveStart('character', -txtarea.value.length);
+                        strPos = range.text.length;
+                  } else if (br == "ff") {
+                        strPos = txtarea.selectionStart;
+                  }
+
+                  var front = (txtarea.value).substring(0, strPos);
+                  var back = (txtarea.value).substring(strPos, txtarea.value.length);
+                  txtarea.value = front + text + back;
+                  strPos = strPos + text.length;
+                  if (br == "ie") {
+                        txtarea.focus();
+                        var ieRange = document.selection.createRange();
+                        ieRange.moveStart('character', -txtarea.value.length);
+                        ieRange.moveStart('character', strPos);
+                        ieRange.moveEnd('character', 0);
+                        ieRange.select();
+                  } else if (br == "ff") {
+                        txtarea.selectionStart = strPos;
+                        txtarea.selectionEnd = strPos;
+                        txtarea.focus();
+                  }
+
+                  txtarea.scrollTop = scrollPos;
+            }
+
+            function insertLink() {
+                  var s = $("#postbody").val();
+                  v = ` __L(" ")L__ `;
+
+                  console.log(s);
+                  insertAtCaret('postbody', v);
+            }
+
+            function insertHeading() {
+                  var s = $("#postbody").val();
+                  var x = $("#insertheading").val().replace('h', '');
+                  if (x != '0') {
+                        s = s + ` __H` + x + `("\n\n")` + x + `H__\n`;
+                        $('#postbody').val(s);
+                  }
+            }
+
+
             function fillinput(params) {
                   console.log(params.id);
                   var locname = $("#" + params.id).html();

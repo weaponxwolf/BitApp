@@ -7,6 +7,7 @@ const async = require('hbs/lib/async');
 const fs = require('fs')
 const path = require('path');
 const fileUpload = require('express-fileupload');
+const mongoose=require('mongoose');
 
 const Clubs = require('../../models/Clubs');
 const Locations = require('../../models/Locations');
@@ -459,14 +460,74 @@ app.get('/events/addnew', (req, res) => {
       res.render('clubs/addnewevent');
 });
 
-app.post('/events/addnew', (req, res) => {
+app.post('/events/addnew', async (req, res) => {
       try {
-            console.log(req.body);
+            var {name ,location,locid,startdate,enddate,starttime,endtime,description }=req.body;
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            if (req.body && req.files) {
+                  var club = await Clubs.findOne({
+                        email: getname
+                  });
+                  if (club) {
+                        var eventIcon=req.files.eventicon;
+                        var eventImage=req.files.eventimage;
+                        var eventdata={
+                              _id: mongoose.Types.ObjectId(),
+                              name :name,
+                              location:location,
+                              startdate:startdate,
+                              enddate : enddate,
+                              starttime : starttime,
+                              endtime : endtime,
+                              description : description
+                        }
+
+                        iconext='';
+                        imgext='';
+
+                        if (eventIcon.mimetype== 'image/png') {
+                              iconext="png"
+                        }
+                        if (eventIcon.mimetype== 'image/jpeg') {
+                              iconext="jpg"
+                        }
+                        if (eventImage.mimetype== 'image/png') {
+                              imgext="png"
+                        }
+                        if (eventImage.mimetype== 'image/jpeg') {
+                              imgext="jpg"
+                        }
+
+                        iconName=eventdata._id+'.'+iconext;
+                        imageName=eventdata._id+'.'+imgext;
+
+                        iconUploadPath=path.join(__dirname,'..','..','public/clubs/events/icons/',iconName);
+                        imageUploadPath=path.join(__dirname,'..','..','public/clubs/events/images/',imageName);
+
+                        eventImage.mv(imageUploadPath);
+                        eventIcon.mv(iconUploadPath);
+
+                        eventdata.eventImage=imageName;
+                        eventdata.eventIcon=iconName;
+                       
+                        await Clubs.updateOne({
+                              email : getname
+                        },{
+                              $push :{
+                                    events : eventdata
+                              }
+                        });
+                  }
+            }
             res.render('clubs/addnewevent');
       } catch (error) {
             console.log(error);
       }
 });
+
+
 app.get('/locations/list', async (req, res) => {
       try {
             const locations = await Locations.find({
@@ -479,6 +540,27 @@ app.get('/locations/list', async (req, res) => {
       } catch (error) {
             console.log(error);
       }
+});
+
+app.get('/events/list', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            var club=await Clubs.findOne({
+                  email :getname
+            });
+            res.send(club.events);
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.get('/posts',(req,res)=>{
+      res.render('clubs/posts');
+});
+app.get('/posts/addnew',(req,res)=>{
+      res.render('clubs/addnewpost');
 });
 
 module.exports = app;
