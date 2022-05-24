@@ -4,8 +4,6 @@
 <head>
     {{>head}}
     <style>
-       
-
         .sc1::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -37,9 +35,6 @@
                 <div class="list-group">
                     <a href="/post/newpost" class="list-group-item list-group-item-action"><img
                             src="/assets\img\plus.png" alt="" style="height: 0.8rem"> New Post</a>
-                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
                 </div>
             </div>
             <div class="col-7">
@@ -50,10 +45,7 @@
 
             <div class="col-3">
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    <a href="#" class="list-group-item list-group-item-action active text-center">Notifications</a>
                 </div>
             </div>
         </div>
@@ -62,14 +54,23 @@
 
     </div>
 
-    <div id="notificationstoast" style="background-color:white;position:fixed;min-width:400px;padding:1rem;right: 0px;top: 100px; border: 1px solid red;display: none; ">
-        
+    <div id="notificationstoast"
+        style="background-color:white;position:fixed;min-width:400px;padding:1rem;right: 0px;top: 100px; border: 1px solid red;display: none; ">
+
     </div>
     {{>scripts}}
     <script>
-        function closenotification(){
+        function closefullview() {
+            $("#container").css('display', 'block');
+            $("#fullview").css('display', 'none');
+            $("#fullview").html('');
+            $('body').css('background-color','white');
+            $("#header").css('display','block');
+        }
+
+        function closenotification() {
             $("#notificationstoast").html("");
-            $("#notificationstoast").css('display','none');
+            $("#notificationstoast").css('display', 'none');
         }
 
         function getPosition(element) {
@@ -89,7 +90,6 @@
 
         function fullview(params) {
             var postid = params.id.split('_')[1];
-            console.log(postid);
             $.get('/post/postdetails?postid=' + postid, function (data, status) {
                 $("#container").css('display', 'none');
                 $("#fullview").css('display', 'block');
@@ -141,11 +141,10 @@
     </script>
     <script>
         var socket = io();
-        socket.on('connect', function (data) {
-        });
+        socket.on('connect', function (data) {});
         socket.on('notification', (data) => {
             $("#notificationstoast").html("");
-            $("#notificationstoast").css('display','block');
+            $("#notificationstoast").css('display', 'block');
             $("#notificationstoast").append(`<span style="float: right"><img
             src="/assets/img/cross.png" alt="" onclick="closenotification()" style="height: 0.8rem"></span>
         <h1>${data.title}</h1>

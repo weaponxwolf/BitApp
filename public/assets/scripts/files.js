@@ -454,12 +454,7 @@ function linkoptionMenu(params) {
     $("#link_" + linkid).append(`
     <div class="optionicons">
         <hr>
-        <div class="delete-icon" id="delete_${linkid}" onclick="deletelink(this)">
-            <span >
-                <div><img src="/assets/img/dust-bin.png" alt=""
-                    style="height: 1.5rem;margin-right: 1 rem;"></div>
-            </span>
-        </div>
+        
         <div class="delete-icon" id="delete_${linkid}" onclick="deletelink(this)">
             <span >
                 <div><img src="/assets/img/dust-bin.png" alt=""
@@ -469,6 +464,12 @@ function linkoptionMenu(params) {
         <div class="rename-icon" id="rename_${linkid}" onclick="renamelink(this)">
             <span >
                 <div><img src="/assets/img/rename.png" alt=""
+                    style="height: 1.5rem;margin-right: 1 rem;"></div>
+            </span>
+        </div>
+        <div class="share-icon" id="share_${linkid}" onclick="sharelink(this)">
+            <span >
+                <div><img src="/assets/img/share.png" alt=""
                     style="height: 1.5rem;margin-right: 1 rem;"></div>
             </span>
         </div>
