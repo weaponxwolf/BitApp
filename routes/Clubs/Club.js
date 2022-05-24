@@ -7,12 +7,15 @@ const async = require('hbs/lib/async');
 const fs = require('fs')
 const path = require('path');
 const fileUpload = require('express-fileupload');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 
 const Clubs = require('../../models/Clubs');
 const Locations = require('../../models/Locations');
 
-app.use(fileUpload());
+app.use(fileUpload({
+      useTempFiles: true,
+      tempFileDir: path.join(__dirname, '..', '..', '/public/clubs/tmp/')
+}));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
       extended: true
@@ -462,7 +465,16 @@ app.get('/events/addnew', (req, res) => {
 
 app.post('/events/addnew', async (req, res) => {
       try {
-            var {name ,location,locid,startdate,enddate,starttime,endtime,description }=req.body;
+            var {
+                  name,
+                  location,
+                  locid,
+                  startdate,
+                  enddate,
+                  starttime,
+                  endtime,
+                  description
+            } = req.body;
             var token = await req.cookies.clubdata;
             var decoded = await jwt.verify(token, 'amitkumar');
             var getname = decoded.email;
@@ -471,52 +483,52 @@ app.post('/events/addnew', async (req, res) => {
                         email: getname
                   });
                   if (club) {
-                        var eventIcon=req.files.eventicon;
-                        var eventImage=req.files.eventimage;
-                        var eventdata={
+                        var eventIcon = req.files.eventicon;
+                        var eventImage = req.files.eventimage;
+                        var eventdata = {
                               _id: mongoose.Types.ObjectId(),
-                              name :name,
-                              location:location,
-                              startdate:startdate,
-                              enddate : enddate,
-                              starttime : starttime,
-                              endtime : endtime,
-                              description : description
+                              name: name,
+                              location: location,
+                              startdate: startdate,
+                              enddate: enddate,
+                              starttime: starttime,
+                              endtime: endtime,
+                              description: description
                         }
 
-                        iconext='';
-                        imgext='';
+                        iconext = '';
+                        imgext = '';
 
-                        if (eventIcon.mimetype== 'image/png') {
-                              iconext="png"
+                        if (eventIcon.mimetype == 'image/png') {
+                              iconext = "png"
                         }
-                        if (eventIcon.mimetype== 'image/jpeg') {
-                              iconext="jpg"
+                        if (eventIcon.mimetype == 'image/jpeg') {
+                              iconext = "jpg"
                         }
-                        if (eventImage.mimetype== 'image/png') {
-                              imgext="png"
+                        if (eventImage.mimetype == 'image/png') {
+                              imgext = "png"
                         }
-                        if (eventImage.mimetype== 'image/jpeg') {
-                              imgext="jpg"
+                        if (eventImage.mimetype == 'image/jpeg') {
+                              imgext = "jpg"
                         }
 
-                        iconName=eventdata._id+'.'+iconext;
-                        imageName=eventdata._id+'.'+imgext;
+                        iconName = eventdata._id + '.' + iconext;
+                        imageName = eventdata._id + '.' + imgext;
 
-                        iconUploadPath=path.join(__dirname,'..','..','public/clubs/events/icons/',iconName);
-                        imageUploadPath=path.join(__dirname,'..','..','public/clubs/events/images/',imageName);
+                        iconUploadPath = path.join(__dirname, '..', '..', 'public/clubs/events/icons/', iconName);
+                        imageUploadPath = path.join(__dirname, '..', '..', 'public/clubs/events/images/', imageName);
 
                         eventImage.mv(imageUploadPath);
                         eventIcon.mv(iconUploadPath);
 
-                        eventdata.eventImage=imageName;
-                        eventdata.eventIcon=iconName;
-                       
+                        eventdata.eventImage = imageName;
+                        eventdata.eventIcon = iconName;
+
                         await Clubs.updateOne({
-                              email : getname
-                        },{
-                              $push :{
-                                    events : eventdata
+                              email: getname
+                        }, {
+                              $push: {
+                                    events: eventdata
                               }
                         });
                   }
@@ -547,8 +559,8 @@ app.get('/events/list', async (req, res) => {
             var token = await req.cookies.clubdata;
             var decoded = await jwt.verify(token, 'amitkumar');
             var getname = decoded.email;
-            var club=await Clubs.findOne({
-                  email :getname
+            var club = await Clubs.findOne({
+                  email: getname
             });
             res.send(club.events);
       } catch (error) {
@@ -556,11 +568,64 @@ app.get('/events/list', async (req, res) => {
       }
 });
 
-app.get('/posts',(req,res)=>{
+app.get('/posts', (req, res) => {
       res.render('clubs/posts');
 });
-app.get('/posts/addnew',(req,res)=>{
+app.get('/posts/addnew', (req, res) => {
       res.render('clubs/addnewpost');
 });
+
+app.post('/posts/createpreview', (req, res) => {
+      thebody = req.body.thebody;
+      var images = [];
+      if (thebody.indexOf('<') == -1) {
+            console.log(thebody);
+            thepreview = thebody
+                  .split(`__H1("`).join('<h1>')
+                  .split(`")1H__`).join('</h1>')
+                  .split(`__H2("`).join('<h1>')
+                  .split(`")2H__`).join('</h1>')
+                  .split(`__H3("`).join('<h1>')
+                  .split(`")3H__`).join('</h1>')
+                  .split(`__H4("`).join('<h1>')
+                  .split(`")4H__`).join('</h1>')
+                  .split(`__H5("`).join('<h1>')
+                  .split(`")5H__`).join('</h1>')
+                  .split(`__H6("`).join('<h1>')
+                  .split(`")6H__`).join('</h1>');
+
+            thepreview = thepreview.split(`__L("`).join('<a href="').split(`")L__`).join('</a>').split("$").join(`">`);
+            console.log(thepreview);
+            if (req.files['file[]']) {
+                  req.files['file[]'].forEach(element => {
+                        const imageType = element.mimetype.replace('image/', '.');
+                        const imagePath = element.tempFilePath + imageType;
+                        fs.renameSync(element.tempFilePath, imagePath);
+                        shortimagepath = element.tempFilePath.split(`\\tmp\\`)[1] + imageType;
+                        console.log(shortimagepath);
+                        images.push(shortimagepath);
+                  });
+                  data={
+                        thetitle:req.body.title,
+                        thebody : thepreview,
+                        images : images
+                  }
+                  res.send(data);
+            } else {
+                  data={
+                        thetitle:req.body.thetitle,
+                        thebody : thepreview
+                  }
+                  res.send(data);
+            }
+            
+      } else {
+            res.send("INVALID CHARACTER '<' ");
+      }
+      
+
+});
+
+
 
 module.exports = app;
