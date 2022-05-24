@@ -195,27 +195,30 @@
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
 
-                  $.get('/club/posts/list', (data, status) => {
+                  $.get('/club/posts/list', function(data,status){
                         console.log(data);
+                        // data.forEach(element => {
+                        //       desc = element.description.split('\r\n').join('<br>');
+                        //       $("#eventslist").append(`<div class="card" style="border-radius:2rem;padding:1rem;margin-bottom:1rem;">
+                        //                         <h1 class="center" style="z-index:45">${element.name}</h1>
+                        //                         <article class="episode" style="z-index:45">
+                        //                               <div class="episode__number">
+                        //                                     <img src="/clubs/events/images/${element.eventImage}"
+                        //                                           style="width:300px;border-radius:0.5rem;">
+                        //                               </div>
+                        //                               <div class="episode__content">
+                        //                                     <div class="title" style="text-align:center">
+                        //                                           ${element.startdate}<br>-<br>${element.enddate}</div>
+                        //                                     <div class="story">
+                        //                                           <p>${desc}
+                        //                                     </div>
+                        //                               </div>
+                        //                         </article>
+                        //                   </div>
+                        //       `)
+                        // });
                         data.forEach(element => {
-                              desc = element.description.split('\r\n').join('<br>');
-                              $("#eventslist").append(`<div class="card" style="border-radius:2rem;padding:1rem;margin-bottom:1rem;">
-                                                <h1 class="center" style="z-index:45">${element.name}</h1>
-                                                <article class="episode" style="z-index:45">
-                                                      <div class="episode__number">
-                                                            <img src="/clubs/events/images/${element.eventImage}"
-                                                                  style="width:300px;border-radius:0.5rem;">
-                                                      </div>
-                                                      <div class="episode__content">
-                                                            <div class="title" style="text-align:center">
-                                                                  ${element.startdate}<br>-<br>${element.enddate}</div>
-                                                            <div class="story">
-                                                                  <p>${desc}
-                                                            </div>
-                                                      </div>
-                                                </article>
-                                          </div>
-                              `)
+                              console.log(element);
                         });
                   });
 

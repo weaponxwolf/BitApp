@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 
 const Clubs = require('../../models/Clubs');
 const Locations = require('../../models/Locations');
+const Posts = require('../../models/Posts');
 
 app.use(fileUpload({
       useTempFiles: true,
@@ -575,7 +576,20 @@ app.get('/posts/addnew', (req, res) => {
       res.render('clubs/addnewpost');
 });
 
-app.post('/posts/createpreview', (req, res) => {
+app.get('/posts/list',async(req,res)=>{
+      try {
+            const posts=await Posts.find();
+            res.send(posts);
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/posts/createpreview', async (req, res) => {
+      var token = await req.cookies.clubdata;
+      var decoded = await jwt.verify(token, 'amitkumar');
+      var getname = decoded.email;
+      console.log(decoded);
       thebody = req.body.thebody;
       var images = [];
       if (thebody.indexOf('<') == -1) {
@@ -595,34 +609,40 @@ app.post('/posts/createpreview', (req, res) => {
                   .split(`")6H__`).join('</h1>');
 
             thepreview = thepreview.split(`__L("`).join('<a href="').split(`")L__`).join('</a>').split("$").join(`">`);
-            console.log(thepreview);
             if (req.files['file[]']) {
                   req.files['file[]'].forEach(element => {
                         const imageType = element.mimetype.replace('image/', '.');
                         const imagePath = element.tempFilePath + imageType;
                         fs.renameSync(element.tempFilePath, imagePath);
                         shortimagepath = element.tempFilePath.split(`\\tmp\\`)[1] + imageType;
-                        console.log(shortimagepath);
                         images.push(shortimagepath);
                   });
-                  data={
-                        thetitle:req.body.title,
-                        thebody : thepreview,
-                        images : images
+                  data = {
+                        thetitle: req.body.title,
+                        thebody: thepreview,
+                        images: images
                   }
+                  var post = await new Posts({
+                        title: req.body.title,
+                        body: thepreview,
+                        images: images,
+                        createdby : decoded.memberemail,
+                        createdon : Date.now()
+                  });
+                  post.save();
                   res.send(data);
             } else {
-                  data={
-                        thetitle:req.body.thetitle,
-                        thebody : thepreview
+                  data = {
+                        thetitle: req.body.thetitle,
+                        thebody: thepreview
                   }
                   res.send(data);
             }
-            
+
       } else {
             res.send("INVALID CHARACTER '<' ");
       }
-      
+
 
 });
 

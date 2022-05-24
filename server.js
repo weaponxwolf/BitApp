@@ -325,7 +325,7 @@ app.post('/clublogin', async (req, res) => {
                   if (obj) {
                         var token = await jwt.sign({
                               email: club.email,
-                              membername : obj.email,
+                              memberemail : obj.email,
                               membername : obj.name,
                               memberdesignation : obj.designation,
                               batch : obj.batch,

@@ -7,6 +7,8 @@ const PostsSchema=new mongoose.Schema({
    createdon : Date,
    ImageName : String,
    ImageLink : String,
+   images : Array,
+   body : String
 });
 
 module.exports=new mongoose.model("Posts",PostsSchema);
