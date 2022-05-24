@@ -137,15 +137,15 @@ app.post('/member/updaterank', async (req, res) => {
 
 app.get('/members/listbyyear', async (req, res) => {
       try {
-        
+
             var token = req.cookies.clubdata;
             var decoded = jwt.verify(token, 'amitkumar');
             const club = await Clubs.findOne({
                   email: decoded.email
             });
-            var members=[];
-            club.members.forEach(element=>{
-                  if (element.batch===req.query.year) {
+            var members = [];
+            club.members.forEach(element => {
+                  if (element.batch === req.query.year) {
                         members.push(element);
                   }
             });
@@ -161,7 +161,7 @@ app.get('/events/manageareaandpos', (req, res) => {
 
 app.get('/events/areasandpos/list', async (req, res) => {
       try {
-            const locations =await Locations.find();
+            const locations = await Locations.find();
             res.send(locations);
       } catch (error) {
             console.log(error);
@@ -171,7 +171,7 @@ app.get('/events/areasandpos/list', async (req, res) => {
 
 app.post('/events/manageareaandpos', async (req, res) => {
       try {
-            if (req.body.placename!="") {
+            if (req.body.placename != "") {
                   const location = new Locations({
                         name: req.body.placename,
                         height: req.body.height,
@@ -183,7 +183,7 @@ app.post('/events/manageareaandpos', async (req, res) => {
                   });
                   location.save();
                   res.render('clubs/manageareaandpos');
-            }else{
+            } else {
                   res.render('clubs/manageareaandpos');
             }
       } catch (error) {
@@ -452,7 +452,33 @@ app.get('/fileslist', async (req, res) => {
       } catch (error) {
             console.log(error);
       }
+});
 
-})
+
+app.get('/events/addnew', (req, res) => {
+      res.render('clubs/addnewevent');
+});
+
+app.post('/events/addnew', (req, res) => {
+      try {
+            console.log(req.body);
+            res.render('clubs/addnewevent');
+      } catch (error) {
+            console.log(error);
+      }
+});
+app.get('/locations/list', async (req, res) => {
+      try {
+            const locations = await Locations.find({
+                  name: {
+                        $regex: req.query.location,
+                        $options: 'i'
+                  }
+            });
+            res.send(locations);
+      } catch (error) {
+            console.log(error);
+      }
+});
 
 module.exports = app;
