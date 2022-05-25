@@ -8,7 +8,9 @@ const PostsSchema=new mongoose.Schema({
    ImageName : String,
    ImageLink : String,
    images : Array,
-   body : String
+   body : String,
+   type : String,
+   clubname : String
 });
 
 module.exports=new mongoose.model("Posts",PostsSchema);

@@ -138,6 +138,10 @@
                                                       <textarea class="form-control" name="thebody" id="postbody"
                                                             rows="10"></textarea>
                                                 </div>
+                                                <div style="display: none">
+                                                      <input type="text" name="thefinaltitle" id="thefinaltitle">
+                                                      <input type="text" name="thefinalbody" id="thefinalbody">
+                                                </div>
                                                 <div class="col-4">
                                                       <div class="row" style="margin-bottom: 1rem">
                                                             <button type="button" onclick="insertLink()"
@@ -185,9 +189,7 @@
                                     <button type="submit" onclick="previewpost()" class="btn btn-primary">Preview
                                           Post</button>
                               </div>
-                              <hr>
-
-                              <div class="container col-6" style="display: none;" id="preview">
+                              <div class="container col-8" style="display: none;" id="preview">
                                     <div id="previewpost" class="card" style="padding: 1rem;">
 
                                     </div>
@@ -201,7 +203,8 @@
                                     </div>
                                     <hr>
                                     <div class="card">
-                                          <button type="submit" class="btn btn-primary">Create Post</button>
+                                          <button type="submit" onclick="createPost()" class="btn btn-primary">Publish
+                                                Post</button>
                                           <button type="submit" onclick="goback()" class="btn btn-dark">Go Back</button>
                                     </div>
                               </div>
@@ -214,6 +217,26 @@
       </div>
       {{>scripts}}
       <script>
+            function createPost() {
+                  thetitle = $("#thefinaltitle").val();
+                  thebody = $("#thefinalbody").val();
+                  let elements = document.querySelectorAll('.carousel-item img');
+                  console.log(elements);
+                  var images=[];
+                  for (let i = 0; i < elements.length; i++) {
+                        console.log(elements[i].getAttribute('src'));
+                        images.push(elements[i].getAttribute('src'));
+                  }
+                  $.post('/club/posts/publish',{
+                        title :thetitle,
+                        body :thebody,
+                        images : images
+
+                  },(data,status)=>{
+                        window.location.href="/club/posts/";
+                  });
+            }
+
             function addmoreImage() {
                   $("#imagestoupload").append(` <li class="list-group-item">
                                                             <div class="form-group">
@@ -245,16 +268,22 @@
                         cache: false,
                         timeout: 600000,
                         success: function (data, status) {
+                              $("#thefinaltitle").val(data.thetitle);
+                              $("#thefinalbody").val(data.thebody);
                               console.log(data.images);
                               $("#previewpost").append(` 
-                              <div id="title">
+                              <div id="titlebox">
+                                    <h3>
                                     ${data.thetitle}
+                                    </h3>
+                                    <b>${data.email}</b>
                               </div>
-                              <div id="body">
+                              <div id="bodybox">
                                     ${data.thebody}
                               </div>
                               `);
                               $("#imagecarousel").html(``);
+
                               if (data.images) {
                                     $("#imagecarousel").append(`<div class="carousel-item active">
       <img class="d-block w-100" src="/clubs/tmp/${data.images[0]}" alt="First slide">

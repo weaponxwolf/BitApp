@@ -576,9 +576,15 @@ app.get('/posts/addnew', (req, res) => {
       res.render('clubs/addnewpost');
 });
 
-app.get('/posts/list',async(req,res)=>{
+app.get('/posts/list', async (req, res) => {
       try {
-            const posts=await Posts.find();
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            const posts = await Posts.find({
+                  type: "clubpost",
+                  clubname : getname
+            });
             res.send(posts);
       } catch (error) {
             console.log(error);
@@ -589,11 +595,9 @@ app.post('/posts/createpreview', async (req, res) => {
       var token = await req.cookies.clubdata;
       var decoded = await jwt.verify(token, 'amitkumar');
       var getname = decoded.email;
-      console.log(decoded);
       thebody = req.body.thebody;
       var images = [];
       if (thebody.indexOf('<') == -1) {
-            console.log(thebody);
             thepreview = thebody
                   .split(`__H1("`).join('<h1>')
                   .split(`")1H__`).join('</h1>')
@@ -609,32 +613,45 @@ app.post('/posts/createpreview', async (req, res) => {
                   .split(`")6H__`).join('</h1>');
 
             thepreview = thepreview.split(`__L("`).join('<a href="').split(`")L__`).join('</a>').split("$").join(`">`);
-            if (req.files['file[]']) {
-                  req.files['file[]'].forEach(element => {
+
+            if (req.files) {
+                  if (req.files['file[]'][1]) {
+                        var s = 1;
+                        req.files['file[]'].forEach(element => {
+                              const imageType = element.mimetype.replace('image/', '.');
+                              const imagePath = element.tempFilePath + imageType;
+                              fs.renameSync(element.tempFilePath, imagePath);
+                              shortimagepath = element.tempFilePath.split(`\\tmp\\`)[1] + imageType;
+                              images.push(shortimagepath);
+                        });
+                        data = {
+                              thetitle: req.body.title,
+                              thebody: thepreview,
+                              images: images,
+                              email : getname
+                        }
+                        res.send(data);
+                  } else if (req.files['file[]']) {
+                        var images = [];
+                        var element = req.files['file[]'];
                         const imageType = element.mimetype.replace('image/', '.');
                         const imagePath = element.tempFilePath + imageType;
                         fs.renameSync(element.tempFilePath, imagePath);
                         shortimagepath = element.tempFilePath.split(`\\tmp\\`)[1] + imageType;
                         images.push(shortimagepath);
-                  });
+                        data = {
+                              thetitle: req.body.title,
+                              thebody: thepreview,
+                              images: images,
+                              email : getname
+                        }
+                        res.send(data);
+                  }
+            } else {
                   data = {
                         thetitle: req.body.title,
                         thebody: thepreview,
-                        images: images
-                  }
-                  var post = await new Posts({
-                        title: req.body.title,
-                        body: thepreview,
-                        images: images,
-                        createdby : decoded.memberemail,
-                        createdon : Date.now()
-                  });
-                  post.save();
-                  res.send(data);
-            } else {
-                  data = {
-                        thetitle: req.body.thetitle,
-                        thebody: thepreview
+                        email : getname
                   }
                   res.send(data);
             }
@@ -646,6 +663,46 @@ app.post('/posts/createpreview', async (req, res) => {
 
 });
 
+app.post('/posts/publish', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            thetitle = req.body.title;
+            thebody = req.body.thebody;
+            images = req.body.images;
+            var imgs = [];
+            var post={
+                  title : req.body.title,
+                  images : [],
+                  body:req.body.body,
+                  createdby : decoded.membername + ','+ decoded.memberemail + ',' + decoded.memberdesignation,
+                  createdon : Date.now(),
+                  type : "clubpost",
+                  clubname : decoded.email
+            }
+            images.forEach(element => {
+                  var ext;
+                  if (element.indexOf('.png')) {
+                        ext='.png';
+                  }
+                  if (element.indexOf('.jpeg')) {
+                        ext='.jpeg';
+                  }
+                  var objid = mongoose.Types.ObjectId();
+                  var oldPath = path.join(__dirname, '..', '..', 'public' + element);
+                  var newPath = path.join(__dirname, '..', '..', 'public/posts/images/' + objid+ext);
 
+                  fs.rename(oldPath, newPath, function (err) {
+                        if (err) throw err
+                  });
+                  post.images.push(objid+ext);
+                  const newpost=new Posts(post);
+                  newpost.save();
+            });
+      } catch (error) {
+            console.log(error);
+      }
+});
 
 module.exports = app;
