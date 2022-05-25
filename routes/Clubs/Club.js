@@ -221,8 +221,9 @@ app.get('/pagefiles/:hello', async (req, res) => {
       var decoded = await jwt.verify(token, 'amitkumar');
       var getname = decoded.email;
       var getfoldername = getname.split('.').join('-').split('@')[0];
-      if (!fs.existsSync(path.join(__dirname, "..", `public/profile/${getfoldername}/index.html`))) {
+      if (!fs.existsSync(path.join(__dirname, "..", "..", `public/profile/${getfoldername}/index.html`))) {
             res.render('clubs/pagefiles');
+            console.log(path.join(__dirname, "..", "..", `public/profile/${getfoldername}/index.html`))
       } else {
             res.render('clubs/pagefiles', {
                   profileindex: profileindex
@@ -237,7 +238,7 @@ app.get('/pagefiles/', async (req, res) => {
       var decoded = await jwt.verify(token, 'amitkumar');
       var getname = decoded.email;
       var getfoldername = getname.split('.').join('-').split('@')[0];
-      if (!fs.existsSync(path.join(__dirname, "..", `public/profile/${getfoldername}/index.html`))) {
+      if (!fs.existsSync(path.join(__dirname, "..", "..", `public/profile/${getfoldername}/index.html`))) {
             res.render('clubs/pagefiles');
       } else {
             res.render('clubs/pagefiles', {
@@ -262,7 +263,7 @@ app.post('/deletefolder', async (req, res) => {
             }
 
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + appenddir);
+            var dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + middir + '/' + appenddir);
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
             fs.rmSync(dir, {
@@ -292,10 +293,10 @@ app.post('/deletefile', (req, res) => {
             }
             var getfoldername = getname.split('.').join('-').split('@')[0];
             if (appenddir == "/profile/profilefiles/" || appenddir == "/profile/profilefiles/") {
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + filename);
+                  dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + '/' + filename);
 
             } else {
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + filename);
+                  dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + middir + '/' + filename);
             }
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
@@ -324,9 +325,9 @@ app.post('/uploadfile', async (req, res) => {
             var getfoldername = getname.split('.').join('-').split('@')[0];
             dir = "";
             if (middir == "/undefined") {
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + nameoffile);
+                  dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + '/' + nameoffile);
             } else {
-                  dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + nameoffile);
+                  dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + middir + '/' + nameoffile);
             }
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
@@ -357,7 +358,8 @@ app.get('/folderlist', async (req, res) => {
             var decoded = await jwt.verify(token, 'amitkumar');
             var getname = decoded.email;
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + appenddir);
+            var dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + '/' + appenddir);
+
             if (!fs.existsSync(dir)) {
                   fs.mkdirSync(dir, {
                         recursive: true
@@ -390,7 +392,8 @@ app.post('/createfolder', async (req, res) => {
             }
 
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + middir + '/' + appenddir);
+            var dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + middir + '/' + appenddir);
+
             dir = dir.split('%20').join(' ');
             dir = dir.split('$').join('/');
             if (!fs.existsSync(dir)) {
@@ -446,7 +449,7 @@ app.get('/fileslist', async (req, res) => {
             var decoded = await jwt.verify(token, 'amitkumar');
             var getname = decoded.email;
             var getfoldername = getname.split('.').join('-').split('@')[0];
-            var dir = path.join(__dirname, "..", "public/profile/" + getfoldername + '/' + appenddir);
+            var dir = path.join(__dirname, "../../", "public/profile/" + getfoldername + '/' + appenddir);
             var files = [];
             var allfiles = await fs.readdirSync(dir);
             allfiles.forEach(element => {
@@ -837,13 +840,13 @@ app.get('/sheet/edit/:id', async (req, res) => {
       }
 });
 
-app.post('/sheet/save',async(req,res)=>{
+app.post('/sheet/save', async (req, res) => {
       try {
-            var sheet=await Sheets.updateOne({
-                  _id : req.body.sheetid
-            },{
-                  columns : req.body.allcols,
-                  allrows : req.body.tabledata
+            var sheet = await Sheets.updateOne({
+                  _id: req.body.sheetid
+            }, {
+                  columns: req.body.allcols,
+                  allrows: req.body.tabledata
             });
             res.send("SAVED");
       } catch (error) {
@@ -854,7 +857,7 @@ app.post('/sheet/save',async(req,res)=>{
 app.get('/sheet/data/:id', async (req, res) => {
       try {
             const sheets = await Sheets.findOne({
-                  _id : req.params.id
+                  _id: req.params.id
             });
             res.send(sheets);
       } catch (error) {
@@ -872,9 +875,9 @@ app.post('/sheets/addnew', async (req, res) => {
                   createdby: decoded.memberemail,
                   createdon: Date.now(),
                   clubname: getname,
-                  createdbyname : decoded.membername,
+                  createdbyname: decoded.membername,
                   columns: [],
-                  allrows : [
+                  allrows: [
                         []
                   ]
             };
