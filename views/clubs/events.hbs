@@ -102,29 +102,8 @@
                               <span class="navbar-toggler-icon"></span>
                         </button>
 
-                        <div class="navbar-collapse collapse" id="navbarContent">
-                              <ul class="navbar-nav ml-lg-4 pt-3 pt-lg-0">
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="/club/members/">Members</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="/club/events/">Events</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="/club/posts/">Posts</a>
-                                    </li>
-                              </ul>
-                              <div class="ml-auto">
-
-                                    <a href="#" onclick="chooseprofileaction()" id="profileoption"
-                                          class="btn btn-outline rounded-pill">Club Page</a>
-                                    <a href="/club/" style="display: none" id="profilebutton"
-                                          class="btn btn-outline rounded-pill">Club Page</a>
-                                    <a href="/club/pagefiles/" style="display: none" id="profileeditbutton"
-                                          class="btn btn-outline rounded-pill">Edit Club Page</a>
-                                    <a href="/logout" class="btn btn-outline rounded-pill">Log Out</a>
-                              </div>
-                        </div>
+                        
+                        {{>clubs/navbar}}
                   </div>
             </nav>
       </header>
