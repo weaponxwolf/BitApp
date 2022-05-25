@@ -221,17 +221,14 @@
                   thetitle = $("#thefinaltitle").val();
                   thebody = $("#thefinalbody").val();
                   let elements = document.querySelectorAll('.carousel-item img');
-                  console.log(elements);
                   var images=[];
                   for (let i = 0; i < elements.length; i++) {
-                        console.log(elements[i].getAttribute('src'));
                         images.push(elements[i].getAttribute('src'));
                   }
                   $.post('/club/posts/publish',{
                         title :thetitle,
                         body :thebody,
                         images : images
-
                   },(data,status)=>{
                         window.location.href="/club/posts/";
                   });

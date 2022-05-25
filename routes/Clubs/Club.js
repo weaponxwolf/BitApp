@@ -58,10 +58,10 @@ app.get('/', function (req, res) {
       var getname = decoded.email;
       var getfoldername = getname.split('.').join('-').split('@')[0];
       app.use(express.static(`public/profile/${getfoldername}/`));
-      if (!fs.existsSync(path.join(__dirname, "..", `public/profile/${getfoldername}/index.html`))) {
-            res.redirect('/profile/profilefiles/');
+      if (!fs.existsSync(path.join(__dirname, "..",'..', `public/profile/${getfoldername}/index.html`))) {
+            res.redirect('/club/pagefiles/');
       } else {
-            res.sendFile(path.join(__dirname, "..", `public/profile/${getfoldername}/index.html`));
+            res.sendFile(path.join(__dirname, "..",'..', `public/profile/${getfoldername}/index.html`));
       }
 });
 
@@ -584,7 +584,7 @@ app.get('/posts/list', async (req, res) => {
             const posts = await Posts.find({
                   type: "clubpost",
                   clubname : getname
-            });
+            }).sort({createdon : -1});
             res.send(posts);
       } catch (error) {
             console.log(error);
@@ -699,10 +699,17 @@ app.post('/posts/publish', async (req, res) => {
                   post.images.push(objid+ext);
                   const newpost=new Posts(post);
                   newpost.save();
+                  res.send("Published");
             });
       } catch (error) {
             console.log(error);
       }
+});
+
+
+
+app.get('/posts/manage',(req,res)=>{
+      res.render('clubs/manageposts.hbs')
 });
 
 module.exports = app;

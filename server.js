@@ -51,6 +51,24 @@ var IsLoggedIn = async (req, res, next) => {
             res.redirect('/');
       }
 }
+var IsClubLoggedIn = async (req, res, next) => {
+      try {
+            if (req.cookies['clubdata']) {
+                  var decoded = jwt.verify(req.cookies['clubdata'], 'amitkumar');
+                  const club = await Clubs.findOne({
+                        email: decoded.email
+                  });
+                  if (club) {
+                        next();
+                  } else {
+                        res.redirect('/');
+                  }
+            } else
+                  res.redirect('/');
+      } catch (error) {
+            res.redirect('/');
+      }
+}
 
 //GET USER DETAILS BY EMAIL
 const GetUserDetails = async (email) => {
@@ -68,6 +86,21 @@ const GetUserDetails = async (email) => {
             return null;
       }
 
+}
+
+const GetName = (req) => {
+      if (req.cookies['userdata']) {
+            var decoded = jwt.verify(req.cookies['userdata'], process.env.JWT_SIGNATURE);
+            return decoded.email;
+      } else
+            return null;
+}
+const GetClubName = (req) => {
+      if (req.cookies['clubdata']) {
+            var decoded = jwt.verify(req.cookies['clubdata'], process.env.JWT_SIGNATURE);
+            return decoded.email;
+      } else
+            return null;
 }
 
 //ALL ROUTES
@@ -94,17 +127,22 @@ app.use('/post', IsLoggedIn, PostRoutes);
 app.use('/academics', IsLoggedIn, AcademicsRoute);
 app.use('/explore', IsLoggedIn, ExploreRoute);
 app.use('/news', IsLoggedIn, NewsRoute);
-app.use('/viewprofile', IsLoggedIn, ViewProfileRoute);
+app.use('/viewprofile', ViewProfileRoute);
 app.use('/home', IsLoggedIn, HomeRoute);
 
 
 //FIRST PAGE - OPTIONS FOR LOG IN
 app.get('/', (req, res) => {
       var getname = GetName(req);
-      if (getname == null) {
+      var getclubname = GetClubName(req);
+      if (getname == null && getclubname == null) {
             res.render('index');
-      } else {
+      } else if (getname) {
             res.redirect('/home');
+      } else if (getclubname) {
+            res.redirect('/club/admin')
+      }else{
+            res.render('index');
       }
 });
 
@@ -113,13 +151,7 @@ app.get('/', (req, res) => {
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const GetName = (req) => {
-      if (req.cookies['userdata']) {
-            var decoded = jwt.verify(req.cookies['userdata'], process.env.JWT_SIGNATURE);
-            return decoded.email;
-      } else
-            return null;
-}
+
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 passport.use(new GoogleStrategy({
             clientID: GOOGLE_CLIENT_ID,
@@ -321,23 +353,27 @@ app.post('/clublogin', async (req, res) => {
                   email: req.body.email,
             });
             if (club) {
-                  var obj=club.members.find((e)=>e.email===req.body.memberemail);
+                  var obj = club.members.find((e) => e.email === req.body.memberemail);
                   if (obj) {
                         var token = await jwt.sign({
                               email: club.email,
-                              memberemail : obj.email,
-                              membername : obj.name,
-                              memberdesignation : obj.designation,
-                              batch : obj.batch,
-                              rank : obj.rank,
+                              memberemail: obj.email,
+                              membername: obj.name,
+                              memberdesignation: obj.designation,
+                              batch: obj.batch,
+                              rank: obj.rank,
                         }, 'amitkumar');
                         await res.cookie('clubdata', token);
                         res.redirect('/club/admin');
-                  }else{
-                        res.render('clublogin',{message : "You are Not Registered As Member Of The Club !"})
+                  } else {
+                        res.render('clublogin', {
+                              message: "You are Not Registered As Member Of The Club !"
+                        })
                   }
-            }else{
-                  res.render('clublogin',{message : "Club Is Not Registered in BitApp !"})
+            } else {
+                  res.render('clublogin', {
+                        message: "Club Is Not Registered in BitApp !"
+                  })
             }
       } catch (error) {
             console.log(error);
