@@ -563,7 +563,14 @@ app.get('/events/list', async (req, res) => {
             var club = await Clubs.findOne({
                   email: getname
             });
-            res.send(club.events);
+            var events = [];
+            club.events.forEach(element => {
+                  if (element.isDeleted == false) {
+                        events.push(element);
+                  }
+            });
+            events.sort(dynamicSort("startdate"));
+            res.send(events);
       } catch (error) {
             console.log(error);
       }
@@ -682,7 +689,8 @@ app.post('/posts/publish', async (req, res) => {
                   createdby: decoded.membername + ',' + decoded.memberemail + ',' + decoded.memberdesignation,
                   createdon: Date.now(),
                   type: "clubpost",
-                  clubname: decoded.email
+                  clubname: decoded.email,
+                  isDeleted :false
             }
             images.forEach(element => {
                   var ext;
@@ -702,8 +710,8 @@ app.post('/posts/publish', async (req, res) => {
                   post.images.push(objid + ext);
                   const newpost = new Posts(post);
                   newpost.save();
-                  res.send("Published");
             });
+            res.send("Published");
       } catch (error) {
             console.log(error);
       }
@@ -743,8 +751,8 @@ app.post('/events/delete', async (req, res) => {
             var token = await req.cookies.clubdata;
             var decoded = await jwt.verify(token, 'amitkumar');
             var getname = decoded.email;
-            const club=await Clubs.updateOne({
-                  email : getname,
+            const club = await Clubs.updateOne({
+                  email: getname,
                   'events._id': req.body.eventid
             }, {
                   '$set': {
@@ -762,8 +770,8 @@ app.post('/events/undodelete', async (req, res) => {
             var token = await req.cookies.clubdata;
             var decoded = await jwt.verify(token, 'amitkumar');
             var getname = decoded.email;
-            const club=await Clubs.updateOne({
-                  email : getname,
+            const club = await Clubs.updateOne({
+                  email: getname,
                   'events._id': req.body.eventid
             }, {
                   '$set': {
