@@ -58,10 +58,10 @@ app.get('/', function (req, res) {
       var getname = decoded.email;
       var getfoldername = getname.split('.').join('-').split('@')[0];
       app.use(express.static(`public/profile/${getfoldername}/`));
-      if (!fs.existsSync(path.join(__dirname, "..",'..', `public/profile/${getfoldername}/index.html`))) {
+      if (!fs.existsSync(path.join(__dirname, "..", '..', `public/profile/${getfoldername}/index.html`))) {
             res.redirect('/club/pagefiles/');
       } else {
-            res.sendFile(path.join(__dirname, "..",'..', `public/profile/${getfoldername}/index.html`));
+            res.sendFile(path.join(__dirname, "..", '..', `public/profile/${getfoldername}/index.html`));
       }
 });
 
@@ -583,8 +583,11 @@ app.get('/posts/list', async (req, res) => {
             var getname = decoded.email;
             const posts = await Posts.find({
                   type: "clubpost",
-                  clubname : getname
-            }).sort({createdon : -1});
+                  clubname: getname,
+                  isDeleted: false
+            }).sort({
+                  createdon: -1
+            });
             res.send(posts);
       } catch (error) {
             console.log(error);
@@ -628,7 +631,7 @@ app.post('/posts/createpreview', async (req, res) => {
                               thetitle: req.body.title,
                               thebody: thepreview,
                               images: images,
-                              email : getname
+                              email: getname
                         }
                         res.send(data);
                   } else if (req.files['file[]']) {
@@ -643,7 +646,7 @@ app.post('/posts/createpreview', async (req, res) => {
                               thetitle: req.body.title,
                               thebody: thepreview,
                               images: images,
-                              email : getname
+                              email: getname
                         }
                         res.send(data);
                   }
@@ -651,7 +654,7 @@ app.post('/posts/createpreview', async (req, res) => {
                   data = {
                         thetitle: req.body.title,
                         thebody: thepreview,
-                        email : getname
+                        email: getname
                   }
                   res.send(data);
             }
@@ -672,32 +675,32 @@ app.post('/posts/publish', async (req, res) => {
             thebody = req.body.thebody;
             images = req.body.images;
             var imgs = [];
-            var post={
-                  title : req.body.title,
-                  images : [],
-                  body:req.body.body,
-                  createdby : decoded.membername + ','+ decoded.memberemail + ',' + decoded.memberdesignation,
-                  createdon : Date.now(),
-                  type : "clubpost",
-                  clubname : decoded.email
+            var post = {
+                  title: req.body.title,
+                  images: [],
+                  body: req.body.body,
+                  createdby: decoded.membername + ',' + decoded.memberemail + ',' + decoded.memberdesignation,
+                  createdon: Date.now(),
+                  type: "clubpost",
+                  clubname: decoded.email
             }
             images.forEach(element => {
                   var ext;
                   if (element.indexOf('.png')) {
-                        ext='.png';
+                        ext = '.png';
                   }
                   if (element.indexOf('.jpeg')) {
-                        ext='.jpeg';
+                        ext = '.jpeg';
                   }
                   var objid = mongoose.Types.ObjectId();
                   var oldPath = path.join(__dirname, '..', '..', 'public' + element);
-                  var newPath = path.join(__dirname, '..', '..', 'public/posts/images/' + objid+ext);
+                  var newPath = path.join(__dirname, '..', '..', 'public/posts/images/' + objid + ext);
 
                   fs.rename(oldPath, newPath, function (err) {
                         if (err) throw err
                   });
-                  post.images.push(objid+ext);
-                  const newpost=new Posts(post);
+                  post.images.push(objid + ext);
+                  const newpost = new Posts(post);
                   newpost.save();
                   res.send("Published");
             });
@@ -706,10 +709,89 @@ app.post('/posts/publish', async (req, res) => {
       }
 });
 
+app.get('/events/manage', (req, res) => {
+      res.render('clubs/manageevents.hbs')
+});
 
 
-app.get('/posts/manage',(req,res)=>{
+
+
+app.get('/posts/manage', (req, res) => {
       res.render('clubs/manageposts.hbs')
+});
+
+app.post('/posts/delete', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            var post = await Posts.findOne({
+                  _id: req.body.postid,
+                  clubname: getname
+            });
+            post.isDeleted = true;
+            post.save();
+            res.send("DELETED");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+
+app.post('/events/delete', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            const club=await Clubs.updateOne({
+                  email : getname,
+                  'events._id': req.body.eventid
+            }, {
+                  '$set': {
+                        'events.$.isDeleted': true
+                  }
+            });
+            res.send("DELETED");
+
+      } catch (error) {
+            console.log(error);
+      }
+});
+app.post('/events/undodelete', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            const club=await Clubs.updateOne({
+                  email : getname,
+                  'events._id': req.body.eventid
+            }, {
+                  '$set': {
+                        'events.$.isDeleted': false
+                  }
+            });
+            res.send("DELETED");
+
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/posts/undodelete', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            var post = await Posts.findOne({
+                  _id: req.body.postid,
+                  clubname: getname
+            });
+            post.isDeleted = false;
+            post.save();
+            res.send("UNDONE DELETED");
+      } catch (error) {
+            console.log(error);
+      }
 });
 
 module.exports = app;

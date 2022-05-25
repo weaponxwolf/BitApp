@@ -142,7 +142,7 @@
                         <hr>
                         <div class="list-group" style="text-align: center;">
                               <a href="/club/posts/addnew" class="list-group-item list-group-item-action"> Add New
-                                     Post </a>
+                                    Post </a>
                         </div>
                         <div class="list-group" style="text-align: center;">
                               <a href="/club/posts/manage" class="list-group-item list-group-item-action"> Manage
@@ -152,6 +152,8 @@
                   <div class="col-10">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
                               <h1> Manage Posts</h1>
+                              <button type="button" class="btn btn-light" onclick="RefreshPost()">Refresh List</button>
+                              <hr>
                               <table class="table">
                                     <thead>
                                           <tr>
@@ -163,7 +165,7 @@
                                           </tr>
                                     </thead>
                                     <tbody id="postslist">
-                                          
+
                                     </tbody>
                               </table>
                         </div>
@@ -175,6 +177,48 @@
       </div>
       {{>scripts}}
       <script>
+            function RefreshPost() {
+                  $("#postslist").html('');
+                  $.get('/club/posts/list', function (data, status) {
+                        var sno = 1;
+                        data.forEach(element => {
+                              var getname = element.createdby.split(',')[0];
+                              $("#postslist").append(`<tr>
+                                                <th scope="row">${sno}</th>
+                                                <td>${element.title}</td>
+                                                <td>${getname}</td>
+                                                <td>${element.createdon}</td>
+                                                <td id="options_${element._id}"><button type="button" id="view_${element._id}" onclick="viewpost(this)" class="btn btn-success">View</button>
+                                                <button type="button" id="edit_${element._id}" onclick="editpost(this)" class="btn btn-primary">Edit</button>
+                                                <button type="button" id="delete_${element._id}" onclick="deletepost(this)" class="btn btn-danger">Delete</button></td>
+                              </tr>`);
+                              sno++;
+                        });
+                  });
+            }
+
+            function undodeletepost(params) {
+                  var postid = params.id.split('_')[1];
+                  $.post('/club/posts/undodelete', {
+                        postid: postid
+                  }, function (data, status) {
+                        $("#undodelete_" + postid).remove();
+                        $("#options_" + postid).append(` <button type="button" id="delete_${postid}" onclick="deletepost(this)" class="btn btn-danger">Delete</button></td>
+                        `);
+                  });
+            }
+
+            function deletepost(params) {
+                  var postid = params.id.split('_')[1];
+                  $.post('/club/posts/delete', {
+                        postid: postid
+                  }, function (data, status) {
+                        $("#delete_" + postid).remove();
+                        $("#options_" + postid).append(` <button type="button" id="undodelete_${postid}" onclick="undodeletepost(this)" class="btn btn-dark">Undo Delete</button></td>
+                        `);
+                  });
+            }
+
             function getPosition(element) {
                   var xPosition = 0;
                   var yPosition = 0;
@@ -201,7 +245,6 @@
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
 
                   $.get('/club/posts/list', function (data, status) {
-                        console.log(data);
                         var sno = 1;
                         data.forEach(element => {
                               var getname = element.createdby.split(',')[0];
@@ -210,8 +253,9 @@
                                                 <td>${element.title}</td>
                                                 <td>${getname}</td>
                                                 <td>${element.createdon}</td>
-                                                <td><button type="button" id="edit_${element._id}" class="btn btn-primary">Edit</button>
-                                                <button type="button" id="delete_${element._id}" class="btn btn-danger">Delete</button></td>
+                                                <td id="options_${element._id}"><button type="button" id="view_${element._id}" onclick="viewpost(this)" class="btn btn-success">View</button>
+                                                <button type="button" id="edit_${element._id}" onclick="editpost(this)" class="btn btn-primary">Edit</button>
+                                                <button type="button" id="delete_${element._id}" onclick="deletepost(this)" class="btn btn-danger">Delete</button></td>
                               </tr>`);
                               sno++;
                         });

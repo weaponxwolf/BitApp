@@ -10,7 +10,8 @@ const PostsSchema=new mongoose.Schema({
    images : Array,
    body : String,
    type : String,
-   clubname : String
+   clubname : String,
+   isDeleted : Boolean
 });
 
 module.exports=new mongoose.model("Posts",PostsSchema);

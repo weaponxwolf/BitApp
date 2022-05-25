@@ -154,8 +154,7 @@
                   </div>
                   <div class="col-10">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
-                              <h1>Events</h1>
-
+                            
                               <body>
                                     <div class="container" id="eventslist">
                                           
@@ -199,7 +198,6 @@
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
 
                   $.get('/club/events/list', (data, status) => {
-                        console.log(data);
                         data.forEach(element => {
                               desc = element.description.split('\r\n').join('<br>');
                               $("#eventslist").append(`<div class="card" style="border-radius:2rem;padding:1rem;margin-bottom:1rem;">
