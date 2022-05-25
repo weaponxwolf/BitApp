@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            .form-control {
+                  margin-left: 1rem;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-float">
+                  <div class="container">
+                        <a href="/club/admin" class="navbar-brand">Bit<span class="text-primary">App</span></a>
+
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        {{>clubs/navbar}}
+                  </div>
+            </nav>
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/club/sheets/" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Sheets </a>
+                        </div>
+                        <hr>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <h1>Add Sheet </h1>
+                              <div class="container">
+                                    <form method="POST">
+                                          <div class="row" style="margin-bottom: 1rem">
+                                                <div class="col">
+                                                      <input type="text" name="name" class="form-control col-6"
+                                                            placeholder="Enter Form Name">
+                                                </div>
+                                          </div>
+                                          <hr>
+                                          <div id="columnscount" style="display: none">2</div>
+                                          <div id="columns">
+                                                <div class="row" style="margin-bottom: 1rem">
+                                                      <div class="col">
+                                                            <input type="text" name="column[]" class="form-control"
+                                                                  placeholder="Enter Column 1 Name">
+                                                      </div>
+                                                      <div class="col">
+                                                            <button style="margin-left:1rem" type="button"
+                                                                  class="btn btn-primary" id="addmorecolumn"
+                                                                  onclick="addMoreColumn()">Add More
+                                                                  Column</button>
+                                                      </div>
+                                                </div>
+                                          </div>
+
+                                          <hr>
+                                          <div style="text-align: center">
+                                                <button type="submit" class="btn btn-primary">Create Sheet</button>
+                                          </div>
+                                    </form>
+
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      {{>scripts}}
+      <script>
+            function addMoreColumn() {
+                  $("#addmorecolumn").remove();
+                  var count = parseInt($("#columnscount").html());
+                  $("#columns").append(`<div class="row" style="margin-bottom: 1rem">
+                                                      <div class="col">
+                                                            <input type="text" name="column[]" class="form-control"
+                                                                  placeholder="Enter Column ${count} Name">
+                                                      </div>
+                                                      <div class="col">
+                                                            <button style="margin-left:1rem" type="button"
+                                                                  class="btn btn-primary" id="addmorecolumn"
+                                                                  onclick="addMoreColumn()">Add More
+                                                                  Column</button>
+                                                      </div>
+                                                </div>`);
+                  count++;
+                  $("#columnscount").html(count);
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+            });
+      </script>
+
+
+</body>
+
+</html>

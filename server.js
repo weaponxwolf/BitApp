@@ -117,7 +117,7 @@ const NewsRoute = require('./routes/Students/News');
 
 
 //ALL CLUB ACCESS ROUTES
-app.use('/club', ClubsRoute);
+app.use('/club',IsClubLoggedIn, ClubsRoute);
 
 //ALL STUDENT ACCESS ROUTES
 app.use('/maps', IsLoggedIn, MapsRoute);

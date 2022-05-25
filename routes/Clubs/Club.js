@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const Clubs = require('../../models/Clubs');
 const Locations = require('../../models/Locations');
 const Posts = require('../../models/Posts');
+const Sheets = require('../../models/Sheets');
 
 app.use(fileUpload({
       useTempFiles: true,
@@ -690,7 +691,7 @@ app.post('/posts/publish', async (req, res) => {
                   createdon: Date.now(),
                   type: "clubpost",
                   clubname: decoded.email,
-                  isDeleted :false
+                  isDeleted: false
             }
             images.forEach(element => {
                   var ext;
@@ -797,6 +798,93 @@ app.post('/posts/undodelete', async (req, res) => {
             post.isDeleted = false;
             post.save();
             res.send("UNDONE DELETED");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+
+app.get('/forms', (req, res) => {
+      res.render('clubs/forms');
+});
+
+app.get('/forms/addnew', (req, res) => {
+      res.render('clubs/addnewform');
+});
+app.get('/sheets', (req, res) => {
+      res.render('clubs/sheets');
+});
+
+
+app.get('/sheets/addnew', (req, res) => {
+      res.render('clubs/addnewsheet');
+});
+
+app.get('/sheets/list', async (req, res) => {
+      try {
+            const sheets = await Sheets.find();
+            res.send(sheets);
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.get('/sheet/edit/:id', async (req, res) => {
+      try {
+            res.render('clubs/editsheet');
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/sheet/save',async(req,res)=>{
+      try {
+            var sheet=await Sheets.updateOne({
+                  _id : req.body.sheetid
+            },{
+                  columns : req.body.allcols,
+                  allrows : req.body.tabledata
+            });
+            res.send("SAVED");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.get('/sheet/data/:id', async (req, res) => {
+      try {
+            const sheets = await Sheets.findOne({
+                  _id : req.params.id
+            });
+            res.send(sheets);
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/sheets/addnew', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            var sheet = {
+                  name: req.body.name,
+                  createdby: decoded.memberemail,
+                  createdon: Date.now(),
+                  clubname: getname,
+                  createdbyname : decoded.membername,
+                  columns: [],
+                  allrows : [
+                        []
+                  ]
+            };
+            var columns = req.body.column;
+            columns.forEach(element => {
+                  sheet.columns.push(element);
+            });
+            const newSheet = new Sheets(sheet);
+            newSheet.save();
+            res.redirect('/club/sheets');
       } catch (error) {
             console.log(error);
       }
