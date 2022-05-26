@@ -32,7 +32,9 @@ app.get('/newpost', (req, res) => {
 
 app.get('/getposts',async(req,res)=>{
       try {
-            const posts=await Posts.find().sort({createdon : -1});
+            const posts=await Posts.find({
+                  isDeleted: false
+            }).sort({createdon : -1});
             res.send(posts);
       } catch (error) {
             
@@ -43,11 +45,12 @@ app.get('/postdetails',async(req,res)=>{
       try {
             var postid=req.query.postid;
             const post=await Posts.findOne({
-                  _id : postid
+                  _id : postid,
+                  isDeleted: false
             });
             res.send(post);
       } catch (error) {
-            
+            console.log(error);
       }
       
 })
@@ -56,10 +59,14 @@ app.post('/newpost', async (req, res) => {
       try {
             const sampleFile =await req.files.image;
             const getname = GetName(req);
+            var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
+            console.log(decoded);
             const newPost = await new Posts({
                   title: req.body.title,
                   paragraph: req.body.paragraph,
                   createdby: getname,
+                  createdbyname : decoded.name,
+                  isDeleted:false,
                   createdon: Date.now(),
             });
             const str = sampleFile.name;
@@ -74,7 +81,7 @@ app.post('/newpost', async (req, res) => {
             }
             var extension=replaced.split('$')[1];
             newPost.ImageName = newPost.id+'.'+extension;
-            var uploadPath=path.join(__dirname,'..','public/posts/images/',newPost.ImageName);
+            var uploadPath=path.join(__dirname,'../../','public/posts/images/',newPost.ImageName);
             await sampleFile.mv(uploadPath);
             newPost.save();
 
