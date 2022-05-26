@@ -3,6 +3,8 @@
 
 <head>
       {{>head}}
+      <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+      <link rel="stylesheet" href="/assets/css/owl.theme.default.min.css">
       <style>
             .sc1::-webkit-scrollbar {
                   width: 8px;
@@ -20,7 +22,7 @@
             }
 
             #mainpart div div img {
-                  max-height:98%;
+                  max-height: 98%;
                   max-width: 98%;
                   cursor: pointer;
             }
@@ -32,6 +34,14 @@
                   align-items: center;
                   border: 1px solid white;
                   border-radius: 0.5rem;
+                  padding: 0px;
+            }
+            span{
+                  cursor: pointer;
+            }
+
+            img{
+                  cursor: pointer;
             }
       </style>
 </head>
@@ -52,23 +62,19 @@
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll;width:120vh;overflow-x:hidden"
                               id="mainpart">
                               <div class="row" style="height:80vh">
-                                    <div id="img_1_1" class="col-4"
-                                          style="height:30vh;">
+                                    <div id="img_1_1" class="col-4" style="height:30vh;">
                                     </div>
-                                    <div id="img_1_2" class="col-8"
-                                          style="height:60vh;"></div>
-                                    <div class="col-4" id="img_1_3"
+                                    <div id="img_1_2" class="col-8" style="height:60vh;"></div>
+                                    <div class="col-4 owl-carousel" id="img_1_3"
                                           style="height:30vh;position:relative;bottom:30vh">
                                     </div>
-                                    <div id="img_1_4" class="col-4"
-                                          style="height:30vh;"></div>
-                                    <div id="img_1_5" class="col-4"
-                                          style="height:30vh;"></div>
-                                    <div class="col-4" id="img_1_6"
-                                          style="height:30vh;position:relative;bottom:30vh">
+                                    <div id="img_1_4" class="col-4" style="height:30vh;"></div>
+                                    <div id="img_1_5" class="col-4" style="height:30vh;">
+
                                     </div>
-                                    <div class="col-8" id="img_1_7"
-                                          style="height:60vh;position:relative;right:40vh">
+                                    <div class="col-4" id="img_1_6" style="height:30vh;position:relative;bottom:30vh">
+                                    </div>
+                                    <div class="col-8" id="img_1_7" style="height:60vh;position:relative;right:40vh">
                                     </div>
                                     <div class="col-4" id="img_1_8"
                                           style="height:30vh;position:relative;bottom:60vh;left:82vh">
@@ -76,32 +82,22 @@
                                     <div class="col-4" id="img_1_9"
                                           style="height:30vh;position:relative;bottom:30vh;left:41.2vh">
                                     </div>
-                                    <div class="col-4" id="img_1_10"
-                                          style="height:30vh;"></div>
-                                    <div class="col-4" id="img_1_11"
-                                          style="height:30vh;position:relative;bottom:30vh;">
+                                    <div class="col-4" id="img_1_10" style="height:30vh;"></div>
+                                    <div class="col-4" id="img_1_11" style="height:30vh;position:relative;bottom:30vh;">
                                     </div>
-                                    <div class="col-4" id="img_1_12"
-                                          style="height:30vh;position:relative;bottom:30vh;">
+                                    <div class="col-4" id="img_1_12" style="height:30vh;position:relative;bottom:30vh;">
                                     </div>
                               </div>
                               <div class="row" style="height:80vh;position:relative;top:100vh">
-                                    <div id="img_2_1" class="col-4"
-                                          style="height:30vh;"></div>
-                                    <div id="img_2_2" class="col-8"
-                                          style="height:60vh;"></div>
-                                    <div class="col-4" id="img_2_3"
-                                          style="height:30vh;position:relative;bottom:30vh">
+                                    <div id="img_2_1" class="col-4" style="height:30vh;"></div>
+                                    <div id="img_2_2" class="col-8" style="height:60vh;"></div>
+                                    <div class="col-4" id="img_2_3" style="height:30vh;position:relative;bottom:30vh">
                                     </div>
-                                    <div id="img_2_4" class="col-4"
-                                          style="height:30vh;"></div>
-                                    <div id="img_2_5" class="col-4"
-                                          style="height:30vh;"></div>
-                                    <div class="col-4" id="img_2_6"
-                                          style="height:30vh;position:relative;bottom:30vh">
+                                    <div id="img_2_4" class="col-4" style="height:30vh;"></div>
+                                    <div id="img_2_5" class="col-4" style="height:30vh;"></div>
+                                    <div class="col-4" id="img_2_6" style="height:30vh;position:relative;bottom:30vh">
                                     </div>
-                                    <div class="col-8" id="img_2_7"
-                                          style="height:60vh;position:relative;right:40vh">
+                                    <div class="col-8" id="img_2_7" style="height:60vh;position:relative;right:40vh">
                                     </div>
                                     <div class="col-4" id="img_2_8"
                                           style="height:30vh;position:relative;bottom:60vh;left:82vh">
@@ -109,21 +105,277 @@
                                     <div class="col-4" id="img_2_9"
                                           style="height:30vh;position:relative;bottom:30vh;left:41.2vh">
                                     </div>
-                                    <div class="col-4" id="img_2_10"
-                                          style="height:30vh;"></div>
-                                    <div class="col-4" id="img_2_11"
-                                          style="height:30vh;position:relative;bottom:30vh;">
+                                    <div class="col-4" id="img_2_10" style="height:30vh;"></div>
+                                    <div class="col-4" id="img_2_11" style="height:30vh;position:relative;bottom:30vh;">
                                     </div>
-                                    <div class="col-4" id="img_2_12"
-                                          style="height:30vh;position:relative;bottom:30vh;">
+                                    <div class="col-4" id="img_2_12" style="height:30vh;position:relative;bottom:30vh;">
                                     </div>
                               </div>
                         </div>
                   </div>
             </div>
       </div>
+
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
       {{>scripts}}
+      <script src="/assets/js/owl.carousel.min.js"></script>
       <script>
+            function closefullview() {
+                  $("#container").css('display', 'block');
+                  $("#fullview").css('display', 'none');
+                  $("#fullview").html('');
+                  $('body').css('background-color', 'white');
+                  $("#header").css('display', 'block');
+            }
+
+            function fullview(params) {
+                  var postid = params.id.split('_')[1];
+                  $.get('/post/postdetails?postid=' + postid, function (data, status) {
+                        var isliked = data.liked;
+                        var likeimg = "";
+                        if (isliked) {
+                              likeimg = "/assets/img/liked-icon.png";
+                        } else {
+                              likeimg = "/assets/img/like-icon.png";
+                        }
+                        $("#container").css('display', 'none');
+                        $("#fullview").css('display', 'block');
+                        $("#fullview").append(`<div class="row">
+            <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;color:white">
+                <img onclick="closefullview()" src="/posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
+            </div>
+            <div class="col sc1" style="border-left: 1px solid #dfd2d2;height: 80vh;max-height:80vh;padding:2rem;overflow-y:scroll">
+                <div class="row">
+                    <div class="col">
+                        <h1>${data.title}</h1>
+                        <b>${data.createdbyname}</b>
+                        <br><br>
+                        <p>${data.paragraph}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col"><span id="fullviewnooflikes_${data._id}">${data.nooflikes}</span> <img src="${likeimg}" style="width: 2rem;" alt="" id="fullviewlike_${data._id}" onclick="likepost(this)"></div>
+                    <div class="col"><span id="fullviewnoofcomments_${data._id}">${data.noofcomments}</span> <img src="/assets/img/comment-icon.png" style="width: 2rem;" alt="" id="fullviewcomment_${data._id}"></div>
+                </div>
+                <hr>
+
+                <div class="row"><div class="form-group col-7">
+                <textarea id="commentbox" class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                </div>
+                <div class="col-3"><button type="button" id="cmt_${data._id}" onclick="commentonpost(this)" class="btn btn-primary">Comment</button>
+                </div>
+                </div>
+                <div id="postcomments_${data._id}" style="font-size:0.8rem">
+  
+
+
+            </div>
+
+        </div>`);
+                        $("#postcomments_" + data._id).append(`<li class="list-group-item"></li>`);
+
+                        $.get('/post/comments?postid=' + data._id, function (comments, status) {
+                              comments.forEach(comment => {
+                                    $("#postcomments_" + postid + " li").append(
+                                          `<span  id='comment_${comment._id}'><b id='commentor_${comment._id}'>${comment.commentbyname} :</b> ${comment.comment}<br><span>`
+                                    );
+                                    if (comment.commentedbyyou) {
+                                          $(`#commentor_${comment._id}`).append(
+                                                `<span style="float:right" id='delcomment_${postid}_${comment._id}' onclick='deletecomment(this)'>Delete<span>`
+                                          );
+                                    }
+                              });
+
+                        });
+                  });
+                  $("body").css('background-color', 'white');
+                  $("#header").css('display', 'none');
+            }
+
+            function fullviewclubpost(params) {
+                  var postid = params.id.split('_')[1];
+                  $.get('/post/postdetails?postid=' + postid, function (data, status) {
+                        var creator = data.createdby.split(',');
+                        var isliked = data.liked;
+                        var likeimg = "";
+                        if (isliked) {
+                              likeimg = "/assets/img/liked-icon.png";
+                        } else {
+                              likeimg = "/assets/img/like-icon.png";
+                        }
+                        $("#container").css('display', 'none');
+                        $("#fullview").css('display', 'block');
+                        $("#fullview").append(`<div class="row">
+            <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;">
+                <div id="carouselExampleControls1" class="carousel slide"
+                                                      data-ride="carousel" id="carousel_${data._id}" ">
+                                                      <div class="carousel-inner" id='fullimagecor_${data._id}' onclick="closefullviewclubpost()">
+                                                
+                                                      </div>
+                                                      <a class="carousel-control-prev" href="#carouselExampleControls1"
+                                                            role="button" data-slide="prev">
+                                                            <span class="carousel-control-prev-icon"
+                                                                  aria-hidden="true"></span>
+                                                            <span class="sr-only">Previous</span>
+                                                      </a>
+                                                      <a class="carousel-control-next" href="#carouselExampleControls1"
+                                                            role="button" data-slide="next">
+                                                            <span class="carousel-control-next-icon"
+                                                                  aria-hidden="true"></span>
+                                                            <span class="sr-only">Next</span>
+                                                      </a>
+                                                </div>
+            </div>
+            <div class="col sc1" style="border-left: 1px solid #dfd2d2;padding:2rem;overflow-y:scroll;height: 80vh;max-height:80vh;">
+                <div class="row sc1">
+                    <div class="col">
+                        <h1>${data.title}</h1>
+                        <b>${creator[0]},${data.clubname}</b>
+                        <br>
+                        <br>
+                        <p style="font-size:small">${data.body}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col"><span id="fullviewnooflikes_${data._id}">${data.nooflikes}</span> <img src="${likeimg}" style="width: 2rem;" alt="" id="fullviewlike_${data._id}" onclick="likepost(this)"></div>
+                    <div class="col"><span id="fullviewnoofcomments_${data._id}">${data.noofcomments}</span>  <img src="/assets/img/comment-icon.png" style="width: 2rem;" alt="" id="fullviewcomment_${data._id}"></div>
+                </div>
+                <hr>
+                <div class="row"><div class="form-group col-7">
+                <textarea id="commentbox" class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                </div>
+                <div class="col-3"><button type="button" id="cmt_${data._id}" onclick="commentonpost(this)" class="btn btn-primary">Comment</button>
+                </div>
+                </div>
+                <div id="postcomments_${data._id}" style="font-size:0.8rem">
+  
+  
+                </div>
+               
+            </div>
+        </div>`);
+                        $("#fullimagecor_" + data._id).append(` 
+                                                            <div class="carousel-item active">
+                                                                  <img class="d-block w-100" src="/posts/images/${data.images[0]}"
+                                                                        alt="Third slide">
+                                                            </div>`);
+                        for (let i = 1; i < data.images.length; i++) {
+                              $("#fullimagecor_" + data._id).append(` 
+                                                            <div class="carousel-item">
+                                                                  <img class="d-block w-100" src="/posts/images/${data.images[i]}"
+                                                                        alt="Third slide">
+                                                            </div>`);
+                        }
+
+                        $("#postcomments_" + data._id).append(`<li class="list-group-item"></li>`);
+
+                        $.get('/post/comments?postid=' + data._id, function (comments, status) {
+                              comments.forEach(comment => {
+                                    $("#postcomments_" + postid + " li").append(
+                                          `<span  id='comment_${comment._id}'><b id='commentor_${comment._id}'>${comment.commentbyname} :</b> ${comment.comment}<br><span>`
+                                    );
+                                    if (comment.commentedbyyou) {
+                                          $(`#commentor_${comment._id}`).append(
+                                                `<span style="float:right" id='delcomment_${postid}_${comment._id}' onclick='deletecomment(this)'>Delete<span>`
+                                          );
+                                    }
+                              });
+
+                        });
+
+                  });
+
+                  $("body").css('background-color', 'white');
+                  $("#header").css('display', 'none');
+            }
+
+            function deletecomment(params) {
+                  var postid = params.id.split('_')[1];
+                  var commentid = params.id.split('_')[2];
+                  $.post('/post/deletecomment', {
+                        commentid: commentid,
+                        postid: postid
+                  }, (data, status) => {
+                        RefreshComments(postid);
+                        var s = parseInt($("#fullviewnoofcomments_" + postid).html());
+                        $("#fullviewnoofcomments_" + postid).html(s - 1);
+                        var s = parseInt($("#noofcomments_" + postid).html());
+                        $("#noofcomments_" + postid).html(s - 1);
+                  });
+            }
+
+            function RefreshComments(postid) {
+                  $("#postcomments_" + postid).html(`<li class="list-group-item"></li>`);
+                  $.get('/post/comments?postid=' + postid, function (comments, status) {
+                        comments.forEach(comment => {
+                              $("#postcomments_" + postid + " li").append(
+                                    `<span  id='comment_${comment._id}'><b id='commentor_${comment._id}'>${comment.commentbyname} :</b> ${comment.comment}<br><span>`
+                              );
+                              if (comment.commentedbyyou) {
+                                    $(`#commentor_${comment._id}`).append(
+                                          `<span style="float:right" id='delcomment_${postid}_${comment._id}' onclick='deletecomment(this)'>Delete<span>`
+                                    );
+                              }
+                        });
+                  });
+            }
+
+            function commentonpost(params) {
+                  var postid = params.id.split('_')[1];
+                  var comment = $("#commentbox").val();
+                  $.post('/post/comment/', {
+                        comment: comment,
+                        postid: postid
+                  }, function (data, status) {
+                        var s = parseInt($("#fullviewnoofcomments_" + postid).html());
+                        $("#fullviewnoofcomments_" + postid).html(s + 1);
+                        var s = parseInt($("#noofcomments_" + postid).html());
+                        $("#noofcomments_" + postid).html(s + 1);
+                        RefreshComments(postid);
+                  });
+            }
+
+
+            function closefullviewclubpost() {
+                  $("#container").css('display', 'block');
+                  $("#fullview").css('display', 'none');
+                  $("#fullview").html('');
+                  $('body').css('background-color', 'white');
+                  $("#header").css('display', 'block');
+            }
+
+            function likepost(params) {
+                  var postid = params.id.split('_')[1];
+                  if ($("#fullviewlike_" + postid).attr("src") == "/assets/img/liked-icon.png") {
+                        $.post('/post/unlike', {
+                              postid: postid
+                        }, function (data, status) {
+                              var s = parseInt($("#nooflikes_" + postid).html());
+                              $("#nooflikes_" + postid).html(s - 1);
+                              var s = parseInt($("#fullviewnooflikes_" + postid).html());
+                              $("#fullviewnooflikes_" + postid).html(s - 1);
+                              $("#like_" + postid).attr("src", "/assets/img/like-icon.png");
+                              $("#fullviewlike_" + postid).attr("src", "/assets/img/like-icon.png");
+                        });
+                  } else {
+                        $.post('/post/like', {
+                              postid: postid
+                        }, function (data, status) {
+                              var s = parseInt($("#nooflikes_" + postid).html());
+                              $("#nooflikes_" + postid).html(s + 1);
+                              var s = parseInt($("#fullviewnooflikes_" + postid).html());
+                              $("#fullviewnooflikes_" + postid).html(s + 1);
+                              $("#like_" + postid).attr("src", "/assets/img/liked-icon.png");
+                              $("#fullviewlike_" + postid).attr("src", "/assets/img/liked-icon.png");
+                        });
+
+                  }
+            }
+
             function getPosition(element) {
                   var xPosition = 0;
                   var yPosition = 0;
@@ -148,14 +400,30 @@
                   var clientHeight = document.getElementById('header').clientHeight;
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
-                  for (let j = 1; j <= 2; j++) {
-                        for (let i = 1; i <= 12; i++) {
-                              $('#img_' + j + '_' + i).append(
-                                    ` <img src="/posts/images/628d96d1b635f92c098dad93.jpeg" alt="">`);
+                  $.get('/post/getposts', (data, status) => {
+                        var postcount = data.length;
+                        console.log(data);
+                        for (let i = 1; i <= postcount; i++) {
+                              if (data[i - 1].type == 'clubpost') {
+                                    $('#img_' + 1 + '_' + i).append(
+                                          ` <img id="post_${data[i-1]._id}" onclick="fullviewclubpost(this)" src="/posts/images/${data[i-1].images[0]}" alt="">`
+                                    );
+                              } else {
+                                    $('#img_' + 1 + '_' + i).append(
+                                          ` <img id="post_${data[i-1]._id}" onclick="fullview(this)" src="/posts/images/${data[i-1].ImageName}" alt="">`
+                                    );
+                              }
+
                         }
 
-                  }
 
+                  });
+
+            });
+            $(document).ready(function () {
+                  $(".owl-carousel").owlCarousel({
+                        dots: false
+                  });
             });
       </script>
 
