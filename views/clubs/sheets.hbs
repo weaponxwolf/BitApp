@@ -117,7 +117,7 @@
 
                         <div class="list-group">
                               <a href="/club/sheets/" class="list-group-item list-group-item-action"><img
-                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Sheets</a>
+                                          src="/assets/img/sheet-icon.png" alt="" style="height: 0.8rem"> Sheets</a>
                         </div>
                         <hr>
 
@@ -130,7 +130,8 @@
                   <div class="col-10">
                         <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
                               <h1>Sheets</h1>
-                              <button type="button" class="btn btn-light" onclick="RefreshPost()">Refresh List</button>
+                              <button type="button" class="btn btn-light" onclick="RefreshSheets()">Refresh
+                                    List</button>
                               <hr>
                               <table class="table">
                                     <thead>
@@ -155,7 +156,7 @@
       </div>
       {{>scripts}}
       <script>
-            function RefreshPost() {
+            function RefreshSheets() {
                   $("#sheetslist").html('');
                   $.get('/club/sheets/list', function (data, status) {
                         var sno = 1;
@@ -167,32 +168,32 @@
                                                 <td>${element.createdbyname}</td>
                                                 <td>${element.createdon}</td>
                                                 <td id="options_${element._id}">
-                                                <a href="/club/sheet/edit/${element._id}"><button type="button" id="edit_${element._id}" onclick="editpost(this)" class="btn btn-primary">View & Edit</button></a>
-                                                <button type="button" id="delete_${element._id}" onclick="deletepost(this)" class="btn btn-danger">Delete</button></td>
+                                                <a href="/club/sheet/edit/${element._id}"><button type="button" id="edit_${element._id}" onclick="editsheet(this)" class="btn btn-primary">View & Edit</button></a>
+                                                <button type="button" id="delete_${element._id}" onclick="deletesheet(this)" class="btn btn-danger">Delete</button></td>
                               </tr>`);
                               sno++;
                         });
                   });
             }
 
-            function undodeletepost(params) {
-                  var postid = params.id.split('_')[1];
-                  $.post('/club/posts/undodelete', {
-                        postid: postid
+            function undodeletesheet(params) {
+                  var sheetid = params.id.split('_')[1];
+                  $.post('/club/sheet/undodelete', {
+                        sheetid: sheetid
                   }, function (data, status) {
-                        $("#undodelete_" + postid).remove();
-                        $("#options_" + postid).append(` <button type="button" id="delete_${postid}" onclick="deletepost(this)" class="btn btn-danger">Delete</button></td>
+                        $("#undodelete_" + sheetid).remove();
+                        $("#options_" + sheetid).append(` <button type="button" id="delete_${sheetid}" onclick="deletesheet(this)" class="btn btn-danger">Delete</button></td>
                         `);
                   });
             }
 
-            function deletepost(params) {
-                  var postid = params.id.split('_')[1];
-                  $.post('/club/posts/delete', {
-                        postid: postid
+            function deletesheet(params) {
+                  var sheetid = params.id.split('_')[1];
+                  $.post('/club/sheet/delete', {
+                        sheetid: sheetid
                   }, function (data, status) {
-                        $("#delete_" + postid).remove();
-                        $("#options_" + postid).append(` <button type="button" id="undodelete_${postid}" onclick="undodeletepost(this)" class="btn btn-dark">Undo Delete</button></td>
+                        $("#delete_" + sheetid).remove();
+                        $("#options_" + sheetid).append(` <button type="button" id="undodelete_${sheetid}" onclick="undodeletesheet(this)" class="btn btn-dark">Undo Delete</button></td>
                         `);
                   });
             }
@@ -231,8 +232,8 @@
                                                 <td>${element.createdbyname}</td>
                                                 <td>${element.createdon}</td>
                                                 <td id="options_${element._id}">
-                                                <a href="/club/sheet/edit/${element._id}"><button type="button" id="edit_${element._id}" onclick="editpost(this)" class="btn btn-primary">View & Edit</button></a>
-                                                <button type="button" id="delete_${element._id}" onclick="deletepost(this)" class="btn btn-danger">Delete</button></td>
+                                                <a href="/club/sheet/edit/${element._id}"><button type="button" id="edit_${element._id}" onclick="editsheet(this)" class="btn btn-primary">View & Edit</button></a>
+                                                <button type="button" id="delete_${element._id}" onclick="deletesheet(this)" class="btn btn-danger">Delete</button></td>
                               </tr>`);
                               sno++;
                         });

@@ -789,6 +789,38 @@ app.post('/events/undodelete', async (req, res) => {
       }
 });
 
+
+app.get('/posts/view', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            const post = await Posts.findOne({
+                  clubname: getname,
+                  _id : req.query.postid
+            });
+            res.send(post);
+      } catch (error) {
+
+      }
+});
+
+app.get('/posts/edit/:postid', async (req, res) => {
+      try {
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            const post = await Posts.findOne({
+                  clubname: getname,
+                  _id : req.query.postid
+            });
+            res.render('clubs/editpost');
+      } catch (error) {
+
+      }
+});
+
+
 app.post('/posts/undodelete', async (req, res) => {
       try {
             var token = await req.cookies.clubdata;
@@ -825,7 +857,13 @@ app.get('/sheets/addnew', (req, res) => {
 
 app.get('/sheets/list', async (req, res) => {
       try {
-            const sheets = await Sheets.find();
+            var token = await req.cookies.clubdata;
+            var decoded = await jwt.verify(token, 'amitkumar');
+            var getname = decoded.email;
+            const sheets = await Sheets.find({
+                  clubname: getname,
+                  isDeleted: false
+            });
             res.send(sheets);
       } catch (error) {
             console.log(error);
@@ -849,6 +887,33 @@ app.post('/sheet/save', async (req, res) => {
                   allrows: req.body.tabledata
             });
             res.send("SAVED");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/sheet/delete', async (req, res) => {
+      try {
+            const sheet = await Sheets.updateOne({
+                  _id: req.body.sheetid
+            }, {
+                  isDeleted: true
+            });
+            res.send("DELETED");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+
+app.post('/sheet/undodelete', async (req, res) => {
+      try {
+            const sheet = await Sheets.updateOne({
+                  _id: req.body.sheetid
+            }, {
+                  isDeleted: false
+            });
+            res.send("DELETED");
       } catch (error) {
             console.log(error);
       }

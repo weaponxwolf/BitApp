@@ -8,6 +8,7 @@ const SheetsSchema = mongoose.Schema({
       clubname : String,
       createdbyname: String,
       columns: Array,
+      isDeleted : Boolean,
       allrows : {
             type : Array,
             rowvalues : Array
