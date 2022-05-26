@@ -138,9 +138,33 @@ app.get('/comments', async (req, res) => {
             var post = await Posts.findOne({
                   _id: postid
             });
-            var comments=post.comments;
+            var comments = post.comments;
             comments.sort(dynamicSort('-commentedon'));
+            comments.forEach(comment => {
+                  if (comment.commentby == decoded.email) {
+                        comment.commentedbyyou = true
+                  }
+            })
             res.send(comments);
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/deletecomment', async (req, res) => {
+      try {
+            var commentid = req.body.commentid;
+            var postid = req.body.postid;
+            var s=await Posts.updateOne({
+                  _id: postid
+            }, {
+                  $pull: {
+                        comments: {
+                              _id : commentid
+                        }
+                  }
+            });
+            res.send("OK");
       } catch (error) {
             console.log(error);
       }

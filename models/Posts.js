@@ -23,7 +23,8 @@ const PostsSchema = new mongoose.Schema({
       commentby: String,
       commentbyname: String,
       comment: String,
-      commentedon: Date
+      commentedon: Date,
+      commentedbyyou : Boolean
    }],
    popularity: Number
 });

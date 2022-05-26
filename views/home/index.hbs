@@ -22,6 +22,10 @@
         img {
             cursor: pointer;
         }
+
+        body {
+            word-wrap: break-word;
+        }
     </style>
 </head>
 
@@ -64,15 +68,34 @@
     </div>
     {{>scripts}}
     <script>
+        function deletecomment(params) {
+            var postid = params.id.split('_')[1];
+            var commentid = params.id.split('_')[2];
+            $.post('/post/deletecomment', {
+                commentid: commentid,
+                postid: postid
+            }, (data, status) => {
+                RefreshComments(postid);
+                var s = parseInt($("#fullviewnoofcomments_" + postid).html());
+                $("#fullviewnoofcomments_" + postid).html(s - 1);
+                var s = parseInt($("#noofcomments_" + postid).html());
+                $("#noofcomments_" + postid).html(s - 1);
+            });
+        }
+
         function RefreshComments(postid) {
-            $("#postcomments_" + postid).html(`<h4> Comments </h4>`);
+            $("#postcomments_" + postid).html(`<li class="list-group-item"></li>`);
             $.get('/post/comments?postid=' + postid, function (comments, status) {
                 comments.forEach(comment => {
-                    $("#postcomments_" + postid).append(
-                        `<li class="list-group-item"><b>${comment.commentbyname} :</b> ${comment.comment}</li>`
+                    $("#postcomments_" + postid + " li").append(
+                        `<span  id='comment_${comment._id}'><b id='commentor_${comment._id}'>${comment.commentbyname} :</b> ${comment.comment}<br><span>`
+                    );
+                    if (comment.commentedbyyou) {
+                        $(`#commentor_${comment._id}`).append(
+                            `<span style="float:right" id='delcomment_${postid}_${comment._id}' onclick='deletecomment(this)'>Delete<span>`
                         );
+                    }
                 });
-
             });
         }
 
@@ -83,6 +106,10 @@
                 comment: comment,
                 postid: postid
             }, function (data, status) {
+                var s = parseInt($("#fullviewnoofcomments_" + postid).html());
+                $("#fullviewnoofcomments_" + postid).html(s + 1);
+                var s = parseInt($("#noofcomments_" + postid).html());
+                $("#noofcomments_" + postid).html(s + 1);
                 RefreshComments(postid);
             });
         }
@@ -168,7 +195,7 @@
             <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;color:white">
                 <img onclick="closefullview()" src="posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
             </div>
-            <div class="col" style="border-left: 1px solid #dfd2d2;height: 80vh;max-height:80vh;padding:2rem;overflow-y:scroll">
+            <div class="col sc1" style="border-left: 1px solid #dfd2d2;height: 80vh;max-height:80vh;padding:2rem;overflow-y:scroll">
                 <div class="row">
                     <div class="col">
                         <h1>${data.title}</h1>
@@ -183,8 +210,35 @@
                     <div class="col"><span id="fullviewnoofcomments_${data._id}">${data.noofcomments}</span> <img src="/assets/img/comment-icon.png" style="width: 2rem;" alt="" id="fullviewcomment_${data._id}"></div>
                 </div>
                 <hr>
+
+                <div class="row"><div class="form-group col-7">
+                <textarea id="commentbox" class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                </div>
+                <div class="col-3"><button type="button" id="cmt_${data._id}" onclick="commentonpost(this)" class="btn btn-primary">Comment</button>
+                </div>
+                </div>
+                <div id="postcomments_${data._id}" style="font-size:0.8rem">
+  
+
+
             </div>
-        </div>`)
+
+        </div>`);
+                $("#postcomments_" + data._id).append(`<li class="list-group-item"></li>`);
+
+                $.get('/post/comments?postid=' + data._id, function (comments, status) {
+                    comments.forEach(comment => {
+                        $("#postcomments_" + postid + " li").append(
+                            `<span  id='comment_${comment._id}'><b id='commentor_${comment._id}'>${comment.commentbyname} :</b> ${comment.comment}<br><span>`
+                        );
+                        if (comment.commentedbyyou) {
+                            $(`#commentor_${comment._id}`).append(
+                                `<span style="float:right" id='delcomment_${postid}_${comment._id}' onclick='deletecomment(this)'>Delete<span>`
+                            );
+                        }
+                    });
+
+                });
             });
             $("body").css('background-color', 'white');
             $("#header").css('display', 'none');
@@ -246,7 +300,7 @@
                 <div class="col-3"><button type="button" id="cmt_${data._id}" onclick="commentonpost(this)" class="btn btn-primary">Comment</button>
                 </div>
                 </div>
-                <div id="postcomments_${data._id}" style="font-size:small">
+                <div id="postcomments_${data._id}" style="font-size:0.8rem">
   
   
                 </div>
@@ -266,13 +320,18 @@
                                                             </div>`);
                 }
 
-                $("#postcomments_" + data._id).append(`<h4> Comments </h4>`);
+                $("#postcomments_" + data._id).append(`<li class="list-group-item"></li>`);
 
                 $.get('/post/comments?postid=' + data._id, function (comments, status) {
                     comments.forEach(comment => {
-                        $("#postcomments_" + data._id).append(
-                            `<li class="list-group-item"><b>${comment.commentbyname} :</b> ${comment.comment}</li>`
+                        $("#postcomments_" + postid + " li").append(
+                            `<span  id='comment_${comment._id}'><b id='commentor_${comment._id}'>${comment.commentbyname} :</b> ${comment.comment}<br><span>`
+                        );
+                        if (comment.commentedbyyou) {
+                            $(`#commentor_${comment._id}`).append(
+                                `<span style="float:right" id='delcomment_${postid}_${comment._id}' onclick='deletecomment(this)'>Delete<span>`
                             );
+                        }
                     });
 
                 });
