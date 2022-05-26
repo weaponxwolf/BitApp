@@ -18,6 +18,10 @@
             background-color: #dfdfdf;
             border-radius: 10px;
         }
+
+        img {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -60,13 +64,55 @@
     </div>
     {{>scripts}}
     <script>
+        function RefreshComments(postid) {
+            $("#postcomments_" + postid).html(`<h4> Comments </h4>`);
+            $.get('/post/comments?postid=' + postid, function (comments, status) {
+                comments.forEach(comment => {
+                    $("#postcomments_" + postid).append(
+                        `<li class="list-group-item"><b>${comment.commentbyname} :</b> ${comment.comment}</li>`
+                        );
+                });
+
+            });
+        }
+
+        function commentonpost(params) {
+            var postid = params.id.split('_')[1];
+            var comment = $("#commentbox").val();
+            $.post('/post/comment/', {
+                comment: comment,
+                postid: postid
+            }, function (data, status) {
+                RefreshComments(postid);
+            });
+        }
+
+
         function likepost(params) {
-            console.log(params.id.split('_')[1]);
-            var postid=params.id.split('_')[1];
-            if ($("#like_"+postid).attr("src")=="/assets/img/liked-icon.png") {
-                $("#like_"+postid).attr("src","/assets/img/like-icon.png");
-            }else{
-                $("#like_"+postid).attr("src","/assets/img/liked-icon.png");
+            var postid = params.id.split('_')[1];
+            if ($("#like_" + postid).attr("src") == "/assets/img/liked-icon.png") {
+                $.post('/post/unlike', {
+                    postid: postid
+                }, function (data, status) {
+                    var s = parseInt($("#nooflikes_" + postid).html());
+                    $("#nooflikes_" + postid).html(s - 1);
+                    var s = parseInt($("#fullviewnooflikes_" + postid).html());
+                    $("#fullviewnooflikes_" + postid).html(s - 1);
+                    $("#like_" + postid).attr("src", "/assets/img/like-icon.png");
+                    $("#fullviewlike_" + postid).attr("src", "/assets/img/like-icon.png");
+                });
+            } else {
+                $.post('/post/like', {
+                    postid: postid
+                }, function (data, status) {
+                    var s = parseInt($("#nooflikes_" + postid).html());
+                    $("#nooflikes_" + postid).html(s + 1);
+                    var s = parseInt($("#fullviewnooflikes_" + postid).html());
+                    $("#fullviewnooflikes_" + postid).html(s + 1);
+                    $("#like_" + postid).attr("src", "/assets/img/liked-icon.png");
+                    $("#fullviewlike_" + postid).attr("src", "/assets/img/liked-icon.png");
+                });
+
             }
         }
 
@@ -109,15 +155,21 @@
         function fullview(params) {
             var postid = params.id.split('_')[1];
             $.get('/post/postdetails?postid=' + postid, function (data, status) {
-                console.log(data);
+                var isliked = data.liked;
+                var likeimg = "";
+                if (isliked) {
+                    likeimg = "/assets/img/liked-icon.png";
+                } else {
+                    likeimg = "/assets/img/like-icon.png";
+                }
                 $("#container").css('display', 'none');
                 $("#fullview").css('display', 'block');
                 $("#fullview").append(`<div class="row">
             <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;color:white">
                 <img onclick="closefullview()" src="posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
             </div>
-            <div class="col" style="border-left: 1px solid #dfd2d2;padding:2rem;">
-                <div class="row" style="height: 70%;">
+            <div class="col" style="border-left: 1px solid #dfd2d2;height: 80vh;max-height:80vh;padding:2rem;overflow-y:scroll">
+                <div class="row">
                     <div class="col">
                         <h1>${data.title}</h1>
                         <b>${data.createdbyname}</b>
@@ -125,6 +177,12 @@
                         <p>${data.paragraph}</p>
                     </div>
                 </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col"><span id="fullviewnooflikes_${data._id}">${data.nooflikes}</span> <img src="${likeimg}" style="width: 2rem;" alt="" id="fullviewlike_${data._id}" onclick="likepost(this)"></div>
+                    <div class="col"><span id="fullviewnoofcomments_${data._id}">${data.noofcomments}</span> <img src="/assets/img/comment-icon.png" style="width: 2rem;" alt="" id="fullviewcomment_${data._id}"></div>
+                </div>
+                <hr>
             </div>
         </div>`)
             });
@@ -134,10 +192,15 @@
 
         function fullviewclubpost(params) {
             var postid = params.id.split('_')[1];
-            console.log(postid);
             $.get('/post/postdetails?postid=' + postid, function (data, status) {
-                console.log(data);
                 var creator = data.createdby.split(',');
+                var isliked = data.liked;
+                var likeimg = "";
+                if (isliked) {
+                    likeimg = "/assets/img/liked-icon.png";
+                } else {
+                    likeimg = "/assets/img/like-icon.png";
+                }
                 $("#container").css('display', 'none');
                 $("#fullview").css('display', 'block');
                 $("#fullview").append(`<div class="row">
@@ -161,15 +224,31 @@
                                                       </a>
                                                 </div>
             </div>
-            <div class="col" style="border-left: 1px solid #dfd2d2;padding:2rem;">
-                <div class="row" style="height: 70%;">
+            <div class="col sc1" style="border-left: 1px solid #dfd2d2;padding:2rem;overflow-y:scroll;height: 80vh;max-height:80vh;">
+                <div class="row sc1">
                     <div class="col">
                         <h1>${data.title}</h1>
                         <b>${creator[0]},${data.clubname}</b>
                         <br>
                         <br>
-                        <p>${data.body}</p>
+                        <p style="font-size:small">${data.body}</p>
                     </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col"><span id="fullviewnooflikes_${data._id}">${data.nooflikes}</span> <img src="${likeimg}" style="width: 2rem;" alt="" id="fullviewlike_${data._id}" onclick="likepost(this)"></div>
+                    <div class="col"><span id="fullviewnoofcomments_${data._id}">${data.noofcomments}</span>  <img src="/assets/img/comment-icon.png" style="width: 2rem;" alt="" id="fullviewcomment_${data._id}"></div>
+                </div>
+                <hr>
+                <div class="row"><div class="form-group col-7">
+                <textarea id="commentbox" class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                </div>
+                <div class="col-3"><button type="button" id="cmt_${data._id}" onclick="commentonpost(this)" class="btn btn-primary">Comment</button>
+                </div>
+                </div>
+                <div id="postcomments_${data._id}" style="font-size:small">
+  
+  
                 </div>
                
             </div>
@@ -186,6 +265,18 @@
                                                                         alt="Third slide">
                                                             </div>`);
                 }
+
+                $("#postcomments_" + data._id).append(`<h4> Comments </h4>`);
+
+                $.get('/post/comments?postid=' + data._id, function (comments, status) {
+                    comments.forEach(comment => {
+                        $("#postcomments_" + data._id).append(
+                            `<li class="list-group-item"><b>${comment.commentbyname} :</b> ${comment.comment}</li>`
+                            );
+                    });
+
+                });
+
             });
 
             $("body").css('background-color', 'white');
@@ -201,6 +292,13 @@
             document.getElementById("container").style.marginTop = getPosition(clientHeight);
             $.get('/post/getposts', function (data, status) {
                 data.forEach(element => {
+                    var isliked = element.liked;
+                    var likeimg = "";
+                    if (isliked) {
+                        likeimg = "/assets/img/liked-icon.png";
+                    } else {
+                        likeimg = "/assets/img/like-icon.png";
+                    }
                     if (element.type == 'clubpost') {
                         var getname = element.createdby.split(',')[0];
                         $("#mainpart").append(`<div class="post" id="post_${element._id}">
@@ -208,8 +306,11 @@
                                                 <h3>${element.title}</h3>
                                                 <div style="display:inline;float:right;">
                                                     <b>${getname}, ${element.clubname}</b>
-                                <img src="/assets/img/comment-icon.png" style="width: 2rem;float: right;" alt="" id="comment_${element._id}" onclick="commentpost(this)">
-                                <img src="/assets/img/like-icon.png" style="width: 2rem;float: right;" alt="" id="like_${element._id}" onclick="likepost(this)">
+                                                    
+                                                    <span style="float:right;" id="noofcomments_${element._id}">${element.noofcomments}</span>
+                                <img src="/assets/img/comment-icon.png" style="width: 2rem;float: right;" alt="" id="comment_${element._id}" onclick="fullviewclubpost(this)">
+                                <span style="float:right;" id="nooflikes_${element._id}">${element.nooflikes}</span>
+                                <img src="${likeimg}" style="width: 2rem;float: right;" alt="" id="like_${element._id}" onclick="likepost(this)">
                             </div>
                                                 
                                                 <div class="mainbody">
@@ -256,9 +357,10 @@
                             style="max-height: 80vh;border-radius:1rem;margin-bottom:0.5rem;">
                             <div>
                                
-                              
-                           <img src="/assets/img/comment-icon.png" style="width: 2rem;float: right;" alt="">
-                           <img src="/assets/img/like-icon.png" style="width: 2rem;float: right;" alt="" id="like_${element._id}" onclick="likepost(this)">
+                        <span style="float:right;" id="noofcomments_${element._id}">${element.noofcomments}</span>
+                           <img src="/assets/img/comment-icon.png" style="width: 2rem;float: right;" alt="" id="comment_${element._id}" onclick="fullview(this)">
+                        <span style="float:right;" id="nooflikes_${element._id}">${element.nooflikes}</span>
+                           <img src="${likeimg}" style="width: 2rem;float: right;" alt="" id="like_${element._id}" onclick="likepost(this)">
                        
                            </div>
                             <h3 class="card-title">${element.title}</h3>
