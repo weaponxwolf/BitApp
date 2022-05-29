@@ -22,9 +22,11 @@
         img {
             cursor: pointer;
         }
-        span{
+
+        span {
             cursor: pointer;
         }
+
         body {
             word-wrap: break-word;
         }
@@ -65,8 +67,7 @@
     </div>
 
     <div id="notificationstoast"
-        style="background-color:white;position:fixed;min-width:400px;padding:1rem;right: 0px;top: 100px; border: 1px solid red;display: none; ">
-
+        style="background-color:white;position:fixed;min-width:400px;padding:1rem;right: 0px;top: 100px; border: 1px solid rgb(0, 0, 0);z-index:5;width:40rem; border-radius:1rem;display:none">
     </div>
     {{>scripts}}
     <script>
@@ -343,6 +344,14 @@
             $("body").css('background-color', 'white');
             $("#header").css('display', 'none');
         }
+
+        function PlayNotification() {
+            const audio = new Audio(
+                "/assets/audio/Notification.mp3"
+            );
+            audio.load();
+            audio.play();
+        }
         $(document).ready(function () {
             var s = document.getElementById('mainpart');
             var header = document.getElementById('header');
@@ -446,12 +455,14 @@
         var socket = io();
         socket.on('connect', function (data) {});
         socket.on('notification', (data) => {
+
             $("#notificationstoast").html("");
             $("#notificationstoast").css('display', 'block');
             $("#notificationstoast").append(`<span style="float: right"><img
-            src="/assets/img/cross.png" alt="" onclick="closenotification()" style="height: 0.8rem"></span>
-        <h1>${data.title}</h1>
-        <h1>${data.body}</h1>`);
+            src="/assets/img/cross.png" alt="" onclick="closenotification()" style="height: 0.8rem"></span><h4>${data.title}</h4>
+            <p>${data.body}</p>`);
+            PlayNotification();
+
         });
     </script>
 

@@ -4,6 +4,7 @@ const PostsSchema = new mongoose.Schema({
    title: String,
    paragraph: String,
    createdby: String,
+   createdbyname: String,
    createdon: Date,
    ImageName: String,
    ImageLink: String,

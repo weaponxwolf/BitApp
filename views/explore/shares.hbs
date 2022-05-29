@@ -36,11 +36,12 @@
                   border-radius: 0.5rem;
                   padding: 0px;
             }
-            span{
+
+            span {
                   cursor: pointer;
             }
 
-            img{
+            img {
                   cursor: pointer;
             }
       </style>
@@ -65,7 +66,7 @@
                                     <div id="img_1_1" class="col-4" style="height:30vh;">
                                     </div>
                                     <div id="img_1_2" class="col-8" style="height:60vh;"></div>
-                                    <div class="col-4 owl-carousel" id="img_1_3"
+                                    <div class="col-4" id="img_1_3"
                                           style="height:30vh;position:relative;bottom:30vh">
                                     </div>
                                     <div id="img_1_4" class="col-4" style="height:30vh;"></div>
@@ -406,7 +407,7 @@
                         for (let i = 1; i <= postcount; i++) {
                               if (data[i - 1].type == 'clubpost') {
                                     $('#img_' + 1 + '_' + i).append(
-                                          ` <img id="post_${data[i-1]._id}" onclick="fullviewclubpost(this)" src="/posts/images/${data[i-1].images[0]}" alt="">`
+                                          ` <img id="post_${data[i-1]._id}"  onclick="fullviewclubpost(this)" src="/posts/images/${data[i-1].images[0]}" alt="">`
                                     );
                               } else {
                                     $('#img_' + 1 + '_' + i).append(

@@ -490,6 +490,9 @@ app.post('/events/addnew', async (req, res) => {
                   if (club) {
                         var eventIcon = req.files.eventicon;
                         var eventImage = req.files.eventimage;
+                        var locdata=await Locations.findOne({
+                              name : location
+                        });
                         var eventdata = {
                               _id: mongoose.Types.ObjectId(),
                               name: name,
@@ -498,7 +501,9 @@ app.post('/events/addnew', async (req, res) => {
                               enddate: enddate,
                               starttime: starttime,
                               endtime: endtime,
-                              description: description
+                              description: description,
+                              locdata : locdata,
+                              isDeleted : false
                         }
 
                         iconext = '';

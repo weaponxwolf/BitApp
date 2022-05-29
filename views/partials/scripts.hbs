@@ -10,9 +10,35 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-      function chooseprofileaction(){
-           $("#profilebutton").css("display","inline");
-           $("#profileeditbutton").css("display","inline");
-           $("#profileoption").css("display","none");
+      function chooseprofileaction() {
+            $("#profilebutton").css("display", "inline");
+            $("#profileeditbutton").css("display", "inline");
+            $("#profileoption").css("display", "none");
       }
+</script>
+
+<script>
+      function closenotification() {
+            $("#notificationstoast").html("");
+            $("#notificationstoast").css('display', 'none');
+      }
+
+      function PlayNotification() {
+            const audio = new Audio(
+                  "/assets/audio/Notification.mp3"
+            );
+            audio.load();
+            audio.play();
+      }
+      var socket = io();
+      socket.on('connect', function (data) {});
+      socket.on('notification', (data) => {
+            $("#notificationstoast").html("");
+            $("#notificationstoast").css('display', 'block');
+            $("#notificationstoast").append(`<span style="float: right"><img
+            src="/assets/img/cross.png" alt="" onclick="closenotification()" style="height: 0.8rem"></span><h4>${data.title}</h4>
+            <p>${data.body}</p>`);
+            PlayNotification();
+
+      });
 </script>

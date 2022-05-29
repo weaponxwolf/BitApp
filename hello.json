@@ -1,0 +1,24 @@
+[
+      {
+            "email": "btech10091.20@bitmesra.ac.in",
+            "profile": {
+                  "id": "115486617600613996161",
+                  "displayName": "SHIVAM SANWARIA",
+                  "name": {
+                        "familyName": "SHARMA",
+                        "givenName": "VISHAL"
+                  },
+                  "emails": [{
+                        "value": "btech10091.20@bitmesra.ac.in",
+                        "verified": true
+                  }]
+            },
+            "fullyCreated": true,
+            "loginsessions": [],
+            "__v": 0,
+            "branch": "ECE",
+            "password": "123456",
+            "section": "A",
+            "semester": "5"
+      }
+]

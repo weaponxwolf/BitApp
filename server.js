@@ -114,10 +114,11 @@ const ExploreRoute = require('./routes/Students/Explore');
 const ClubsRoute = require('./routes/Clubs/Club');
 const MapsRoute = require('./routes/Students/Maps');
 const NewsRoute = require('./routes/Students/News');
+const ChatsRoute = require('./routes/Students/Chats');
 
 
 //ALL CLUB ACCESS ROUTES
-app.use('/club',IsClubLoggedIn, ClubsRoute);
+app.use('/club', IsClubLoggedIn, ClubsRoute);
 
 //ALL STUDENT ACCESS ROUTES
 app.use('/maps', IsLoggedIn, MapsRoute);
@@ -129,6 +130,7 @@ app.use('/explore', IsLoggedIn, ExploreRoute);
 app.use('/news', IsLoggedIn, NewsRoute);
 app.use('/viewprofile', ViewProfileRoute);
 app.use('/home', IsLoggedIn, HomeRoute);
+app.use('/chats', IsLoggedIn, ChatsRoute);
 
 
 //FIRST PAGE - OPTIONS FOR LOG IN
@@ -141,7 +143,7 @@ app.get('/', (req, res) => {
             res.redirect('/home');
       } else if (getclubname) {
             res.redirect('/club/admin')
-      }else{
+      } else {
             res.render('index');
       }
 });
@@ -393,30 +395,34 @@ app.get('/logout', (req, res) => {
 
 //SOCKETS
 io.on('connection', (socket) => {
-
       var cookies = cookie.parse(socket.handshake.headers.cookie);
-      var decoded = jwt.verify(cookies.userdata, 'amitkumar');
-
-      socket.broadcast.emit('user', {
-            username: decoded.name,
-            email: decoded.email
-      });
-
-      socket.on('disconnect', () => {});
-
-      socket.on('sendmessagetoclass', (data) => {
-            socket.broadcast.emit("newmessage", data);
-            Messages.create({
-                  message: data.message,
-                  messageby: data.nameofuser,
-                  byemail: data.emailofuser,
-                  messageto: "ECE_A",
-                  createdon: Date.now()
-            }, function (err, small) {
-                  if (err) return handleError(err);
-                  // saved!
+      if (cookies.userdata) {
+            var decoded = jwt.verify(cookies.userdata, 'amitkumar');
+            socket.broadcast.emit('user', {
+                  username: decoded.name,
+                  email: decoded.email
             });
-      });
+
+            socket.on('disconnect', () => {});
+
+            socket.on('sendmessagetoclass', (data) => {
+                  socket.broadcast.emit("newmessage", data);
+                  Messages.create({
+                        message: data.message,
+                        messageby: data.nameofuser,
+                        byemail: data.emailofuser,
+                        messageto: "ECE_A",
+                        createdon: Date.now()
+                  }, function (err, small) {
+                        if (err) return handleError(err);
+                        // saved!
+                  });
+            });
+
+            socket.on('messagetouser')
+      }
+
+
       socket.on('broadcastnotification', (data) => {
             console.log("hisdssis");
             socket.broadcast.emit('notification', data);

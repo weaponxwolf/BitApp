@@ -75,7 +75,7 @@
 
                               </div>
                               <div id="upcomingevents">
-                                    
+
                               </div>
                         </div>
                   </div>
@@ -85,7 +85,6 @@
 
       {{>scripts}}
       <script>
-           
             function goback() {
                   $("#thefullimage").html("");
                   $("#allareasandloc").html("");
@@ -127,27 +126,39 @@
                   var clientHeight = document.getElementById('header').clientHeight;
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
-                  $.get('/club/events/areasandpos/list', function (data, status) {
-                        data.forEach(element => {
-                              tabind = 1;
-                              height = parseInt(element.height) + parseInt(element
-                                    .top);
-                              width = parseInt(element.width) + parseInt(element
-                                    .left);
-                              if (element.type === 'point') {
-                                    $("#allareasandloc").append(
-                                          `
-                                    <img class="red" src="/assets/img/location-icon.png" alt="" style="height:${element.height}px; 
+                  $.get('/maps/events/ongoing', function (data, status) {
+                        console.log(data);
+                        data.forEach(event => {
+                              var element = event.locdata;
+                              if (element) {
+                                    tabind = 1;
+                                    height = parseInt(element.height) + parseInt(
+                                          element
+                                          .top);
+                                    width = parseInt(element.width) + parseInt(
+                                          element
+                                          .left);
+                                    if (element.type === 'point') {
+                                          $("#allareasandloc").append(
+                                                `
+                                    <img class="red" src="/assets/img/circle.png" alt="" style="height:${element.height}px; 
                                     width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`
-                                    );
-                              } else {
-                                    $("#allareasandloc").append(
-                                          ` <div onclick="zoomin(this)" id="${element._id}" style="background-color: #ffffff36;height: ${element.height}px;width: ${element.width}px;position: relative;margin-bottom: -${element.height}px;left: ${element.left}px;top: ${element.top}px;opacity: 45%;" class="red"></div>`
-                                    );
+                                          );
+                                    } else {
+                                          $("#allareasandloc").append(` <div onclick="HElllo(this)" id="${element._id}" style="background-color: #c99e9e66;
+                                          height: ${element.height}px;
+                                          width: ${element.width}px;
+                                          position: relative;
+                                          margin-bottom: -${element.height}px;
+                                          left: ${element.left}px;
+                                          top: ${element.top}px;
+                                          opacity: 45%;" class="red"></div>`);
+                                    }
+
+
+                                    tabind++;
                               }
 
-
-                              tabind++;
                         });
                   });
             });

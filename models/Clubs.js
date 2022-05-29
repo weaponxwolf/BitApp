@@ -7,6 +7,7 @@ const ClubsSchema = new mongoose.Schema({
   events: [{
     name: String,
     location: String,
+    locdata:Object,
     startdate: String,
     enddate: String,
     starttime: String,

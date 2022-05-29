@@ -215,6 +215,7 @@ app.post('/newpost', async (req, res) => {
             const sampleFile = await req.files.image;
             const getname = GetName(req);
             var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
+            console.log(decoded);
             const newPost = await new Posts({
                   title: req.body.title,
                   paragraph: req.body.paragraph,

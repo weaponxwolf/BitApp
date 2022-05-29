@@ -177,10 +177,13 @@
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
 
                   $.get('/club/events/list', (data, status) => {
+                        console.log(data);
                         data.forEach(element => {
+                            
                               desc = element.description.split('\r\n').join('<br>');
                               $("#eventslist").append(`<div class="card" style="border-radius:2rem;padding:1rem;margin-bottom:1rem;">
-                                                <h1 class="center" style="z-index:45">${element.name}</h1>
+                                                <h1 class="center" style="z-index:45"><img src="/clubs/events/icons/${element.eventIcon}"
+                                                                  style="width:3rem;border-radius:0.5rem;"> ${element.name}</h1>
                                                 <article class="episode" style="z-index:45">
                                                       <div class="episode__number">
                                                             <img src="/clubs/events/images/${element.eventImage}"

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            li {
+                  cursor: pointer;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            {{>navbar}}
+      </header>
+
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem;font-size: 0.6rem; " id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-3">
+                        <div class="chatlist">
+                              <h6>Chat List</h6>
+                              <ul class="list-group  sc1" id="chatlist" style="max-height: 40vh;overflow-y: scroll;">
+
+                              </ul>
+                        </div>
+                        <hr>
+                        <div class="recommendations ">
+                              <h6>Recommendations</h6>
+                              <ul class="list-group sc1" style="max-height: 30vh;overflow-y: scroll;">
+
+                              </ul>
+                        </div>
+                  </div>
+                  <div class="col-9" style="height: 60vh">
+                        <h1 class="card" id="nameofuser" style="max-height:40vh">User</h1>
+                        <h1 class="card" id="emailofuser" style="display: none;">Email</h1>
+                        <div class="sc1"
+                              style="max-height: 80vh;background-color: #f1f1f1;height:60vh;border-radius: 10px;padding: 2rem;"
+                              id="mainpart">
+
+                              <div id="allmessages" class="sc1" style="overflow-y: scroll;max-height:60vh">
+                              </div>
+                        </div>
+                        <hr>
+                        <div style="text-align: center;justify-content:center;align-items:center; display: flex;">
+                              <textarea name="" id="message" class="col-9 row-2"></textarea><Button class="col-2 row-2"
+                                    style=" background-color: white;
+                              color: black;
+                              border: 2px solid #4CAF50;height: 45px;" onclick="sendtouser()"
+                                    id="sendtoclass">Send</Button>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      </div>
+      {{>scripts}}
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+            var socket = io();
+            socket.on('connect', () => {});
+
+            function sendtouser() {
+                  var message = $("#message").val();
+                  var sendtouser = $("#nameofuser").html();
+                  var sendtoemail = $("#emailofuser").html();
+                  socket.emit('messagetouser', {
+                        message: message,
+                        sendtouser: sendtouser,
+                        sendtoemail: sendtoemail
+                  });
+            }
+      </script>
+      <script>
+            function setchat(params, name, email) {
+                  $("#nameofuser").html(name);
+                  $("#emailofuser").html(email);
+            }
+
+            function startchat(params, name, email) {
+                  var s = true;
+                  $("#chatlist").children().each((index, element) => {
+                        if (element.innerHTML == name) {
+                              s = false;
+                        }
+                  });
+                  if (s) {
+                        $("#chatlist").prepend(
+                              ` <li class="list-group-item" id="chat_${params.id}" onclick='setchat(this,"${name}","${email}")'>${name}</li>`
+                        );
+                        $("#nameofuser").html(name);
+                        $("#emailofuser").html(email);
+                  }
+
+
+            }
+
+            function closefullview() {
+                  $("#container").css('display', 'block');
+                  $("#fullview").css('display', 'none');
+                  $("#fullview").html('');
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  $.get('/chats/users/list', (data, status) => {
+                        data.allusers.forEach(user => {
+                              if (user.email == data.yourinfo) {} else {
+                                    var id = user.email.split('@')[0].split('.')
+                                          .join('-');
+                                    $(".recommendations ul").append(
+                                          ` <li class="list-group-item" id="createchat_${id}" onclick='startchat(this,"${user.name}","${user.email}")'>${user.name}</li>`
+                                    );
+                              }
+                        });
+                  })
+            });
+      </script>
+
+</body>
+
+</html>
