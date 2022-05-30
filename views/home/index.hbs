@@ -452,10 +452,7 @@
         })
     </script>
     <script>
-        var socket = io();
-        socket.on('connect', function (data) {});
         socket.on('notification', (data) => {
-
             $("#notificationstoast").html("");
             $("#notificationstoast").css('display', 'block');
             $("#notificationstoast").append(`<span style="float: right"><img

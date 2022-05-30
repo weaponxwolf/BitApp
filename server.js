@@ -115,6 +115,9 @@ const ClubsRoute = require('./routes/Clubs/Club');
 const MapsRoute = require('./routes/Students/Maps');
 const NewsRoute = require('./routes/Students/News');
 const ChatsRoute = require('./routes/Students/Chats');
+const {
+      decode
+} = require('punycode');
 
 
 //ALL CLUB ACCESS ROUTES
@@ -393,38 +396,76 @@ app.get('/logout', (req, res) => {
 
 
 
+const UsersOnline = require('./models/OnlineUsers');
+
 //SOCKETS
 io.on('connection', (socket) => {
-      var cookies = cookie.parse(socket.handshake.headers.cookie);
-      if (cookies.userdata) {
-            var decoded = jwt.verify(cookies.userdata, 'amitkumar');
-            socket.broadcast.emit('user', {
-                  username: decoded.name,
-                  email: decoded.email
-            });
-
-            socket.on('disconnect', () => {});
-
-            socket.on('sendmessagetoclass', (data) => {
-                  socket.broadcast.emit("newmessage", data);
-                  Messages.create({
-                        message: data.message,
-                        messageby: data.nameofuser,
-                        byemail: data.emailofuser,
-                        messageto: "ECE_A",
-                        createdon: Date.now()
-                  }, function (err, small) {
-                        if (err) return handleError(err);
-                        // saved!
+      if (socket.handshake.headers.cookie) {
+            var cookies = cookie.parse(socket.handshake.headers.cookie);
+            if (cookies.userdata) {
+                  var decoded = jwt.verify(cookies.userdata, process.env.JWT_SIGNATURE);
+                  UsersOnline.findOne({
+                        email: decoded.email
+                  }, (err, user) => {
+                        if (user) {} else {
+                              UsersOnline.create({
+                                    email: decoded.email,
+                                    name: decoded.name,
+                                    branch: decoded.branch,
+                                    section: decoded.section,
+                                    socketID: socket.id
+                              }, (err, doc) => {});
+                        }
                   });
-            });
+                  socket.on('disconnect', () => {
+                        // console.log(decoded.name + ' DISCONNECTED');
+                        UsersOnline.deleteOne({
+                              email: decoded.email
+                        }, (err, doc) => {});
+                  });
 
-            socket.on('messagetouser')
+                  socket.on('private_message', (data) => {
+                        UsersOnline.findOne({
+                              email: data.recieveremail
+                        }, (err, user) => {
+                              if (user) {
+                                    Messages.create({
+                                          message: data.message,
+                                          from: data.sendername,
+                                          fromemail: data.senderemail,
+                                          to: data.recievername,
+                                          toemail: data.recieveremail,
+                                          createdon: Date.now()
+                                    });
+                                    socket.broadcast.to(user.socketID).emit('new_message', data);
+                              } else {
+                                    Messages.create({
+                                          message: data.message,
+                                          from: data.sendername,
+                                          fromemail: data.senderemail,
+                                          to: data.recievername,
+                                          toemail: data.recieveremail,
+                                          createdon: Date.now()
+                                    });
+                              }
+
+                        });
+                  });
+
+                  socket.on('online_users', (branchandsection) => {
+                        UsersOnline.find({
+                              branch: branchandsection.branch,
+                              section: branchandsection.section
+                        }, (err, users) => {
+                              socket.emit('users_online', users);
+                        })
+                  })
+            }
+
       }
 
 
       socket.on('broadcastnotification', (data) => {
-            console.log("hisdssis");
             socket.broadcast.emit('notification', data);
       });
 });

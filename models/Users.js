@@ -13,6 +13,10 @@ const UserSchema=new mongoose.Schema({
     semester : String,
     branch : String,
     password : String,
+    chatrooms : [{
+        with: String,
+        chatroomid : String
+    }],
     loginsessions : Array
 });
 

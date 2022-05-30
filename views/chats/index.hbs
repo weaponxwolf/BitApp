@@ -56,6 +56,10 @@
                   <div class="col-9" style="height: 60vh">
                         <h1 class="card" id="nameofuser" style="max-height:40vh">User</h1>
                         <h1 class="card" id="emailofuser" style="display: none;">Email</h1>
+                        <h1 class="card" id="useremail" style="display: none;">{{user.email}}</h1>
+                        <h1 class="card" id="username" style="display: none;">{{user.name}}</h1>
+                        <h1 class="card" id="section" style="display: none;">{{user.section}}</h1>
+                        <h1 class="card" id="branch" style="display: none;">{{user.branch}}</h1>
                         <div class="sc1"
                               style="max-height: 80vh;background-color: #f1f1f1;height:60vh;border-radius: 10px;padding: 2rem;"
                               id="mainpart">
@@ -76,51 +80,86 @@
       </div>
       </div>
       {{>scripts}}
-      <script src="/socket.io/socket.io.js"></script>
       <script>
-            var socket = io();
-            socket.on('connect', () => {});
-
-            function sendtouser() {
-                  var message = $("#message").val();
-                  var sendtouser = $("#nameofuser").html();
-                  var sendtoemail = $("#emailofuser").html();
-                  socket.emit('messagetouser', {
-                        message: message,
-                        sendtouser: sendtouser,
-                        sendtoemail: sendtoemail
-                  });
-            }
-      </script>
-      <script>
-            function setchat(params, name, email) {
+            function chat(name, email, socketID) {
                   $("#nameofuser").html(name);
                   $("#emailofuser").html(email);
-            }
-
-            function startchat(params, name, email) {
-                  var s = true;
-                  $("#chatlist").children().each((index, element) => {
-                        if (element.innerHTML == name) {
-                              s = false;
-                        }
+                  $.get('/chats/messages/byemail?email=' + email, (messages,
+                        status) => {
+                        $("#allmessages").html('');
+                        messages.forEach(message => {
+                              $("#allmessages").append(
+                                    `<li class="list-group-item">${message.from}: ${message.message}</li>`
+                              );
+                        });
                   });
-                  if (s) {
-                        $("#chatlist").prepend(
-                              ` <li class="list-group-item" id="chat_${params.id}" onclick='setchat(this,"${name}","${email}")'>${name}</li>`
-                        );
-                        $("#nameofuser").html(name);
-                        $("#emailofuser").html(email);
+            }
+
+            function startchat(name, email, socketID) {
+                  var s = $("#chatlist").children();
+                  var x = true;
+                  for (let i = 0; i < s.length; i++) {
+                        if (s[i].innerHTML == name) {
+                              x = false;
+                        }
                   }
-
-
+                  if (x) {
+                        $("#chatlist").prepend(
+                              `<li onclick='chat("${name}","${email}","${socketID}")' onclick="getmessages()" class="list-group-item">${name}</li>`
+                        );
+                  }
+                  $("#nameofuser").html(name);
+                  $("#emailofuser").html(email);
+                  $("#userrecomm_" + socketID).remove();
             }
 
-            function closefullview() {
-                  $("#container").css('display', 'block');
-                  $("#fullview").css('display', 'none');
-                  $("#fullview").html('');
+            function sendtouser() {
+                  var recievername = $("#nameofuser").html();
+                  var recieveremail = $("#emailofuser").html();
+                  var senderemail = $("#useremail").html();
+                  var sendername = $("#username").html();
+                  var message = $("#message").val();
+                  socket.emit('private_message', {
+                        recieveremail: recieveremail,
+                        recievername: recievername,
+                        senderemail: senderemail,
+                        sendername: sendername,
+                        message: message
+                  });
             }
+
+            socket.on('new_message', (data) => {
+                  var emailofuser = $("#emailofuser").html();
+                  if (emailofuser == data.senderemail) {
+                        $("#allmessages").append(
+                              `<li class="list-group-item">${data.sendername}: ${data.message}</li>`);
+                  }
+            });
+
+            socket.on('users_online', (users) => {
+                  var useremail = $("#useremail").html();
+                  users.forEach(user => {
+                        if (user.email == useremail) {
+
+                        } else {
+                              var s = $("#chatlist").children();
+                              var x = true;
+                              for (let i = 0; i < s.length; i++) {
+                                    if (s[i].innerHTML == user.name) {
+                                          x = false;
+                                    }
+                              }
+                              if (x) {
+                                    $(".recommendations ul").prepend(
+                                          `<li class="list-group-item" id="userrecomm_${user.socketID}" onclick='startchat("${user.name}","${user.email}","${user.socketID}")'>${user.name}</li>`
+                                    );
+                              }
+
+                        }
+
+                  });
+
+            });
 
             function getPosition(element) {
                   var xPosition = 0;
@@ -145,17 +184,37 @@
                   var clientHeight = document.getElementById('header').clientHeight;
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
-                  $.get('/chats/users/list', (data, status) => {
-                        data.allusers.forEach(user => {
-                              if (user.email == data.yourinfo) {} else {
-                                    var id = user.email.split('@')[0].split('.')
-                                          .join('-');
-                                    $(".recommendations ul").append(
-                                          ` <li class="list-group-item" id="createchat_${id}" onclick='startchat(this,"${user.name}","${user.email}")'>${user.name}</li>`
-                                    );
-                              }
+
+                  $.get('/chats/messenger/list', (data, status) => {
+                        console.log(data);
+                        data.forEach(user => {
+                              $("#chatlist").append(
+                                    `<li onclick='chat("${user.from}","${user.fromemail}")' class="list-group-item">${user.from}</li>`
+                              );
                         });
-                  })
+                        var section = $("#section").html();
+                        var branch = $("#branch").html();
+                        socket.emit('online_users', {
+                              section: section,
+                              branch: branch
+                        });
+                        if (data[0]) {
+                              $.get('/chats/messages/byemail?email=' + data[0].fromemail, (
+                                    messages,
+                                    status) => {
+                                    messages.forEach(message => {
+                                          $("#allmessages").append(
+                                                `<li class="list-group-item">${message.from}: ${message.message}</li>`
+                                          );
+                                    });
+                                    $("#nameofuser").html(data[0].from);
+                                    $("#emailofuser").html(data[0].fromemail);
+                              });
+                        }
+
+
+                  });
+
             });
       </script>
 
