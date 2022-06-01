@@ -43,6 +43,10 @@
                   -o-animation: up-right 1s infinite;
                   animation: up-right 1s infinite;
             }
+
+           #allareasandloc img{
+                  cursor: pointer;
+            }
       </style>
 </head>
 
@@ -60,6 +64,10 @@
                         <div class="list-group">
                               <a href="/maps/managemaps" class="list-group-item list-group-item-action"><img
                                           src="/assets/img/plus.png" alt="" style="height: 0.8rem">Manage Maps</a>
+                        </div>
+                        <hr>
+                        <div class="list-group" id="ongoingevents">
+                              <a href="#" class="list-group-item list-group-item-action active">Ongoing Events</a>
                         </div>
                   </div>
                   <div class="col-10">
@@ -117,6 +125,9 @@
                   };
             }
 
+            function opendetails(params) {
+                  console.log(params);
+            }
 
             $(document).ready(function () {
                   var s = document.getElementById('mainpart');
@@ -127,7 +138,6 @@
                   var headerHeight = $('header').outerHeight();
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
                   $.get('/maps/events/ongoing', function (data, status) {
-                        console.log(data);
                         data.forEach(event => {
                               var element = event.locdata;
                               if (element) {
@@ -141,7 +151,7 @@
                                     if (element.type === 'point') {
                                           $("#allareasandloc").append(
                                                 `
-                                    <img class="red" src="/assets/img/circle.png" alt="" style="height:${element.height}px; 
+                                    <img class="red" id="${event._id}" onmouseover="opendetails(this)" onmouseout="closedetails()" src="/clubs/events/icons/${event.eventIcon}" alt="" style="height:${element.height}px; 
                                     width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`
                                           );
                                     } else {
@@ -158,7 +168,10 @@
 
                                     tabind++;
                               }
-
+                              $("#ongoingevents").append(
+                                    ` <a href="#" class="list-group-item list-group-item-action"><img
+                                         class="red" src="/clubs/events/icons/${event.eventIcon}" alt="" style="height: 1.5rem"> ${event.name}</a>`
+                                    );
                         });
                   });
             });

@@ -60,17 +60,11 @@ app.get('/', async (req, res) => {
                         branch: decoded.branch,
                         section: decoded.section
                   }
-                  // console.log(s);
                   res.render('chats/index', {
                         user: s
                   });
             }
-
-      } catch (error) {
-
-      }
-
-
+      } catch (error) {}
 });
 
 
@@ -82,34 +76,33 @@ const GetName = (req) => {
 app.get('/messenger/list', async (req, res) => {
       try {
             var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
-            const messages = await Messages.find({
-                  $or: [{
-                        fromemail: decoded.email
-                  }, {
-                        toemail: decoded.email
-                  }]
-            }).sort({
-                  createdon: -1
+            const conversations = await Messages.find({
+                  between: decoded.email
             });
-            console.log(messages);
-            var messengers = new Set();
-            messages.forEach(message => {
-                  if (message.fromemail != decoded.email) {
-                        messengers.add(message.fromemail);
+            var msgers = [];
+            conversations.forEach(convo => {
+                  var themsg = convo.messages[convo.messages.length - 1];
+                  var thelastmsg = {
+                        message: themsg.message,
+                        from: themsg.from,
+                        to: themsg.to,
+                        fromemail: themsg.fromemail,
+                        toemail: themsg.toemail,
+                        createdon: themsg.createdon,
+                        indexname: "",
+                        indexemail: ""
                   }
-            })
-            var messengerarray = Array.from(messengers);
-            var msgandmsgers = [];
-            for (let i = 0; i < messengerarray.length; i++) {
-                  const message = await Messages.findOne({
-                        fromemail: messengerarray[i],
-                        toemail: decoded.email
-                  }).sort({
-                        createdon: -1
-                  });
-                  msgandmsgers.push(message);
-            }
-            res.send(msgandmsgers)
+                  if (themsg.fromemail == decoded.email) {
+                        thelastmsg.indexname = themsg.to;
+                        thelastmsg.indexemail = themsg.toemail;
+                  } else {
+                        thelastmsg.indexname = themsg.from;
+                        thelastmsg.indexemail = themsg.fromemail;
+                  }
+                  msgers.push(thelastmsg);
+            });
+            msgers.sort(dynamicSort('-createdon'));
+            res.send(msgers);
       } catch (error) {
             console.log(error);
       }
@@ -119,17 +112,12 @@ app.get('/messenger/list', async (req, res) => {
 app.get('/messages/byemail', async (req, res) => {
       try {
             var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
-            const messages = await Messages.find({
-                  $or: [{
-                        fromemail: req.query.email,
-                        toemail: decoded.email
-                  }, {
-                        fromemail: decoded.email,
-                        toemail: req.query.email
-                  }]
+            const messages = await Messages.findOne({
+                  between: {
+                        $all: [decoded.email, req.query.email]
+                  }
             });
-            console.log(messages);
-            res.send(messages)
+            res.send(messages);
       } catch (error) {
             console.log(error);
       }
@@ -149,7 +137,7 @@ app.get('/users/list', async (req, res) => {
                         firstName: user.profile.name.givenName,
                         lastName: user.profile.name.familyName,
                         branch: user.branch,
-                        sectiion: user.section,
+                        section: user.section,
                         semester: user.semester
                   }
                   allusers.push(s);
@@ -165,52 +153,5 @@ app.get('/users/list', async (req, res) => {
       }
 });
 
-app.post('/chatroom', async (req, res) => {
-      try {
-            var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
-            const user = await Users.findOne({
-                  email: decoded.email
-            });
-            var obj = user.chatrooms.find((o) => o.with == req.body.email);
-            if (obj) {
-                  res.send(obj.chatroomid);
-            } else {
-                  var id = uuidv4();
-                  var s = {
-                        with: req.body.email,
-                        chatroomid: id
-                  }
-                  await Users.updateOne({
-                        email: decoded.email
-                  }, {
-                        $push: {
-                              chatrooms: s
-                        }
-                  });
-                  const anotheruser = await Users.findOne({
-                        email: req.body.email
-                  });
-                  var obj = anotheruser.chatrooms.find((o) => o.with == decoded.email);
-                  if (obj) {
-                        res.send("OK")
-                  } else {
-                        var x = {
-                              with: decoded.email,
-                              chatroomid: id
-                        }
-                        await Users.updateOne({
-                              email: req.body.email
-                        }, {
-                              $push: {
-                                    chatrooms: x
-                              }
-                        });
-                        res.send(id);
-                  }
-            }
-      } catch (error) {
-            console.log(error);
-      }
-});
 
 module.exports = app;

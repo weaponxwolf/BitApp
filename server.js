@@ -418,7 +418,6 @@ io.on('connection', (socket) => {
                         }
                   });
                   socket.on('disconnect', () => {
-                        // console.log(decoded.name + ' DISCONNECTED');
                         UsersOnline.deleteOne({
                               email: decoded.email
                         }, (err, doc) => {});
@@ -429,23 +428,128 @@ io.on('connection', (socket) => {
                               email: data.recieveremail
                         }, (err, user) => {
                               if (user) {
-                                    Messages.create({
-                                          message: data.message,
-                                          from: data.sendername,
-                                          fromemail: data.senderemail,
-                                          to: data.recievername,
-                                          toemail: data.recieveremail,
-                                          createdon: Date.now()
-                                    });
+                                    Messages.findOne({
+                                          $or: [{
+                                                between: [data.senderemail, data.recieveremail]
+                                          }, {
+                                                between: [data.recieveremail, data.senderemail]
+                                          }]
+                                    }, (err, doc) => {
+                                          if (doc) {
+                                                var message = {
+                                                      fromemail: data.senderemail,
+                                                      from: data.sendername,
+                                                      toemail: data.recieveremail,
+                                                      to: data.recievername,
+                                                      message: data.message,
+                                                      createdon: Date.now()
+                                                }
+                                                Messages.findOneAndUpdate({
+                                                      $or: [{
+                                                            between: [data.senderemail, data.recieveremail]
+                                                      }, {
+                                                            between: [data.recieveremail, data.senderemail]
+                                                      }]
+                                                }, {
+                                                      $push: {
+                                                            messages: message
+                                                      }
+                                                }, {
+                                                      new: true
+                                                }, (err, doc) => {
+                                                });
+                                          } else {
+                                                var message = {
+                                                      fromemail: data.senderemail,
+                                                      from: data.sendername,
+                                                      toemail: data.recieveremail,
+                                                      to: data.recievername,
+                                                      message: data.message,
+                                                      createdon: Date.now()
+                                                }
+                                                Messages.create({
+                                                      between: [data.senderemail, data.recieveremail]
+                                                }, (err, doc) => {
+                                                      Messages.findOneAndUpdate({
+                                                            $or: [{
+                                                                  between: [data.senderemail, data.recieveremail]
+                                                            }, {
+                                                                  between: [data.recieveremail, data.senderemail]
+                                                            }]
+                                                      }, {
+                                                            $push: {
+                                                                  messages: message
+                                                            }
+                                                      }, {
+                                                            new: true
+                                                      }, (err, doc) => {
+                                                      });
+                                                });
+
+                                          }
+                                    })
                                     socket.broadcast.to(user.socketID).emit('new_message', data);
                               } else {
-                                    Messages.create({
-                                          message: data.message,
-                                          from: data.sendername,
-                                          fromemail: data.senderemail,
-                                          to: data.recievername,
-                                          toemail: data.recieveremail,
-                                          createdon: Date.now()
+                                    Messages.findOne({
+                                          $or: [{
+                                                between: [data.senderemail, data.recieveremail]
+                                          }, {
+                                                between: [data.recieveremail, data.senderemail]
+                                          }]
+                                    }, (err, doc) => {
+                                          if (doc) {
+                                                var message = {
+                                                      fromemail: data.senderemail,
+                                                      from: data.sendername,
+                                                      toemail: data.recieveremail,
+                                                      to: data.recievername,
+                                                      message: data.message,
+                                                      createdon: Date.now()
+                                                }
+                                                Messages.findOneAndUpdate({
+                                                      $or: [{
+                                                            between: [data.senderemail, data.recieveremail]
+                                                      }, {
+                                                            between: [data.recieveremail, data.senderemail]
+                                                      }]
+                                                }, {
+                                                      $push: {
+                                                            messages: message
+                                                      }
+                                                }, {
+                                                      new: true
+                                                }, (err, doc) => {
+                                                });
+                                          } else {
+                                                var message = {
+                                                      fromemail: data.senderemail,
+                                                      from: data.sendername,
+                                                      toemail: data.recieveremail,
+                                                      to: data.recievername,
+                                                      message: data.message,
+                                                      createdon: Date.now()
+                                                }
+                                                Messages.create({
+                                                      between: [data.senderemail, data.recieveremail]
+                                                }, (err, doc) => {
+                                                      Messages.findOneAndUpdate({
+                                                            $or: [{
+                                                                  between: [data.senderemail, data.recieveremail]
+                                                            }, {
+                                                                  between: [data.recieveremail, data.senderemail]
+                                                            }]
+                                                      }, {
+                                                            $push: {
+                                                                  messages: message
+                                                            }
+                                                      }, {
+                                                            new: true
+                                                      }, (err, doc) => {
+                                                            
+                                                      });
+                                                });
+
+                                          }
                                     });
                               }
 

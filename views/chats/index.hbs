@@ -46,14 +46,18 @@
                               </ul>
                         </div>
                         <hr>
-                        <div class="recommendations ">
-                              <h6>Recommendations</h6>
+                        <div id="listofusers" class="sc1" style="max-height: 30vh;overflow-y:scroll;">
+                              <li onclick="userslist()" class="list-group-item font-weight-bold active text-center"
+                                    style="font-size:1rem">New Conversation</li>
+                        </div>
+                        <!-- <div class="recommendations ">
+                              <h6>Online Users</h6>
                               <ul class="list-group sc1" style="max-height: 30vh;overflow-y: scroll;">
 
                               </ul>
-                        </div>
+                        </div> -->
                   </div>
-                  <div class="col-9" style="height: 60vh">
+                  <div class="col-9" style="height: 60vh;display: none;" id="chatarea">
                         <h1 class="card" id="nameofuser" style="max-height:40vh">User</h1>
                         <h1 class="card" id="emailofuser" style="display: none;">Email</h1>
                         <h1 class="card" id="useremail" style="display: none;">{{user.email}}</h1>
@@ -81,36 +85,70 @@
       </div>
       {{>scripts}}
       <script>
-            function chat(name, email, socketID) {
-                  $("#nameofuser").html(name);
-                  $("#emailofuser").html(email);
-                  $.get('/chats/messages/byemail?email=' + email, (messages,
-                        status) => {
-                        $("#allmessages").html('');
-                        messages.forEach(message => {
-                              $("#allmessages").append(
-                                    `<li class="list-group-item">${message.from}: ${message.message}</li>`
-                              );
-                        });
+            function startchat(name, email) {
+                  $("#chatlist").prepend(
+                        `<li onclick='chat("${name}","${email}")' class="list-group-item font-weight-bold " style="font-size:1rem"><span class="theuser">${name}</span></li>`
+                        );
+
+                  $("#listofusers").html(`<li onclick="userslist()" class="list-group-item font-weight-bold active text-center"
+                                    style="font-size:1rem">New Conversation</li>`);
+            }
+
+            function userslist() {
+                  var list = $("#chatlist").children();
+                  var namelist = [];
+                  var username = $("#username").html();
+                  namelist.push(username);
+                  for (let i = 0; i < list.length; i++) {
+                        namelist.push(list[i].id);
+                  }
+                  $.get('/chats/users/list', (data, status) => {
+                        $("#listofusers").html('');
+                        data.allusers.forEach(element => {
+                              var presence = (namelist.indexOf(element.name) > -1);
+                              if (presence) {} else {
+                                    $("#listofusers").append(
+                                          `<li onclick='startchat("${element.name}","${element.email}")' class="list-group-item" style="font-size:0.7rem">${element.name}</li>`
+                                    );
+                              }
+                        })
                   });
             }
 
-            function startchat(name, email, socketID) {
-                  var s = $("#chatlist").children();
-                  var x = true;
-                  for (let i = 0; i < s.length; i++) {
-                        if (s[i].innerHTML == name) {
-                              x = false;
-                        }
-                  }
-                  if (x) {
-                        $("#chatlist").prepend(
-                              `<li onclick='chat("${name}","${email}","${socketID}")' onclick="getmessages()" class="list-group-item">${name}</li>`
-                        );
-                  }
+            function RefreshChatList() {
+
+                  $.get('/chats/messenger/list', (data, status) => {
+                        $("#chatlist").html('');
+                        data.forEach(user => {
+                              $("#chatlist").append(
+                                    `<li id="${user.indexname}" onclick='chat("${user.indexname}","${user.indexemail}")' class="list-group-item font-weight-bold " style="font-size:1rem"><span class="theuser">${user.indexname}</span> <br> <span style="font-size: 0.6rem;font-weight:normal">${user.message}</span></li>`
+                              );
+                        });
+                        var section = $("#section").html();
+                        var branch = $("#branch").html();
+                        socket.emit('online_users', {
+                              section: section,
+                              branch: branch
+                        });
+                  });
+
+            }
+
+            function chat(name, email, socketID) {
+                  $("#chatarea").css('display', 'block');
                   $("#nameofuser").html(name);
                   $("#emailofuser").html(email);
-                  $("#userrecomm_" + socketID).remove();
+                  $.get('/chats/messages/byemail?email=' + email, (data,
+                        status) => {
+                        $("#allmessages").html('');
+                        if (data) {
+                              data.messages.forEach(message => {
+                                    $("#allmessages").append(
+                                          `<li class="list-group-item">${message.from}: ${message.message}</li>`
+                                    );
+                              });
+                        }
+                  });
             }
 
             function sendtouser() {
@@ -126,18 +164,25 @@
                         sendername: sendername,
                         message: message
                   });
+                  $("#allmessages").append(
+                        `<li class="list-group-item">${sendername}: ${message}</li>`);
+                  RefreshChatList();
             }
 
             socket.on('new_message', (data) => {
                   var emailofuser = $("#emailofuser").html();
+                  RefreshChatList();
                   if (emailofuser == data.senderemail) {
                         $("#allmessages").append(
                               `<li class="list-group-item">${data.sendername}: ${data.message}</li>`);
+
                   }
+
             });
 
             socket.on('users_online', (users) => {
                   var useremail = $("#useremail").html();
+                  $(".recommendations ul").html('');
                   users.forEach(user => {
                         if (user.email == useremail) {
 
@@ -186,29 +231,28 @@
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
 
                   $.get('/chats/messenger/list', (data, status) => {
-                        console.log(data);
                         data.forEach(user => {
                               $("#chatlist").append(
-                                    `<li onclick='chat("${user.from}","${user.fromemail}")' class="list-group-item">${user.from}</li>`
+                                    `<li id="${user.indexname}" onclick='chat("${user.indexname}","${user.indexemail}")' class="list-group-item font-weight-bold " style="font-size:1rem"><span class="theuser">${user.indexname}</span> <br> <span style="font-size: 0.6rem;font-weight:normal">${user.message}</span></li>`
                               );
                         });
                         var section = $("#section").html();
                         var branch = $("#branch").html();
-                        socket.emit('online_users', {
-                              section: section,
-                              branch: branch
-                        });
+                        // socket.emit('online_users', {
+                        //       section: section,
+                        //       branch: branch
+                        // });
                         if (data[0]) {
-                              $.get('/chats/messages/byemail?email=' + data[0].fromemail, (
-                                    messages,
+                              $.get('/chats/messages/byemail?email=' + data[0].indexemail, (
+                                    alldata,
                                     status) => {
-                                    messages.forEach(message => {
+                                    alldata.messages.forEach(message => {
                                           $("#allmessages").append(
                                                 `<li class="list-group-item">${message.from}: ${message.message}</li>`
                                           );
                                     });
-                                    $("#nameofuser").html(data[0].from);
-                                    $("#emailofuser").html(data[0].fromemail);
+                                    $("#nameofuser").html(data[0].indexname);
+                                    $("#emailofuser").html(data[0].indexemail);
                               });
                         }
 
