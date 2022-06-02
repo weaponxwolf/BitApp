@@ -66,8 +66,7 @@
                                     <div id="img_1_1" class="col-4" style="height:30vh;">
                                     </div>
                                     <div id="img_1_2" class="col-8" style="height:60vh;"></div>
-                                    <div class="col-4" id="img_1_3"
-                                          style="height:30vh;position:relative;bottom:30vh">
+                                    <div class="col-4" id="img_1_3" style="height:30vh;position:relative;bottom:30vh">
                                     </div>
                                     <div id="img_1_4" class="col-4" style="height:30vh;"></div>
                                     <div id="img_1_5" class="col-4" style="height:30vh;">
@@ -117,12 +116,30 @@
             </div>
       </div>
 
-      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+      <div ondblclick="closefullview()" class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      <div id="fullimageview"
+            style="display: none;background-color: black;text-align: center;height: 100vh;padding-top: 2vh;">
 
       </div>
       {{>scripts}}
       <script src="/assets/js/owl.carousel.min.js"></script>
       <script>
+            function closefullimageview() {
+                  $("#fullview").css('display', 'block');
+                  $("#fullimageview").css('display', 'none');
+                  $("#fullimageview").html('');
+            }
+
+            function imagefullview(ImageName) {
+                  $("#fullview").css('display', 'none');
+                  $("#fullimageview").css('display', 'block');
+                  $("#fullimageview").html(
+                        `<img onclick="closefullimageview()" src="/posts/images/${ImageName}" alt="" style="height:95vh">`
+                        );
+            }
+
             function closefullview() {
                   $("#container").css('display', 'block');
                   $("#fullview").css('display', 'none');
@@ -145,7 +162,7 @@
                         $("#fullview").css('display', 'block');
                         $("#fullview").append(`<div class="row">
             <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;color:white">
-                <img onclick="closefullview()" src="/posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
+                <img ondblclick="closefullview()" onclick='imagefullview("${data.ImageName}")' src="/posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
             </div>
             <div class="col sc1" style="border-left: 1px solid #dfd2d2;height: 80vh;max-height:80vh;padding:2rem;overflow-y:scroll">
                 <div class="row">

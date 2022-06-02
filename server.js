@@ -17,7 +17,6 @@ const cookie = require('cookie');
 require('dotenv').config()
 const async = require('hbs/lib/async');
 
-//IMPORTANT MIDDLEWARES
 app.use(cookieParser());
 app.set('view engine', 'hbs');
 app.use(bodyParser.urlencoded({
@@ -456,8 +455,7 @@ io.on('connection', (socket) => {
                                                       }
                                                 }, {
                                                       new: true
-                                                }, (err, doc) => {
-                                                });
+                                                }, (err, doc) => {});
                                           } else {
                                                 var message = {
                                                       fromemail: data.senderemail,
@@ -482,8 +480,7 @@ io.on('connection', (socket) => {
                                                             }
                                                       }, {
                                                             new: true
-                                                      }, (err, doc) => {
-                                                      });
+                                                      }, (err, doc) => {});
                                                 });
 
                                           }
@@ -518,8 +515,7 @@ io.on('connection', (socket) => {
                                                       }
                                                 }, {
                                                       new: true
-                                                }, (err, doc) => {
-                                                });
+                                                }, (err, doc) => {});
                                           } else {
                                                 var message = {
                                                       fromemail: data.senderemail,
@@ -545,7 +541,7 @@ io.on('connection', (socket) => {
                                                       }, {
                                                             new: true
                                                       }, (err, doc) => {
-                                                            
+
                                                       });
                                                 });
 

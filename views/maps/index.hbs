@@ -93,6 +93,12 @@
 
       {{>scripts}}
       <script>
+            function opendetails(params){
+                  $("#ongoingevents").append(`<a href="#" id="list_${params.id}" class="list-group-item list-group-item-action active">${params.id}</a>`);
+            }
+            function closedetails(params){
+                  $("#list_"+params.id).remove();
+            }
             function goback() {
                   $("#thefullimage").html("");
                   $("#allareasandloc").html("");
@@ -125,10 +131,6 @@
                   };
             }
 
-            function opendetails(params) {
-                  console.log(params);
-            }
-
             $(document).ready(function () {
                   var s = document.getElementById('mainpart');
                   var header = document.getElementById('header');
@@ -151,18 +153,11 @@
                                     if (element.type === 'point') {
                                           $("#allareasandloc").append(
                                                 `
-                                    <img class="red" id="${event._id}" onmouseover="opendetails(this)" onmouseout="closedetails()" src="/clubs/events/icons/${event.eventIcon}" alt="" style="height:${element.height}px; 
+                                    <img class="red" id="${event._id}" onmouseover="opendetails(this)" onmouseout="closedetails(this)" src="/clubs/events/icons/${event.eventIcon}" alt="" style="height:${element.height}px; 
                                     width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`
                                           );
                                     } else {
-                                          $("#allareasandloc").append(` <div onclick="HElllo(this)" id="${element._id}" style="background-color: #c99e9e66;
-                                          height: ${element.height}px;
-                                          width: ${element.width}px;
-                                          position: relative;
-                                          margin-bottom: -${element.height}px;
-                                          left: ${element.left}px;
-                                          top: ${element.top}px;
-                                          opacity: 45%;" class="red"></div>`);
+                                          $("#allareasandloc").append(` <div onclick="HElllo(this)" id="${element._id}" style="background-color: #c99e9e66;height: ${element.height}px;width: ${element.width}px;position: relative;margin-bottom: -${element.height}px;left: ${element.left}px;top: ${element.top}px;opacity: 45%;" class="red"></div>`);
                                     }
 
 
