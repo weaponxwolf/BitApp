@@ -114,6 +114,8 @@ const ClubsRoute = require('./routes/Clubs/Club');
 const MapsRoute = require('./routes/Students/Maps');
 const NewsRoute = require('./routes/Students/News');
 const ChatsRoute = require('./routes/Students/Chats');
+const MailsRoute = require('./routes/Students/Mails');
+
 const {
       decode
 } = require('punycode');
@@ -133,6 +135,7 @@ app.use('/news', IsLoggedIn, NewsRoute);
 app.use('/viewprofile', ViewProfileRoute);
 app.use('/home', IsLoggedIn, HomeRoute);
 app.use('/chats', IsLoggedIn, ChatsRoute);
+app.use('/mails', IsLoggedIn, MailsRoute);
 
 
 //FIRST PAGE - OPTIONS FOR LOG IN
