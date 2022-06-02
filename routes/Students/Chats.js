@@ -60,7 +60,7 @@ app.get('/', async (req, res) => {
                         branch: decoded.branch,
                         section: decoded.section
                   }
-                  res.render('chats/index', {
+                  res.render('students/chats/index', {
                         user: s
                   });
             }

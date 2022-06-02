@@ -15,7 +15,7 @@ const app = express()
 app.use(fileUpload());
 
 app.get('/', (req, res) => {
-      res.render('maps/index');
+      res.render('students/maps/index');
 });
 
 

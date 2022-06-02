@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/',(req,res)=>{
-      res.render('explore/shares');
+      res.render('students/explore/shares');
 });
 
 module.exports=app;

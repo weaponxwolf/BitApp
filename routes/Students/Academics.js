@@ -74,43 +74,60 @@ const GetUserDetails = async (email) => {
 }
 
 app.get('/', (req, res) => {
-      res.render('academics/index');
+      res.render('students/academics/index');
 });
 
 app.get('/notices', (req, res) => {
-      res.render('academics/notices');
+      res.render('students/academics/notices');
 })
 
 app.get('/syllabus', (req, res) => {
-      res.render('academics/syllabus');
+      res.render('students/academics/syllabus');
 });
 
 app.get('/sharedfolders/folders/:location', (req, res) => {
-      res.render('academics/insidesharedfolders');
+      res.render('students/academics/insidesharedfolders');
 });
 
 app.get('/sharedfolders/', (req, res) => {
-      res.render('academics/sharedfolders');
+      res.render('students/academics/sharedfolders');
 });
 
-app.get('/classmates',(req,res)=>{
-      res.render('academics/classmates');
+app.get('/classmates', (req, res) => {
+      res.render('students/academics/classmates');
 });
 
-app.get('/classmates/list',async (req,res)=>{
+app.get('/calender', (req, res) => {
+      res.render('students/academics/calender');
+})
+
+app.get('/classchat', async (req, res) => {
       try {
-            const classmates=await Users.find();
-            var s=[];
-            classmates.forEach(element=>{
-                  var classmate={
-                        name : element.profile.displayName,
-                        email : element.email
+            var token = req.cookies.userdata;
+            var decoded = jwt.verify(req.cookies.userdata, 'amitkumar');
+            res.render('students/academics/classchat', {
+                  userdata: decoded
+            });
+      } catch (error) {
+            console.log(error);
+      }
+
+})
+
+app.get('/classmates/list', async (req, res) => {
+      try {
+            const classmates = await Users.find();
+            var s = [];
+            classmates.forEach(element => {
+                  var classmate = {
+                        name: element.profile.displayName,
+                        email: element.email
                   }
                   s.push(classmate);
             });
             res.send(s);
       } catch (error) {
-            
+
       }
 });
 
@@ -383,18 +400,6 @@ app.get('/syllabuslist', async (req, res) => {
       }
 });
 
-app.get('/classchat', async (req, res) => {
-      try {
-            var token = req.cookies.userdata;
-            var decoded = jwt.verify(req.cookies.userdata, 'amitkumar');
-            res.render('academics/classchat', {
-                  userdata: decoded
-            });
-      } catch (error) {
-            console.log(error);
-      }
-
-})
 
 
 app.get('/classmessages', async (req, res) => {
@@ -408,21 +413,19 @@ app.get('/classmessages', async (req, res) => {
       }
 });
 
-app.get('/calender', (req, res) => {
-      res.render('academics/calender');
-})
+
 app.get('/calender/tasks', async (req, res) => {
       try {
-            var all=req.query.date.split('-');
-            var day=parseInt(all[0]) ;
-            var month=parseInt(all[1]);
-            var year=parseInt(all[2]);
+            var all = req.query.date.split('-');
+            var day = parseInt(all[0]);
+            var month = parseInt(all[1]);
+            var year = parseInt(all[2]);
             var getname = GetName(req);
             var tasks = await Tasks.find({
-                  createdby: getname ,
-                  dateoftask : {
-                              $gte: new Date(year, month, day), 
-                              $lt: new Date(year , month, day+1)
+                  createdby: getname,
+                  dateoftask: {
+                        $gte: new Date(year, month, day),
+                        $lt: new Date(year, month, day + 1)
                   }
             });
             res.send(tasks);

@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 app.get('/root', async (req, res) => {
   try {
     var user = await GetUser(req);
-    res.render('files/files', {
+    res.render('students/files/files', {
       user: user
     });
   } catch (error) {
@@ -487,7 +487,7 @@ app.get('/:location', async (req, res) => {
     }).sort({
       'name': 1
     });
-    res.render('files/files', {
+    res.render('students/files/files', {
       user: user
     });
   } catch (error) {

@@ -43,9 +43,9 @@ app.get('/profilefiles/:hello', (req, res) => {
       var getname=GetName(req);
       var getfoldername = getname.split('.').join('-').split('@')[0];
       if (!fs.existsSync(path.join(__dirname,"..",'..', `public/profile/${getfoldername}/index.html`))) {
-            res.render('profile/profilefiles');
+            res.render('students/profile/profilefiles');
       }else{
-            res.render('profile/profilefiles',{profileindex : profileindex});
+            res.render('students/profile/profilefiles',{profileindex : profileindex});
       }
       
 });
@@ -55,9 +55,9 @@ app.get('/profilefiles/', (req, res) => {
       var getname=GetName(req);
       var getfoldername = getname.split('.').join('-').split('@')[0];
       if (!fs.existsSync(path.join(__dirname,"..", '..',`public/profile/${getfoldername}/index.html`))) {
-            res.render('profile/profilefiles');
+            res.render('students/profile/profilefiles');
       }else{
-            res.render('profile/profilefiles',{profileindex : profileindex});
+            res.render('students/profile/profilefiles',{profileindex : profileindex});
       }
       
 });
