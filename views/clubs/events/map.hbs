@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            .blinking {
+                  -webkit-animation: 1s blink ease infinite;
+                  -moz-animation: 1s blink ease infinite;
+                  -ms-animation: 1s blink ease infinite;
+                  -o-animation: 1s blink ease infinite;
+                  animation: 1s blink ease infinite;
+
+            }
+
+            .dot {
+                  height: 20px;
+                  width: 20px;
+                  background-color: rgb(208, 29, 29);
+                  border-radius: 50%;
+                  display: inline-block;
+                  position: absolute;
+                  z-index: 20;
+            }
+
+            @keyframes up-right {
+                  0% {
+                        transform: scale(1);
+                        opacity: .25
+                  }
+
+                  50% {
+                        transform: scale (1, 5);
+                        opacity: 1;
+                  }
+
+                  100% {
+                        transform: scale(1);
+                        opacity: .25;
+                  }
+            }
+
+
+            .red {
+                  -webkit-animation: up-right 1s infinite;
+                  -moz-animation: up-right 1s infinite;
+                  -o-animation: up-right 1s infinite;
+                  animation: up-right 1s infinite;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-float">
+                  <div class="container">
+                        <a href="/club/home" class="navbar-brand">Bit<span class="text-primary">App</span></a>
+
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                      
+                        {{>clubs/navbar}}
+                  </div>
+            </nav>
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/club/events" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Events</a>
+                        </div>
+                        <hr>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/addnew" class="list-group-item list-group-item-action"> Add New
+                                    Event </a>
+                        </div>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/manage" class="list-group-item list-group-item-action"> Manage
+                                    Events</a>
+                        </div>
+                        <hr>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/map" class="list-group-item list-group-item-action">Event Map</a>
+                        </div>
+                        <div class="list-group" style="text-align: center;">
+                              <a href="/club/events/manageareaandpos"
+                                    class="list-group-item list-group-item-action">Manage Area And Positions </a>
+                        </div>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <div class="container">
+
+                                    <div id="allareasandloc">
+
+                                    </div>
+                                    <div>
+                                          <img src="/map/bitmesra.jpg" alt="" usemap="#workmap"
+                                                style="width: 882px;height:2016px;" id="themap">
+                                    </div>
+
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      {{>scripts}}
+      <script>
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+
+                  $.get('/club/events/areasandpos/list', function (data, status) {
+                        data.forEach(element => {
+                              tabind = 1;
+                              height = parseInt(element.height) + parseInt(element
+                                    .top);
+                              width = parseInt(element.width) + parseInt(element
+                                    .left);
+                              if (element.type === 'point') {
+                                    $("#allareasandloc").append(
+                                          `
+                                    <img class="red" src="/assets/img/location-icon.png" alt="" style="height:${element.height}px; 
+                                    width:${element.width}px;position:relative;margin-bottom:-${element.height}px;top: ${element.top}px;left: ${element.left}px;">`
+                                          );
+                              } else {
+                                    $("#allareasandloc").append(` <div onclick="HElllo(this)" id="${element._id}" style="background-color: ${element.color};
+                                          height: ${element.height}px;
+                                          width: ${element.width}px;
+                                          position: relative;
+                                          margin-bottom: -${element.height}px;
+                                          left: ${element.left}px;
+                                          top: ${element.top}px;
+                                          opacity: 45%;" class="red"></div>`);
+                              }
+
+
+                              tabind++;
+                        });
+                  });
+            })
+      </script>
+
+
+</body>
+
+</html>

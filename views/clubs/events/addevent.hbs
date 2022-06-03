@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      {{>head}}
+      <style>
+            .create div {
+                  border: 1px solid black;
+                  padding: 1rem;
+                  margin: 1rem;
+                  cursor: pointer;
+            }
+
+            .folders {
+                  cursor: pointer;
+            }
+
+            .files {
+                  cursor: pointer;
+            }
+
+            .delete-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+
+            }
+
+            .delete-icon:hover span {
+                  display: none;
+            }
+
+            .delete-icon:hover::before {
+                  content: "Delete";
+            }
+
+            .rename-icon {
+                  float: right;
+                  background-color: white;
+                  padding: 0.5rem;
+                  border-radius: 0.3rem;
+                  cursor: pointer;
+            }
+
+            .rename-icon:hover span {
+                  display: none;
+            }
+
+            .rename-icon:hover::before {
+                  content: "Rename";
+            }
+
+            .sc1::-webkit-scrollbar {
+                  width: 8px;
+                  height: 8px;
+            }
+
+            .sc1::-webkit-scrollbar-track {
+                  background-color: rgba(255, 255, 255, 0.4);
+                  border-radius: 10px;
+            }
+
+            .sc1::-webkit-scrollbar-thumb {
+                  background-color: #dfdfdf;
+                  border-radius: 10px;
+            }
+
+            .form-control {
+                  margin-left: 1rem;
+            }
+      </style>
+</head>
+
+<body>
+      <header id="header">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-float">
+                  <div class="container">
+                        <a href="/club/home" class="navbar-brand">Bit<span class="text-primary">App</span></a>
+
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                        </button>
+{{>clubs/navbar}}
+                        
+                  </div>
+            </nav>
+      </header>
+
+      <main>
+            <div></div>
+      </main>
+      <div class="container" style="font-size: 0.8rem" id="container">
+            <div class="row" style="margin-top: 100px">
+                  <div class="col-2">
+                        <div class="list-group">
+                              <a href="/club/events" class="list-group-item list-group-item-action"><img
+                                          src="/assets/img/people-icon.png" alt="" style="height: 0.8rem"> Events</a>
+                        </div>
+                        <hr>
+                  </div>
+                  <div class="col-10">
+                        <div class="sc1" style="max-height: 80vh;overflow-y:scroll" id="mainpart">
+                              <h1>Add Event</h1>
+                              <div class="container">
+                                    <form method="POST" enctype="multipart/form-data">
+                                          <div class="mb-3 row">
+                                                <input type="text" name="name" id="eventname" class="form-control col-5"
+                                                      placeholder="Enter Event Name">
+                                                <input type="text" name="location" id="location"
+                                                      class="form-control col-5" onkeyup="listlocation(this)"
+                                                      placeholder="Enter Event Location">
+                                                <input type="text" name="locid" id="locid" style="display: none">
+                                          </div>
+
+                                          <div>
+                                                <ul class="list-group" id="locationslist">
+                                                </ul>
+                                          </div>
+                                          <div class="mb-3 row">
+                                                <div class="form-group col-5">
+                                                      <label for="exampleInputEmail1">Event Start Date :</label>
+                                                      <input type="date" name="startdate" class="form-control">
+                                                </div>
+                                                <div class="form-group col-5">
+                                                      <label for="exampleInputEmail1">Event End Date :</label>
+                                                      <input type="date" name="enddate" class="form-control">
+                                                </div>
+                                          </div>
+                                          <div class="mb-3 row">
+                                                <div class="form-group col-5">
+                                                      <label for="exampleInputEmail1">Event Start Time :</label>
+                                                      <input type="time" name="starttime" class="form-control">
+                                                </div>
+                                                <div class=" form-group col-5">
+                                                      <label for="exampleInputEmail1">Event End Time :</label>
+                                                      <input type="time" name="endtime" class="form-control">
+                                                </div>
+                                          </div>
+
+                                          <div class="mb-3 row">
+                                                <div class="form-group col-5">
+                                                      <label name="eventfor" for="exampleFormControlSelect1"> Event
+                                                            For</label>
+                                                      <select class="form-control" id="exampleFormControlSelect1">
+                                                            <option value="clubmembers">Club Members </option>
+                                                            <option value="everyone">Everyone </option>
+                                                            <option value="batch">Batch </option>
+                                                            <option value="staff">Staff </option>
+                                                      </select>
+                                                </div>
+                                          </div>
+                                          <div class="mb-3 row">
+                                                <div class="form-group col-5">
+                                                      <label for="exampleFormControlFile1">Event Image :</label>
+                                                      <input type="file" name="eventimage" class="form-control-file"
+                                                            id="exampleFormControlFile1">
+                                                </div>
+                                                <div class="form-group col-5">
+                                                      <label for="exampleFormControlFile1">Event Icon :</label>
+                                                      <input type="file" name="eventicon" class="form-control-file"
+                                                            id="exampleFormControlFile1">
+                                                </div>
+
+                                          </div>
+                                          <div class="form-group col-8">
+                                                <textarea name="description" class="form-control"
+                                                      id="exampleFormControlTextarea1" rows="3"
+                                                      placeholder="Event Description"></textarea>
+                                          </div>
+                                          <button type="submit" class="btn btn-primary">Create Event</button>
+                                    </form>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <div class="container" id="fullview" style="display: none;margin-top: 100px;">
+
+      </div>
+      {{>scripts}}
+      <script>
+            function fillinput(params) {
+                  var locname = $("#" + params.id).html();
+                  $('#location').val(locname);
+                  $("#locid").val(params.id);
+                  $("#locationslist").html("");
+            }
+
+            function listlocation(params) {
+                  var eventloc = $("#location").val();
+                  $.get('/club/locations/list?location=' + eventloc, function (data, status) {
+                        $("#locationslist").html('');
+                        data.forEach(element => {
+                              $("#locationslist").append(
+                                    `<li id='${element._id}' onclick="fillinput(this)" class="list-group-item">${element.name}</li>`
+                              )
+                        });
+                        $("#locationslist").append(`<hr>`)
+                  });
+            }
+
+            function getPosition(element) {
+                  var xPosition = 0;
+                  var yPosition = 0;
+
+                  while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                  }
+                  return {
+                        x: xPosition,
+                        y: yPosition
+                  };
+            }
+
+            $(document).ready(function () {
+                  var s = document.getElementById('mainpart');
+                  var header = document.getElementById('header');
+                  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                  document.getElementById("mainpart").style.height = vh - getPosition(s);
+                  var clientHeight = document.getElementById('header').clientHeight;
+                  var headerHeight = $('header').outerHeight();
+                  document.getElementById("container").style.marginTop = getPosition(clientHeight);
+                  var today = new Date();
+                  var thisyear = today.getFullYear();
+            });
+      </script>
+
+
+</body>
+
+</html>

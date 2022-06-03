@@ -149,7 +149,7 @@ app.get('/', (req, res) => {
       } else if (getname) {
             res.redirect('/home');
       } else if (getclubname) {
-            res.redirect('/club/admin')
+            res.redirect('/club/home')
       } else {
             res.render('index');
       }
@@ -373,7 +373,7 @@ app.post('/clublogin', async (req, res) => {
                               rank: obj.rank,
                         }, 'amitkumar');
                         await res.cookie('clubdata', token);
-                        res.redirect('/club/admin');
+                        res.redirect('/club/home');
                   } else {
                         res.render('clublogin', {
                               message: "You are Not Registered As Member Of The Club !"

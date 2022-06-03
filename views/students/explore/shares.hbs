@@ -120,24 +120,47 @@
 
       </div>
       <div id="fullimageview"
-            style="display: none;background-color: black;text-align: center;height: 100vh;padding-top: 2vh;">
+            style="display: none;background-color: black;text-align: center;height: 100vh;padding-top: 2vh;z-index:2">
 
       </div>
       {{>scripts}}
       <script src="/assets/js/owl.carousel.min.js"></script>
       <script>
+            function clubimagefullview(ImageName) {
+                  $("#mainpart").css('display', 'none');
+                  $("#header").css('margin-bottom', '-100px');
+                  $("#header").html('');
+                  $("#fullview").css('display', 'none');
+                  $("#fullimageview").html(
+                        `<img onclick="closefullclubimageview()" src="/posts/images/${ImageName}" alt="" style="height:95vh">`
+                  );
+                  $("#fullimageview").css('display', 'block');
+
+            }
+
+            function closefullclubimageview() {
+                  $("#container").css('display', 'block');
+                  $("#header").css('margin-bottom', '100px');
+                  $("#header").html(`{{>navbar}}`);
+                  $("#mainpart").css('display', 'block');
+                  $("#fullimageview").css('display', 'none');
+                  $("#fullimageview").html('');
+            }
+
             function closefullimageview() {
-                  $("#fullview").css('display', 'block');
+                  $("#container").css('display', 'block');
+                  $("#mainpart").css('display', 'block');
                   $("#fullimageview").css('display', 'none');
                   $("#fullimageview").html('');
             }
 
             function imagefullview(ImageName) {
+                  $("#container").css('display', 'none');
                   $("#fullview").css('display', 'none');
                   $("#fullimageview").css('display', 'block');
                   $("#fullimageview").html(
                         `<img onclick="closefullimageview()" src="/posts/images/${ImageName}" alt="" style="height:95vh">`
-                        );
+                  );
             }
 
             function closefullview() {
@@ -160,7 +183,7 @@
                         }
                         $("#container").css('display', 'none');
                         $("#fullview").css('display', 'block');
-                        $("#fullview").append(`<div class="row">
+                        $("#fullview").html(`<div class="row">
             <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;color:white">
                 <img ondblclick="closefullview()" onclick='imagefullview("${data.ImageName}")' src="/posts/images/${data.ImageName}" alt="" style="width:100%;max-height:80vh;">
             </div>
@@ -226,7 +249,7 @@
                         }
                         $("#container").css('display', 'none');
                         $("#fullview").css('display', 'block');
-                        $("#fullview").append(`<div class="row">
+                        $("#fullview").html(`<div class="row">
             <div class="col" style="height: 80vh;max-height:80vh;max-width: 50vw;justify-content:center;align-items:center;display:flex;">
                 <div id="carouselExampleControls1" class="carousel slide"
                                                       data-ride="carousel" id="carousel_${data._id}" ">
@@ -278,13 +301,13 @@
         </div>`);
                         $("#fullimagecor_" + data._id).append(` 
                                                             <div class="carousel-item active">
-                                                                  <img class="d-block w-100" src="/posts/images/${data.images[0]}"
+                                                                  <img onclick='clubimagefullview("${data.images[0]}")' class="d-block w-100" src="/posts/images/${data.images[0]}"
                                                                         alt="Third slide">
                                                             </div>`);
                         for (let i = 1; i < data.images.length; i++) {
                               $("#fullimagecor_" + data._id).append(` 
                                                             <div class="carousel-item">
-                                                                  <img class="d-block w-100" src="/posts/images/${data.images[i]}"
+                                                                  <img onclick='clubimagefullview("${data.images[i]}")' class="d-block w-100" src="/posts/images/${data.images[i]}"
                                                                         alt="Third slide">
                                                             </div>`);
                         }
@@ -420,7 +443,6 @@
                   document.getElementById("container").style.marginTop = getPosition(clientHeight);
                   $.get('/post/getposts', (data, status) => {
                         var postcount = data.length;
-                        console.log(data);
                         for (let i = 1; i <= postcount; i++) {
                               if (data[i - 1].type == 'clubpost') {
                                     $('#img_' + 1 + '_' + i).append(
