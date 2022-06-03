@@ -5,7 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const fileUpload = require('express-fileupload');
-
+const linkifyHTML = require('linkify-html');
 // app.use(fileUpload());
 
 const Posts = require('../../models/Posts');
@@ -114,13 +114,16 @@ app.get('/list', async (req, res) => {
             var token = await req.cookies.clubdata;
             var decoded = await jwt.verify(token, 'amitkumar');
             var getname = decoded.email;
-            const posts = await Posts.find({
+            var posts = await Posts.find({
                   type: "clubpost",
                   clubname: getname,
                   isDeleted: false
             }).sort({
                   createdon: -1
             });
+            posts.forEach(post => {
+                  post.body=linkifyHTML(post.body)
+            })
             res.send(posts);
       } catch (error) {
             console.log(error);
@@ -131,6 +134,7 @@ app.post('/addnew', async (req, res) => {
       try {
             var token = await req.cookies.clubdata;
             var decoded = await jwt.verify(token, 'amitkumar');
+            var body = req.body.postbody;
             if (req.body.title && req.body.postbody) {
                   var post = {
                         title: req.body.title,
