@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-
+const linkifyHTML = require('linkify-html');
 const Posts = require('../../models/Posts');
 const async = require('hbs/lib/async');
 
@@ -53,11 +53,45 @@ function dynamicSort(property) {
 }
 
 app.get('/', (req, res) => {
-      res.render('post/index');
+      res.render('students/post/index');
 });
 
 app.get('/newpost', (req, res) => {
-      res.render('post/newpost');
+      res.render('students/post/newpost');
+});
+
+app.get('/manageposts', (req, res) => {
+      res.render('students/post/manageposts');
+});
+
+app.get('/yourposts', async (req, res) => {
+      try {
+            var postid = req.body.postid;
+            var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
+            var posts = await Posts.find({
+                  createdby: decoded.email,
+                  isDeleted: false
+            }).sort({
+                  createdon: -1
+            });
+            posts.forEach(post => {
+                  var obj = post.likes.find(o => o.likedby == decoded.email)
+                  if (obj) {
+                        post.liked = true;
+                  }
+            });
+            posts.forEach(post => {
+                  post.nooflikes = post.likescount;
+                  post.noofcomments = post.commentscount;
+                  if (post.body) {
+                        post.body = linkifyHTML(post.body)
+                  }
+
+            });
+            res.send(posts)
+      } catch (error) {
+            console.log(error);
+      }
 });
 
 app.get('/getposts', async (req, res) => {
@@ -78,10 +112,14 @@ app.get('/getposts', async (req, res) => {
             posts.forEach(post => {
                   post.nooflikes = post.likescount;
                   post.noofcomments = post.commentscount;
+                  if (post.body) {
+                        post.body = linkifyHTML(post.body)
+                  }
+
             });
             res.send(posts);
       } catch (error) {
-
+            console.log(error);
       }
 })
 
@@ -155,12 +193,12 @@ app.post('/deletecomment', async (req, res) => {
       try {
             var commentid = req.body.commentid;
             var postid = req.body.postid;
-            var s=await Posts.updateOne({
+            var s = await Posts.updateOne({
                   _id: postid
             }, {
                   $pull: {
                         comments: {
-                              _id : commentid
+                              _id: commentid
                         }
                   }
             });
@@ -212,7 +250,6 @@ app.post('/unlike', async (req, res) => {
 
 app.post('/newpost', async (req, res) => {
       try {
-            const sampleFile = await req.files.image;
             const getname = GetName(req);
             var decoded = jwt.verify(req.cookies['userdata'], 'amitkumar');
             console.log(decoded);
@@ -224,29 +261,69 @@ app.post('/newpost', async (req, res) => {
                   isDeleted: false,
                   createdon: Date.now(),
             });
-            const str = sampleFile.name;
-            const lastIndex = str.lastIndexOf('.');
-            const replacement = '$';
-            let replaced;
-            if (lastIndex !== -1) {
-                  replaced =
-                        str.substring(0, lastIndex) +
-                        replacement +
-                        str.substring(lastIndex + 1);
+            if (req.files) {
+                  if (req.files.image) {
+                        const sampleFile = await req.files.image;
+                        const str = sampleFile.name;
+                        const lastIndex = str.lastIndexOf('.');
+                        const replacement = '$';
+                        let replaced;
+                        if (lastIndex !== -1) {
+                              replaced =
+                                    str.substring(0, lastIndex) +
+                                    replacement +
+                                    str.substring(lastIndex + 1);
+                        }
+                        var extension = replaced.split('$')[1];
+                        newPost.ImageName = newPost.id + '.' + extension;
+                        var uploadPath = path.join(__dirname, '../../', 'public/posts/images/', newPost.ImageName);
+                        await sampleFile.mv(uploadPath);
+                  }
             }
-            var extension = replaced.split('$')[1];
-            newPost.ImageName = newPost.id + '.' + extension;
-            var uploadPath = path.join(__dirname, '../../', 'public/posts/images/', newPost.ImageName);
-            await sampleFile.mv(uploadPath);
+
             newPost.save();
 
-            res.render('post/newpost', {
+            res.render('students/post/newpost', {
                   message: "Uploaded"
             });
       } catch (error) {
             console.log(error);
       }
+});
 
+
+app.post('/delete', async (req, res) => {
+      try {
+
+            const deletepost = await Posts.updateOne({
+                  _id: req.body.postid
+            }, {
+                  $set: {
+                        isDeleted: true
+                  }
+            });
+            console.log(deletepost);
+            res.send("DELETED");
+      } catch (error) {
+            console.log(error);
+      }
+});
+
+app.post('/undodelete', async (req, res) => {
+      try {
+
+            const deletepost = await Posts.updateOne({
+                  _id: req.body.postid
+            }, {
+                  $set: {
+                        isDeleted: false
+                  }
+            });
+            console.log(deletepost);
+            res.send("DELETED");
+      } catch (error) {
+            console.log(error);
+      }
 });
 
 module.exports = app;

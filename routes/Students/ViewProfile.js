@@ -11,7 +11,7 @@ app.get('/:rollno',(req,res)=>{
       rollno=req.params.rollno;
       var getfoldername = rollno;
       if (!fs.existsSync(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`))) {
-            res.render('clubs/memberprofile');
+            res.send('NO PROFILE ATTACHED');
       }else{
             res.sendFile(path.join(__dirname,"..", `public/profile/${getfoldername}/index.html`));
       }
