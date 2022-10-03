@@ -94,6 +94,7 @@ const GetName = (req) => {
       } else
             return null;
 }
+
 const GetClubName = (req) => {
       if (req.cookies['clubdata']) {
             var decoded = jwt.verify(req.cookies['clubdata'], process.env.JWT_SIGNATURE);
