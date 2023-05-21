@@ -84,7 +84,6 @@ const GetUserDetails = async (email) => {
       } else {
             return null;
       }
-
 }
 
 const GetName = (req) => {
