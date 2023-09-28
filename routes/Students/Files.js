@@ -267,7 +267,7 @@ app.post('/uploadfile', async (req, res) => {
     }
     sampleFile = req.files.file;
     var mimesupport = ["text/x-sass", "text/x-scss", "text/plain", "application/vnd.ms-powerpoint", "application/pdf", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "image/png", "image/gif", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword", "image/jpeg"];
-    var MAX_SIZE = 10240;
+    var MAX_SIZE = 52428800;
     var found = (mimesupport.indexOf(sampleFile.mimetype) > -1);
     if (found && sampleFile.size < MAX_SIZE) {
       const checkFile = await Files.findOne({
@@ -303,7 +303,7 @@ app.post('/uploadfile', async (req, res) => {
         res.send("File '" + newfile.name + "' Uploaded !");
       }
     } else {
-      res.send("INVALID FILE TYPE or FILE EXCEEDING 10Mb ")
+      res.send("INVALID FILE TYPE or FILE EXCEEDING 50Mb ")
     }
 
   } catch (error) {
