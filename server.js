@@ -373,7 +373,7 @@ app.post("/clublogin", async (req, res) => {
       email: req.body.email,
     });
     if (club) {
-      var obj = club.members.find((e) => e.memberemail === req.body.memberemail);
+      var obj = club.members.find((e) => e.email === req.body.memberemail);
       if (obj) {
         var token = await jwt.sign(
           {
